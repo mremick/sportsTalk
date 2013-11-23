@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface GamesViewController : UITableViewController
 
-@property (strong,nonatomic) NSArray *games;
+@property (strong,nonatomic) NSMutableArray *games;
+@property (strong,nonatomic) NSString *className; 
 
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "GamesViewController.h"
+#import "ChatViewController.h"
 
 @interface GamesViewController ()
 
@@ -18,16 +19,36 @@
 {
     [super viewDidLoad];
     
-    self.games = [[NSArray alloc] initWithObjects:@"BKN vs. LAC", nil];
+    self.className = [[NSString alloc] init]; 
+    self.games = [[NSMutableArray alloc] init];
     
-    [self.tableView reloadData];
+    PFQuery *gamesQuery = [PFQuery queryWithClassName:@"GameLists"];
+    
+    [gamesQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+        
+            [self.games removeAllObjects];
+            [self.games addObjectsFromArray:[[objects objectAtIndex:0] objectForKey:@"NBAGames"]];
+            NSLog(@"Games: %@",self.games);
+            NSLog(@"Games Count: %d",[self.games count]);
+            [self.tableView reloadData];
 
+        }
+        
+        else {
+            NSLog(@"An error occurred!");
+        }
+    }];
+    
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -49,7 +70,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = [self.games objectAtIndex:indexPath.row]; 
+    cell.textLabel.text = [self.games objectAtIndex:indexPath.row];
     
     return cell;
 }
@@ -93,7 +114,7 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
@@ -101,8 +122,18 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showChat"]) {
+        ChatViewController *viewController = (ChatViewController *)segue.destinationViewController;
+        NSIndexPath *chosenIndexPath = [self.tableView indexPathForSelectedRow];
+        
+        self.className = [[NSString alloc] initWithString:[NSString stringWithFormat:@"NBA%d",chosenIndexPath.row]];
+        
+        NSLog(@"CLASSNAME (prepareForSegue): %@",self.className);
+        viewController.className = [[NSString alloc] initWithString:self.className];
+        //viewController.className = self.className;
+    }
 }
 
- */
+ 
 
 @end

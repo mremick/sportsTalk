@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface MLSGamesViewController : UITableViewController
+
+@property (strong,nonatomic) NSMutableArray *games;
+
+@property (strong,nonatomic) NSString *className; 
 
 @end

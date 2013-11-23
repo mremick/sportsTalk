@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Parse/Parse.h>
 
 @interface NHLGamesViewController : UITableViewController
 
+@property (strong,nonatomic) NSMutableArray *games;
+
+@property (strong,nonatomic) NSString *className; 
 @end
