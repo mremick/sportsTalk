@@ -244,10 +244,6 @@
     //think the row problem may be occuring here...
     NSUInteger row = [self.chatData count]-[indexPath row]-1;
     
-   
-    
-    
-    
     if (row < [self.chatData count]) {
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
@@ -258,28 +254,22 @@
         
         //tutorial had the font as helvetica and size 14
         NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:@"Courier" size:12], NSFontAttributeName,
+                                    [UIFont fontWithName:@"Helvetica" size:14], NSFontAttributeName,
                                     nil];
         
-        [cell.textString.text boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
+        CGRect rect = [chatText boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                        attributes:attributes
                                           context:nil];
+        CGSize size = rect.size;
         
-        CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
-        //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+        cell.textString.frame = CGRectMake(75, 14, size.width +20, size.height + 20);
         
-        CGRect boundingRect = [chatText boundingRectWithSize:constraintSize
-                                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                                  attributes:attributes
-                                                     context:nil];
         
-        cell.textString.frame = CGRectMake(75, 14, boundingRect.size.width +20, boundingRect.size.height + 20);
         
-        [cell.textString sizeToFit];
         
         //a lot of formatting code after this that I'm skipping for now
-        cell.textString.textAlignment = NSLineBreakByWordWrapping;
+        //cell.textString.textAlignment = NSLineBreakByWordWrapping;
         
         
         NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
@@ -287,7 +277,9 @@
         [formatter setDateFormat:@"HH:mm a"];
         NSString *timeString = [formatter stringFromDate:theDate];
         
-        cell.textLabel.text = chatText;
+        cell.textString.text = chatText;
+        [cell.textString sizeToFit];
+        
         cell.timeLabel.text = timeString;
         cell.userLabel.text = theUserName; 
     }
