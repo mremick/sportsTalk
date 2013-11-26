@@ -41,13 +41,13 @@
     
     //update the last update
     [self.refreshheaderView refreshLastUpdatedDate];
+    
+    //setting up the toolbar above the keyboard
+    //[self toolbarSetup];
 }
 
--(void)createClassName:(NSString *)classname
-{
-    self.className = classname;
-    NSLog(@"createClassName Called! #1");
-}
+
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -56,6 +56,7 @@
     
     self.chatData = [[NSMutableArray alloc] init];
     [self loadLocalChat];
+    self.closeKeyboardButton.hidden = YES; 
 }
 
 
@@ -149,17 +150,35 @@
 - (void)keyboardWasShown:(NSNotification *)aNotification
 {
     NSLog(@"Keyboard was shown!");
-    
+    [self animateTextField:self.tfEntry up:YES];
+    self.closeKeyboardButton.hidden = NO;
     //move keyboard here.
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
     NSLog(@"Keyboard will hide!");
+    [self animateTextField:self.tfEntry up:NO];
+    self.closeKeyboardButton.hidden = YES;
     
-    //return keyboard here 
+
+    //return keyboard here
 }
 
+- (void) animateTextField: (UITextField*) textField up: (BOOL) up
+{
+    //was 80
+    const int movementDistance = 209; // tweak as needed
+    const float movementDuration = 0.3f; // tweak as needed
+    
+    int movement = (up ? -movementDistance : movementDistance);
+    
+    [UIView beginAnimations: @"anim" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+    [UIView commitAnimations];
+}
 
 #pragma mark - Refresh Table View Methods / Data Source Loading / Reloading methods
 
@@ -224,13 +243,43 @@
     
     //think the row problem may be occuring here...
     NSUInteger row = [self.chatData count]-[indexPath row]-1;
-
+    
+   
+    
+    
     
     if (row < [self.chatData count]) {
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         
+        cell.textLabel.textAlignment = NSLineBreakByWordWrapping;
+        cell.textString.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
+        /* adjusting the height of the cell based on the amounf of text */
+        
+        //tutorial had the font as helvetica and size 14
+        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:@"Courier" size:12], NSFontAttributeName,
+                                    nil];
+        
+        [cell.textString.text boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                       attributes:attributes
+                                          context:nil];
+        
+        CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
+        //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+        
+        CGRect boundingRect = [chatText boundingRectWithSize:constraintSize
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:attributes
+                                                     context:nil];
+        
+        cell.textString.frame = CGRectMake(75, 14, boundingRect.size.width +20, boundingRect.size.height + 20);
+        
+        [cell.textString sizeToFit];
+        
         //a lot of formatting code after this that I'm skipping for now
+        cell.textString.textAlignment = NSLineBreakByWordWrapping;
         
         
         NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
@@ -250,11 +299,24 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
+    
+    
+    //playing with formatting 
+   
+
+    
+    
     UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:14.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
-    CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+    //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
     
-    return labelSize.height + 40;
+    CGRect boundingRect = [cellText boundingRectWithSize:constraintSize
+                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                          attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
+                                             context:nil];
+
+    
+    return boundingRect.size.height + 40;
 }
 
 #pragma mark - Parse! 
@@ -351,4 +413,7 @@
 
 
 
+- (IBAction)closeKeyboard:(id)sender {
+    [self.tfEntry resignFirstResponder];
+}
 @end
