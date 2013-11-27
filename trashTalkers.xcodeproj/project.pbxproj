@@ -43,6 +43,7 @@
 		3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8756183EDF400017E2BE /* MLSGamesViewController.m */; };
 		3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */; };
 		3ED273B8183EE1A600B5821E /* NASCARRacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED273B7183EE1A600B5821E /* NASCARRacesViewController.m */; };
+		3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED273C01845920D00B5821E /* ResetPasswordViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,8 @@
 		3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHLGamesViewController.m; sourceTree = "<group>"; };
 		3ED273B6183EE1A600B5821E /* NASCARRacesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NASCARRacesViewController.h; sourceTree = "<group>"; };
 		3ED273B7183EE1A600B5821E /* NASCARRacesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NASCARRacesViewController.m; sourceTree = "<group>"; };
+		3ED273BF1845920D00B5821E /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
+		3ED273C01845920D00B5821E /* ResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPasswordViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +210,8 @@
 				3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */,
 				3ED273B6183EE1A600B5821E /* NASCARRacesViewController.h */,
 				3ED273B7183EE1A600B5821E /* NASCARRacesViewController.m */,
+				3ED273BF1845920D00B5821E /* ResetPasswordViewController.h */,
+				3ED273C01845920D00B5821E /* ResetPasswordViewController.m */,
 				3E5B873C1838559F0017E2BE /* ChatCell.h */,
 				3E5B873D1838559F0017E2BE /* ChatCell.m */,
 				3E5B874C183C4B580017E2BE /* ChatViewController.h */,
@@ -354,6 +359,7 @@
 				3E5B8738183821C70017E2BE /* GamesViewController.m in Sources */,
 				3E5B8751183DB0B50017E2BE /* NFLGamesViewController.m in Sources */,
 				3E5B873E1838559F0017E2BE /* ChatCell.m in Sources */,
+				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,

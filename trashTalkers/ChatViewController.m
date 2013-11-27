@@ -241,7 +241,6 @@
 {
     ChatCell *cell = (ChatCell *)[tableView dequeueReusableCellWithIdentifier:@"chatCellIdentifier"];
     
-    //think the row problem may be occuring here...
     NSUInteger row = [self.chatData count]-[indexPath row]-1;
     
     if (row < [self.chatData count]) {
@@ -257,6 +256,7 @@
                                     [UIFont fontWithName:@"Helvetica" size:14], NSFontAttributeName,
                                     nil];
         
+        
         CGRect rect = [chatText boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                        attributes:attributes
@@ -269,7 +269,7 @@
         
         
         //a lot of formatting code after this that I'm skipping for now
-        //cell.textString.textAlignment = NSLineBreakByWordWrapping;
+        cell.textString.textAlignment = NSLineBreakByWordWrapping;
         
         
         NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
@@ -290,14 +290,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Original
     NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
     
+    //test
+    //NSString *cellText = [[self.chatData objectAtIndex:indexPath.row] objectForKey:@"text"];
     
     //playing with formatting 
    
 
     
-    
+    //This font is adjusting the cells 
     UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:14.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
     //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
