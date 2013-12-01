@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface ResetPasswordViewController : UIViewController <UITextFieldDelegate>
+@interface ResetPasswordViewController : UIViewController <UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (strong,nonatomic) NSString *emailAddress; 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;

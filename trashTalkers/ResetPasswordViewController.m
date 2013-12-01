@@ -35,7 +35,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.closeKeyboardButton.hidden = YES; 
+    self.closeKeyboardButton.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,6 +43,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - UIButton Method
 
 - (IBAction)sendEmailButton:(id)sender {
     
@@ -62,6 +64,8 @@
     }];
     
 }
+
+#pragma mark - UITextField Delegate Methods
     
 - (void)registerForKeyboardNotifications
 {
@@ -102,6 +106,13 @@
 - (IBAction)closeKeyboard:(id)sender {
     [self.emailTextField resignFirstResponder];
 }
-    
+
+#pragma mark - UIAlertView Delegate Method
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES]; 
+}
+
 
 @end

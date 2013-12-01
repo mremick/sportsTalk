@@ -13,6 +13,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *retypePasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *favoriteTeamsTextField;
+@property (weak, nonatomic) IBOutlet UITextField *shortBioTextField;
+
+
 - (IBAction)signUp:(id)sender;
 
 @end

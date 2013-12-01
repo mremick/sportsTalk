@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewController.h"
+#import "UserProfileViewController.h"
 
 #define MAX_ENTRIES_LOADED 25
 
@@ -114,6 +115,14 @@
         [newMessage setObject:self.tfEntry.text forKey:@"text"];
         [newMessage setObject:[PFUser currentUser].username forKey:@"userName"];
         [newMessage setObject:[NSDate date] forKey:@"date"];
+        
+        /* Things to add once someone enters text so they can be saved */
+        
+        //1 game they chatted in
+        //2 their unique ID
+        
+        
+        
         [newMessage saveInBackground];
         self.tfEntry.text = @"";
 
@@ -248,7 +257,7 @@
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         
         cell.textLabel.textAlignment = NSLineBreakByWordWrapping;
-        cell.textString.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
+        //cell.textString.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
         /* adjusting the height of the cell based on the amounf of text */
         
         //tutorial had the font as helvetica and size 14
@@ -264,9 +273,6 @@
         CGSize size = rect.size;
         
         cell.textString.frame = CGRectMake(75, 14, size.width +20, size.height + 20);
-        
-        
-        
         
         //a lot of formatting code after this that I'm skipping for now
         cell.textString.textAlignment = NSLineBreakByWordWrapping;
@@ -405,10 +411,21 @@
     
 }
 
-
-
-
-- (IBAction)closeKeyboard:(id)sender {
+- (IBAction)closeKeyboard:(id)sender
+{
     [self.tfEntry resignFirstResponder];
 }
+
+#pragma mark - Navigation 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showUser"]) {
+        UserProfileViewController *vc = [segue destinationViewController];
+        NSIndexPath *indexPath = [self.chatTable indexPathForSelectedRow];
+        NSUInteger row = [self.chatData count]-[indexPath row]-1;
+        vc.userName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
+    }
+}
+    
 @end

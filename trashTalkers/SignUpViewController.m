@@ -33,6 +33,8 @@
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *retypedPassword = [self.retypePasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *favoriteTeams = [self.favoriteTeamsTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *shortBio = [self.shortBioTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     //weak error checking
     if ([username length] == 0 || [password length] == 0 || [retypedPassword length] == 0 || [email length] == 0) {
@@ -59,11 +61,16 @@
         user.username = username;
         user.password = password;
         user.email = email;
+        user[@"favoriteTeams"] = favoriteTeams;
+        user[@"shortBio"] = shortBio; 
+        
+        
+        //maybe add a quick description here or favorite sports or sports teams 
         
         [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (error) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                                message:@"An error occurred creating your account. Please try again"
+                                                                message:[error.userInfo objectForKey:@"error"]
                                                                delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil, nil];
