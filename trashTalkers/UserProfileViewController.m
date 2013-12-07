@@ -29,7 +29,8 @@
     [super viewWillAppear:animated];
     
     self.userNameLabel.text = self.userName;
-    self.navigationController.title = self.userName; 
+    self.navigationItem.title = self.userName;
+
 }
 
 

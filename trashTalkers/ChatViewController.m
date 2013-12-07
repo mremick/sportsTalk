@@ -261,9 +261,14 @@
         /* adjusting the height of the cell based on the amounf of text */
         
         //tutorial had the font as helvetica and size 14
-        NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:@"Helvetica" size:14], NSFontAttributeName,
-                                    nil];
+        //this isnt formatting the text...
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:20.0];
+        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+        
+        /*NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:@"Helvetica" size:14.0], NSFontAttributeName,
+                                    nil]; */
+        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:chatText attributes:attributes];
         
         
         CGRect rect = [chatText boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
@@ -283,8 +288,8 @@
         [formatter setDateFormat:@"HH:mm a"];
         NSString *timeString = [formatter stringFromDate:theDate];
         
-        cell.textString.text = chatText;
-        [cell.textString sizeToFit];
+        cell.textString.attributedText = attrString;
+        //[cell.textString sizeToFit];
         
         cell.timeLabel.text = timeString;
         cell.userLabel.text = theUserName; 
@@ -307,7 +312,7 @@
 
     
     //This font is adjusting the cells 
-    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:14.0];
+    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:20.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
     //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
     
