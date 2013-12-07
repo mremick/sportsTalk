@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import "ChatCell.h"
+#import "SVProgressHUD.h"
 
 @interface ChatViewController : UIViewController <UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,PF_EGORefreshTableHeaderDelegate>
 

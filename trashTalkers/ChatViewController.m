@@ -332,6 +332,7 @@
     //and the subsequently do a query against the network
     
     if ([self.chatData count] == 0) {
+        
         query.cachePolicy = kPFCachePolicyCacheThenNetwork;
         [query orderByAscending:@"createdAt"];
         NSLog(@"Trying to retrieve from cache");
@@ -349,11 +350,15 @@
                 NSLog(@"An error occured loading chat from cache");
             }
         }];
+        
     }
     
     __block int totalNumberOfEntries = 0;
     PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
     [countQuery orderByAscending:@"createdAt"];
+    
+    [SVProgressHUD showWithStatus:@"Loading Chat"];
+
     [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
         if (!error) {
             NSLog(@"There are currently %d entries",number);
@@ -376,6 +381,7 @@
                 
                 //new query may neeb to be declared here..
                 
+
                 [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     if (!error) {
                         //find succeeded
@@ -408,6 +414,9 @@
             }
         }
     }];
+    
+    [SVProgressHUD dismiss];
+
     
 }
 

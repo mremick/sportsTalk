@@ -189,6 +189,7 @@
                     <connections>
                         <outlet property="favoriteTeamsLabel" destination="iPX-4I-cy4" id="NdU-ef-fX5"/>
                         <outlet property="shortBioLabel" destination="bnJ-AQ-liv" id="LGG-W2-Pqc"/>
+                        <outlet property="userImage" destination="39E-AV-zKb" id="6lH-vw-9RB"/>
                         <outlet property="userNameLabel" destination="hgy-CP-ese" id="2Cd-eO-tTj"/>
                     </connections>
                 </viewController>

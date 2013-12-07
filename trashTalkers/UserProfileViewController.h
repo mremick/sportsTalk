@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *favoriteTeamsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shortBioLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *userImage;
 
 @end

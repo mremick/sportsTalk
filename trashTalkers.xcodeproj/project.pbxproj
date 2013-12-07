@@ -42,6 +42,9 @@
 		3E5B8754183EDE140017E2BE /* MLBGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8753183EDE140017E2BE /* MLBGamesViewController.m */; };
 		3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8756183EDF400017E2BE /* MLSGamesViewController.m */; };
 		3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */; };
+		3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB671852B667000FC942 /* placeholder.jpg */; };
+		3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */; };
+		3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */; };
 		3ED273B8183EE1A600B5821E /* NASCARRacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED273B7183EE1A600B5821E /* NASCARRacesViewController.m */; };
 		3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED273C01845920D00B5821E /* ResetPasswordViewController.m */; };
 		3ED273C4184AD93800B5821E /* UserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED273C3184AD93800B5821E /* UserProfileViewController.m */; };
@@ -107,6 +110,11 @@
 		3E5B8756183EDF400017E2BE /* MLSGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSGamesViewController.m; sourceTree = "<group>"; };
 		3E5B8758183EE0430017E2BE /* NHLGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHLGamesViewController.h; sourceTree = "<group>"; };
 		3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHLGamesViewController.m; sourceTree = "<group>"; };
+		3EC6BB671852B667000FC942 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
+		3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		3EC6BB6C1852BA04000FC942 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		3ED273B6183EE1A600B5821E /* NASCARRacesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NASCARRacesViewController.h; sourceTree = "<group>"; };
 		3ED273B7183EE1A600B5821E /* NASCARRacesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NASCARRacesViewController.m; sourceTree = "<group>"; };
 		3ED273BF1845920D00B5821E /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 		3E5B86DE183711870017E2BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EC6BB691852BA04000FC942 /* SVProgressHUD */,
 				3E5B872B183714E40017E2BE /* Parse.framework */,
 				3E5B87291837145B0017E2BE /* SystemConfiguration.framework */,
 				3E5B871B183714510017E2BE /* CFNetwork.framework */,
@@ -231,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				3E5B86E7183711870017E2BE /* trashTalkers-Info.plist */,
+				3EC6BB671852B667000FC942 /* placeholder.jpg */,
 				3E5B874218385E930017E2BE /* textfield_background.png */,
 				3E5B874318385E930017E2BE /* textfield_background@2x.png */,
 				3E5B86E8183711870017E2BE /* InfoPlist.strings */,
@@ -256,6 +266,17 @@
 				3E5B8707183711870017E2BE /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3EC6BB691852BA04000FC942 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */,
+				3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */,
+				3EC6BB6C1852BA04000FC942 /* SVProgressHUD.h */,
+				3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,7 +355,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */,
 				3E5B874518385E930017E2BE /* textfield_background@2x.png in Resources */,
+				3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */,
 				3E5B86F8183711870017E2BE /* Images.xcassets in Resources */,
 				3E5B86EA183711870017E2BE /* InfoPlist.strings in Resources */,
 				3E5B86F3183711870017E2BE /* Main.storyboard in Resources */,
@@ -366,6 +389,7 @@
 				3E5B8751183DB0B50017E2BE /* NFLGamesViewController.m in Sources */,
 				3E5B873E1838559F0017E2BE /* ChatCell.m in Sources */,
 				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
+				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,

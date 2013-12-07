@@ -19,6 +19,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self loadUser];
+    
+    //setting up the image temporarily
+    self.userImage.image = [UIImage imageNamed:@"placeholder.jpg"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -46,6 +49,12 @@
            
             self.user = objects;
             NSLog(@"USER: %@",self.user);
+            self.favoriteTeams = [[self.user objectAtIndex:0] objectForKey:@"favoriteTeams"];
+            self.shortBio = [[self.user objectAtIndex:0] objectForKey:@"shortBio"];
+
+            self.favoriteTeamsLabel.text = self.favoriteTeams;
+            self.shortBioLabel.text = self.shortBio; 
+
         }
         
         else {
@@ -53,10 +62,8 @@
         }
     }];
     
-    self.favoriteTeams = [[self.user objectAtIndex:0] objectForKey:@"favoriteTeams"];
-    self.shortBio = [[self.user objectAtIndex:0] objectForKey:@"shortBio"];
     
-    //NSLog(@"FAVORITE TEAMS: %@",self.favoriteTeams);
+    
     //NSLog(@"SHORT BIO: %@",self.shortBio);
                                     
 
