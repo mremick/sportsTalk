@@ -183,11 +183,22 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G3s-kC-ZOO">
+                                <rect key="frame" x="137" y="380" width="76" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Add Friend">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addFriend:" destination="pdK-Jc-ubt" eventType="touchUpInside" id="O1Z-U2-6YL"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="iph-zB-g9x"/>
                     <connections>
+                        <outlet property="addFriendButton" destination="G3s-kC-ZOO" id="oOC-t9-2h2"/>
                         <outlet property="favoriteTeamsLabel" destination="iPX-4I-cy4" id="NdU-ef-fX5"/>
                         <outlet property="shortBioLabel" destination="bnJ-AQ-liv" id="LGG-W2-Pqc"/>
                         <outlet property="userImage" destination="39E-AV-zKb" id="6lH-vw-9RB"/>
