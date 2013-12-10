@@ -20,8 +20,8 @@
 //this was a NSArray in the tutorial (thought he was wrong)
 @property (nonatomic,retain) NSMutableArray *chatData;
 
+@property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 
-@property (nonatomic,strong) IBOutlet UITextField *tfEntry;
 - (void)registerForKeyboardNotifications;
 - (void)freeKeyboardNotifications;
 - (void)keyboardWasShown:(NSNotification *)aNotification;
@@ -32,6 +32,7 @@
 -(void)createClassName:(NSString *)classname;
 
 @property (weak, nonatomic) IBOutlet UIButton *closeKeyboardButton;
+
 - (IBAction)closeKeyboard:(id)sender;
 
 @property (strong,nonatomic) NSString *gameTitle; 

@@ -23,17 +23,21 @@
 {
     [super viewDidLoad];
     
+    [self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
         
     NSLog(@"TESTING CLASS NAME: %@",self.className); 
     
 	// Do any additional setup after loading the view.
-    self.tfEntry.delegate = self;
-    self.tfEntry.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.chatTextField.delegate = self;
+    self.chatTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
+    
+    /*
     CGRect rect = CGRectMake(self.tabBarController.view.bounds.size.width + 30, self.tabBarController.view.bounds.size.height, 100, 100);
-    self.tfEntry = [[UITextField alloc] initWithFrame:rect];
-    [self.view addSubview:self.tfEntry];
+    self.chatTextField = [[UITextField alloc] initWithFrame:rect];
+    [self.view addSubview:self.chatTextField];
     
+     */
     
     [self registerForKeyboardNotifications];
     
@@ -79,26 +83,26 @@
 
 - (IBAction)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSLog(@"The text: %@",self.tfEntry.text);
+    NSLog(@"The text: %@",self.chatTextField.text);
     [textField resignFirstResponder];
-    [self.tfEntry resignFirstResponder]; 
+    [self.chatTextField resignFirstResponder];
 }
 
 - (IBAction)backgroundTap:(id)sender
 {
-    [self.tfEntry resignFirstResponder];
+    [self.chatTextField resignFirstResponder];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    NSLog(@"The text: %@",self.tfEntry.text);
+    NSLog(@"The text: %@",self.chatTextField.text);
     [textField resignFirstResponder];
     
-    if ([self.tfEntry.text length] > 0) {
+    if ([self.chatTextField.text length] > 0) {
         
         //updating the table immeadiately
         
-        NSArray *objects = [NSArray arrayWithObjects:self.tfEntry.text,[PFUser currentUser].username,[NSDate date], nil];
+        NSArray *objects = [NSArray arrayWithObjects:self.chatTextField.text,[PFUser currentUser].username,[NSDate date], nil];
         NSArray *keys = [NSArray arrayWithObjects:@"text",@"userName",@"date", nil];
         
         NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -120,7 +124,7 @@
         
         //going for the parsing
         PFObject *newMessage = [PFObject objectWithClassName:self.className];
-        [newMessage setObject:self.tfEntry.text forKey:@"text"];
+        [newMessage setObject:self.chatTextField.text forKey:@"text"];
         [newMessage setObject:[PFUser currentUser].username forKey:@"userName"];
         [newMessage setObject:[NSDate date] forKey:@"date"];
         
@@ -132,8 +136,12 @@
         
         
         [newMessage saveInBackground];
-        self.tfEntry.text = @"";
+        self.chatTextField.text = @"";
 
+    }
+    
+    else {
+        NSLog(@"The text length was less than zero"); 
     }
     
     //reload the data
@@ -167,7 +175,7 @@
 - (void)keyboardWasShown:(NSNotification *)aNotification
 {
     NSLog(@"Keyboard was shown!");
-    [self animateTextField:self.tfEntry up:YES];
+    [self animateTextField:self.chatTextField up:YES];
     self.closeKeyboardButton.hidden = NO;
     //move keyboard here.
 }
@@ -175,7 +183,7 @@
 - (void)keyboardWillHide:(NSNotification *)aNotification
 {
     NSLog(@"Keyboard will hide!");
-    [self animateTextField:self.tfEntry up:NO];
+    [self animateTextField:self.chatTextField up:NO];
     self.closeKeyboardButton.hidden = YES;
     
 
@@ -435,7 +443,7 @@
 
 - (IBAction)closeKeyboard:(id)sender
 {
-    [self.tfEntry resignFirstResponder];
+    [self.chatTextField resignFirstResponder];
 }
 
 #pragma mark - Navigation 
