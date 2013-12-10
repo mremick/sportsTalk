@@ -52,7 +52,6 @@
         
         else {
             [self.friends addObjectsFromArray:results];
-            PFUser *user = [self.friends objectAtIndex:0];
             [self.tableView reloadData]; 
         }
     }];

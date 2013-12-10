@@ -19,13 +19,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self loadUser];
+    [self loadFriends];
     
     //setting up the image temporarily
     self.userImage.image = [UIImage imageNamed:@"placeholder.jpg"];
     
     self.currentUser = [PFUser currentUser];
     
-    
+    NSLog(@"IS FRIEND: %d",[self isFriend:self.userProfile]); 
     
 }
 
@@ -79,6 +80,24 @@
 
 }
 
+- (void)loadFriends
+{
+    self.friends = [NSMutableArray array];
+    PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+        
+        if (error) {
+            NSLog(@"Error fetvhing friends");
+        }
+        
+        else {
+            [self.friends addObjectsFromArray:results];
+            NSLog(@"FRIENDS: %@",self.friends);
+        }
+    }];
+}
+
 - (IBAction)addFriend:(id)sender {
     
     //self.userProfile
@@ -122,7 +141,7 @@
 //helper method to check is someone is a friend
 - (BOOL)isFriend:(PFUser *)user
 {
-    NSLog(@"SELF.FRIENDS: %@",self.friends);
+    NSLog(@"IS FRIEND?: %d",[self isFriend:self.userProfile]);
     //for in loop to iterate through all friends
     for (PFUser *friend in self.friends) {
         //comparing friends and all users and comparing their unique Ids

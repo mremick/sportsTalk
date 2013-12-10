@@ -29,11 +29,16 @@
 	// Do any additional setup after loading the view.
     self.tfEntry.delegate = self;
     self.tfEntry.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    CGRect rect = CGRectMake(self.tabBarController.view.bounds.size.width + 30, self.tabBarController.view.bounds.size.height, 100, 100);
+    self.tfEntry = [[UITextField alloc] initWithFrame:rect];
+    [self.view addSubview:self.tfEntry];
+    
+    
     [self registerForKeyboardNotifications];
     
     //Implementing the pull to refresh view
     
-    //pull to refresh error is probably here
     if (self.refreshheaderView == nil) {
         PF_EGORefreshTableHeaderView *view = [[PF_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.chatTable.bounds.size.height, self.view.frame.size.width, self.chatTable.bounds.size.height)];
         view.delegate = self;
@@ -58,7 +63,9 @@
     
     self.chatData = [[NSMutableArray alloc] init];
     [self loadLocalChat];
-    self.closeKeyboardButton.hidden = YES; 
+    self.closeKeyboardButton.hidden = YES;
+    
+    self.navigationItem.title = self.gameTitle; 
 }
 
 
@@ -263,7 +270,7 @@
         
         //tutorial had the font as helvetica and size 14
         //this isnt formatting the text...
-        UIFont *font = [UIFont fontWithName:@"Helvetica" size:20.0];
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:16.0];
         NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
         
         /*NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:

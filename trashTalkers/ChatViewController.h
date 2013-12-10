@@ -34,6 +34,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeKeyboardButton;
 - (IBAction)closeKeyboard:(id)sender;
 
+@property (strong,nonatomic) NSString *gameTitle; 
+
 
 
 @end
