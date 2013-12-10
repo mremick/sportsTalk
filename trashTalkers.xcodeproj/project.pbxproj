@@ -42,6 +42,7 @@
 		3E5B8754183EDE140017E2BE /* MLBGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8753183EDE140017E2BE /* MLBGamesViewController.m */; };
 		3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8756183EDF400017E2BE /* MLSGamesViewController.m */; };
 		3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */; };
+		3E9242BD18568037008C039E /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242BC18568037008C039E /* FriendsViewController.m */; };
 		3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB671852B667000FC942 /* placeholder.jpg */; };
 		3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */; };
 		3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */; };
@@ -110,6 +111,8 @@
 		3E5B8756183EDF400017E2BE /* MLSGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSGamesViewController.m; sourceTree = "<group>"; };
 		3E5B8758183EE0430017E2BE /* NHLGamesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHLGamesViewController.h; sourceTree = "<group>"; };
 		3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHLGamesViewController.m; sourceTree = "<group>"; };
+		3E9242BB18568037008C039E /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		3E9242BC18568037008C039E /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
 		3EC6BB671852B667000FC942 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -230,6 +233,8 @@
 				3E5B874D183C4B580017E2BE /* ChatViewController.m */,
 				3ED273C2184AD93800B5821E /* UserProfileViewController.h */,
 				3ED273C3184AD93800B5821E /* UserProfileViewController.m */,
+				3E9242BB18568037008C039E /* FriendsViewController.h */,
+				3E9242BC18568037008C039E /* FriendsViewController.m */,
 				3E5B86F7183711870017E2BE /* Images.xcassets */,
 				3E5B86E6183711870017E2BE /* Supporting Files */,
 			);
@@ -390,6 +395,7 @@
 				3E5B873E1838559F0017E2BE /* ChatCell.m in Sources */,
 				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
 				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
+				3E9242BD18568037008C039E /* FriendsViewController.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,

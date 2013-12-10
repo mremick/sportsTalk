@@ -33,6 +33,7 @@
     
     //Implementing the pull to refresh view
     
+    //pull to refresh error is probably here
     if (self.refreshheaderView == nil) {
         PF_EGORefreshTableHeaderView *view = [[PF_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.chatTable.bounds.size.height, self.view.frame.size.width, self.chatTable.bounds.size.height)];
         view.delegate = self;
