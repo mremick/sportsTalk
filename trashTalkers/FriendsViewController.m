@@ -18,29 +18,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     self.currentUser = [PFUser currentUser];
     self.friends = [NSMutableArray array];
-    
-    
-    /*
-    PFQuery *query = [PFUser query];
-    //[query whereKey:@"friendsRelation" containsAllObjectsInArray:@[[PFUser currentUser]]];
-    [query whereKey:@"friendsRelation" equalTo:[PFUser currentUser]];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (error) {
-            NSLog(@"An error occurred fetching friends");
-        }
-        
-        else {
-            [self.friends addObjectsFromArray:objects];
-            NSLog(@"FRIENDS: %@",self.friends);
-            [self.tableView reloadData];
-        }
-    }];
-    
-    */
     
     PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
     PFQuery *query = [relation query];
@@ -52,12 +37,10 @@
         
         else {
             [self.friends addObjectsFromArray:results];
-            [self.tableView reloadData]; 
+            [self.tableView reloadData];
         }
     }];
-
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

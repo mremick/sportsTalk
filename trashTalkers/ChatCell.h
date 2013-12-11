@@ -13,6 +13,8 @@
 @property (nonatomic,retain) IBOutlet UILabel *userLabel;
 @property (nonatomic,retain) IBOutlet UITextView *textString;
 @property (nonatomic,retain) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *userAvatar;
+
 
 
 @end

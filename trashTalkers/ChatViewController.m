@@ -24,7 +24,7 @@
     [super viewDidLoad];
     
     [self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
-        
+            
     NSLog(@"TESTING CLASS NAME: %@",self.className); 
     
 	// Do any additional setup after loading the view.
@@ -43,8 +43,11 @@
     
     //Implementing the pull to refresh view
     
+    //
+    
+    //The problem with the pull to refresh is more than likely here
     if (self.refreshheaderView == nil) {
-        PF_EGORefreshTableHeaderView *view = [[PF_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.chatTable.bounds.size.height, self.view.frame.size.width, self.chatTable.bounds.size.height)];
+        PF_EGORefreshTableHeaderView *view = [[PF_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - (self.chatTable.bounds.size.height + 0), self.view.frame.size.width, self.chatTable.bounds.size.height)];
         view.delegate = self;
         [self.chatTable addSubview:view];
         self.refreshheaderView = view;
@@ -138,10 +141,6 @@
         [newMessage saveInBackground];
         self.chatTextField.text = @"";
 
-    }
-    
-    else {
-        NSLog(@"The text length was less than zero"); 
     }
     
     //reload the data
@@ -272,13 +271,13 @@
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         
-        cell.textLabel.textAlignment = NSLineBreakByWordWrapping;
+        //cell.textLabel.textAlignment = NSLineBreakByWordWrapping;
         //cell.textString.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
         /* adjusting the height of the cell based on the amounf of text */
         
         //tutorial had the font as helvetica and size 14
         //this isnt formatting the text...
-        UIFont *font = [UIFont fontWithName:@"Helvetica" size:16.0];
+        UIFont *font = [UIFont fontWithName:@"Arial" size:13.0];
         NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
         
         /*NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -293,7 +292,8 @@
                                           context:nil];
         CGSize size = rect.size;
         
-        cell.textString.frame = CGRectMake(75, 14, size.width +20, size.height + 20);
+        //the first two inputs change where the text appears in the cell
+        cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
         
         //a lot of formatting code after this that I'm skipping for now
         cell.textString.textAlignment = NSLineBreakByWordWrapping;
@@ -305,10 +305,13 @@
         NSString *timeString = [formatter stringFromDate:theDate];
         
         cell.textString.attributedText = attrString;
-        //[cell.textString sizeToFit];
+        [cell.textString sizeToFit];
         
         cell.timeLabel.text = timeString;
-        cell.userLabel.text = theUserName; 
+        cell.userLabel.text = theUserName;
+        
+        //to upload an avatar in the future
+        //cell.userAvatar.image = [UIImage imageNamed:@"placeholder.jpg"];
     }
     
     
@@ -328,7 +331,7 @@
 
     
     //This font is adjusting the cells 
-    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:20.0];
+    UIFont *cellFont = [UIFont fontWithName:@"Arial" size:13.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
     //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
     

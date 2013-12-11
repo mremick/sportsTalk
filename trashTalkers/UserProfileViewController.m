@@ -26,7 +26,7 @@
     
     self.currentUser = [PFUser currentUser];
     
-    NSLog(@"IS FRIEND: %d",[self isFriend:self.userProfile]); 
+
     
 }
 
@@ -36,10 +36,20 @@
     
     self.userNameLabel.text = self.userName;
     self.navigationItem.title = self.userName;
-
+    
 }
 
+- (void)buttonTitleMethod
+{
+    if ([self isFriend:self.userProfile]) {
+        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Unfriend"];
+    }
+    
+    else {
+        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Add Friend"];
 
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -57,7 +67,6 @@
             self.user = objects;
             
             self.userProfile = [self.user objectAtIndex:0];
-            NSLog(@"USER: %@",self.userProfile);
             self.favoriteTeams = self.userProfile[@"favoriteTeams"];
             self.shortBio = self.userProfile[@"shortBio"];
             self.objectId = self.userProfile.objectId;
@@ -72,12 +81,6 @@
             NSLog(@"An error occurred querying for a user");
         }
     }];
-    
-    
-    
-    //NSLog(@"SHORT BIO: %@",self.shortBio);
-                                    
-
 }
 
 - (void)loadFriends
@@ -94,8 +97,12 @@
         else {
             [self.friends addObjectsFromArray:results];
             NSLog(@"FRIENDS: %@",self.friends);
+            NSLog(@"IS FRIEND:%d",[self isFriend:self.userProfile]);
+
         }
     }];
+    
+    [self performSelector:@selector(buttonTitleMethod) withObject:nil afterDelay:2.0];
 }
 
 - (IBAction)addFriend:(id)sender {
@@ -103,10 +110,8 @@
     //self.userProfile
     PFRelation *friendsRelation = [self.currentUser relationforKey:@"friendsRelation"];
     
-    NSLog(@"IS FRIEND: %d",[self isFriend:self.userProfile]);
-    NSLog(@"OBJECT ID: %@",self.userProfile.objectId);
-    
     //if they are a friend remove them
+    NSLog(@"IS FRIEND:%d",[self isFriend:self.userProfile]);
     if ([self isFriend:self.userProfile]) {
         //remove from array of freinds
         for (PFUser *friend in self.friends) {
@@ -135,15 +140,28 @@
         }
     }];
     
+    [self performSelector:@selector(buttonTitleMethod) withObject:nil afterDelay:2.0];
+
+}
+
+- (BOOL)isFriend:(PFUser *)user
+{
+    for (PFUser *friend in self.friends) {
+        if ([friend.objectId isEqualToString:user.objectId]) {
+            return YES;
+            break;
+        }
+    }
     
+    return NO;
 }
 
 //helper method to check is someone is a friend
+/*
 - (BOOL)isFriend:(PFUser *)user
 {
-    NSLog(@"IS FRIEND?: %d",[self isFriend:self.userProfile]);
     //for in loop to iterate through all friends
-    for (PFUser *friend in self.friends) {
+    for (PFUser *friend in self.convertedFriends) {
         //comparing friends and all users and comparing their unique Ids
         if ([friend.objectId isEqualToString:user.objectId]) {
             return YES;
@@ -152,4 +170,5 @@
     
     return NO;
 }
+ */
 @end

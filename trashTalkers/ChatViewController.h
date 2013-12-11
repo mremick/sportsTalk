@@ -29,7 +29,6 @@
 
 //className methods and properties
 @property (strong,nonatomic) NSString *className;
--(void)createClassName:(NSString *)classname;
 
 @property (weak, nonatomic) IBOutlet UIButton *closeKeyboardButton;
 

@@ -32,6 +32,7 @@
 @property (strong,nonatomic) PFUser *userProfile; 
 @property (strong,nonatomic) PFUser *currentUser;
 @property (strong,nonatomic) NSMutableArray *friends;
+@property (strong,nonatomic) NSMutableArray *convertedFriends; 
 - (BOOL)isFriend:(PFUser *)user;
 
 @end
