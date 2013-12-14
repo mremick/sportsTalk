@@ -8,6 +8,7 @@
 
 #import "ChatViewController.h"
 #import "UserProfileViewController.h"
+#import "UIImageView+ParseFileSupport.h"
 
 #define MAX_ENTRIES_LOADED 25
 
@@ -61,8 +62,6 @@
 }
 
 
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -72,9 +71,19 @@
     [self loadLocalChat];
     self.closeKeyboardButton.hidden = YES;
     
-    self.navigationItem.title = self.gameTitle; 
+    self.navigationItem.title = self.gameTitle;
+   
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser[@"lastChatRoom"] = self.gameTitle;
+    [currentUser saveInBackground]; 
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -105,7 +114,9 @@
         
         //updating the table immeadiately
         
-        NSArray *objects = [NSArray arrayWithObjects:self.chatTextField.text,[PFUser currentUser].username,[NSDate date], nil];
+        PFUser *currentUser = [PFUser currentUser];
+        
+        NSArray *objects = [NSArray arrayWithObjects:self.chatTextField.text,currentUser.username,[NSDate date], nil];
         NSArray *keys = [NSArray arrayWithObjects:@"text",@"userName",@"date", nil];
         
         NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -123,13 +134,14 @@
         [self.chatTable endUpdates];
         [self.chatTable reloadData];
         
-        NSLog(@"CLASSNAME (TextFieldShouldreturn): %@",self.className);
+        //NSLog(@"CLASSNAME (TextFieldShouldreturn): %@",self.className);
         
         //going for the parsing
         PFObject *newMessage = [PFObject objectWithClassName:self.className];
         [newMessage setObject:self.chatTextField.text forKey:@"text"];
-        [newMessage setObject:[PFUser currentUser].username forKey:@"userName"];
+        [newMessage setObject:currentUser.username forKey:@"userName"];
         [newMessage setObject:[NSDate date] forKey:@"date"];
+        [newMessage setObject:currentUser[@"avatar"] forKey:@"avatar"];
         
         /* Things to add once someone enters text so they can be saved */
         
@@ -191,8 +203,8 @@
 
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
-    //was 80
-    const int movementDistance = 209; // tweak as needed
+    //was 209
+    const int movementDistance = 167; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
     
     int movement = (up ? -movementDistance : movementDistance);
@@ -239,6 +251,9 @@
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(PF_EGORefreshTableHeaderView *)view
 {
+    //this is called when pull to refresh is pulled..
+    self.chatData = [[NSMutableArray alloc] init];
+
     [self reloadTableViewDataSource];
     [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
 }
@@ -267,22 +282,16 @@
     
     NSUInteger row = [self.chatData count]-[indexPath row]-1;
     
+    
     if (row < [self.chatData count]) {
+        
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
-        
-        //cell.textLabel.textAlignment = NSLineBreakByWordWrapping;
-        //cell.textString.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
-        /* adjusting the height of the cell based on the amounf of text */
-        
-        //tutorial had the font as helvetica and size 14
-        //this isnt formatting the text...
+        PFFile *imageFile = [[self.chatData objectAtIndex:row] objectForKey:@"avatar"];
+
         UIFont *font = [UIFont fontWithName:@"Arial" size:13.0];
         NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
         
-        /*NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:@"Helvetica" size:14.0], NSFontAttributeName,
-                                    nil]; */
         NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:chatText attributes:attributes];
         
         
@@ -292,12 +301,8 @@
                                           context:nil];
         CGSize size = rect.size;
         
-        //the first two inputs change where the text appears in the cell
         cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
-        
-        //a lot of formatting code after this that I'm skipping for now
         cell.textString.textAlignment = NSLineBreakByWordWrapping;
-        
         
         NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -306,12 +311,9 @@
         
         cell.textString.attributedText = attrString;
         [cell.textString sizeToFit];
-        
         cell.timeLabel.text = timeString;
         cell.userLabel.text = theUserName;
-        
-        //to upload an avatar in the future
-        //cell.userAvatar.image = [UIImage imageNamed:@"placeholder.jpg"];
+        cell.userAvatar.file = imageFile;
     }
     
     
@@ -320,32 +322,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Original
     NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
-    
-    //test
-    //NSString *cellText = [[self.chatData objectAtIndex:indexPath.row] objectForKey:@"text"];
-    
-    //playing with formatting 
-   
 
-    
-    //This font is adjusting the cells 
     UIFont *cellFont = [UIFont fontWithName:@"Arial" size:13.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
-    //CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
     
     CGRect boundingRect = [cellText boundingRectWithSize:constraintSize
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
                                              context:nil];
 
-    
     return boundingRect.size.height + 40;
 }
 
 #pragma mark - Parse! 
-
 //need to find where this is called
 - (void)loadLocalChat
 {
@@ -355,17 +345,31 @@
     //if no objects are loaded in memory, we look to the cache first to fill the table
     //and the subsequently do a query against the network
     
+    [self.chatData removeAllObjects];
+    
     if ([self.chatData count] == 0) {
         
-        query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        
         [query orderByAscending:@"createdAt"];
         NSLog(@"Trying to retrieve from cache");
+        
+        [SVProgressHUD showWithStatus:@"Loading Chat"];
+
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
-                NSLog(@"Successfully retrieved %d chats from cache",[objects count]);
+                //NSLog(@"Successfully retrieved %d chats from cache",[objects count]);
                 [self.chatData removeAllObjects];
                 [self.chatData addObjectsFromArray:objects];
-                [self.chatTable reloadData];
+                
+                //getting back on the main thread to update the UI
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.chatTable reloadData];
+                    [SVProgressHUD dismiss];
+                });
+                
+                NSLog(@"CHAT DATA COUNT: %d",[self.chatData count]);
                 NSLog(@"CHAT DATA: %@",self.chatData);
 
             }
@@ -377,15 +381,16 @@
         
     }
     
+
+    
     __block int totalNumberOfEntries = 0;
     PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
     [countQuery orderByAscending:@"createdAt"];
     
-    [SVProgressHUD showWithStatus:@"Loading Chat"];
 
     [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
         if (!error) {
-            NSLog(@"There are currently %d entries",number);
+            //NSLog(@"There are currently %d entries",number);
             totalNumberOfEntries = number;
             
             if (totalNumberOfEntries > [self.chatData count]) {
@@ -403,26 +408,32 @@
                 //there may be a problem here
                 countQuery.limit = theLimit;
                 
-                //new query may neeb to be declared here..
-                
-
                 [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     if (!error) {
                         //find succeeded
-                        NSLog(@"Successfully retrieved %d chats",[objects count]);
+                        //NSLog(@"Successfully retrieved %d chats",[objects count]);
+                        
+                        
+                        
                         [self.chatData addObjectsFromArray:objects];
                         NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
                         
-                        NSLog(@"CHAT DATA: %@",self.chatData);
+                        //NSLog(@"CHAT DATA: %@",self.chatData);
                         
                         for (int ind = 0; ind < [objects count]; ind++) {
                             NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
                             [insertIndexPaths addObject:newPath];
                         }
                         
-                        [self.chatTable beginUpdates];
-                        [self.chatTable reloadData];
-                        [self.chatTable scrollsToTop];
+                        //getting back to the main thread to update the UI
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.chatTable beginUpdates];
+                            [self.chatTable reloadData];
+                            [self.chatTable scrollsToTop];
+                            [SVProgressHUD dismiss];
+
+                        });
+                        
                     }
                     
                     else {
@@ -438,9 +449,6 @@
             }
         }
     }];
-    
-    [SVProgressHUD dismiss];
-
     
 }
 

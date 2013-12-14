@@ -44,6 +44,9 @@
 		3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B8759183EE0430017E2BE /* NHLGamesViewController.m */; };
 		3E9242BD18568037008C039E /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242BC18568037008C039E /* FriendsViewController.m */; };
 		3E9242BF1857FF6F008C039E /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E9242BE1857FF6F008C039E /* avatar.png */; };
+		3E9242C218596701008C039E /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C118596701008C039E /* EditProfileViewController.m */; };
+		3E9242C5185BE86A008C039E /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */; };
+		3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */; };
 		3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB671852B667000FC942 /* placeholder.jpg */; };
 		3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */; };
 		3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */; };
@@ -115,6 +118,12 @@
 		3E9242BB18568037008C039E /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
 		3E9242BC18568037008C039E /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
 		3E9242BE1857FF6F008C039E /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
+		3E9242C018596701008C039E /* EditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
+		3E9242C118596701008C039E /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
+		3E9242C3185BE86A008C039E /* UIImage+ProportionalFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ProportionalFill.h"; sourceTree = "<group>"; };
+		3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ProportionalFill.m"; sourceTree = "<group>"; };
+		3E9242C6185BEF85008C039E /* UIImageView+ParseFileSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ParseFileSupport.h"; sourceTree = "<group>"; };
+		3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ParseFileSupport.m"; sourceTree = "<group>"; };
 		3EC6BB671852B667000FC942 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -237,6 +246,12 @@
 				3ED273C3184AD93800B5821E /* UserProfileViewController.m */,
 				3E9242BB18568037008C039E /* FriendsViewController.h */,
 				3E9242BC18568037008C039E /* FriendsViewController.m */,
+				3E9242C018596701008C039E /* EditProfileViewController.h */,
+				3E9242C118596701008C039E /* EditProfileViewController.m */,
+				3E9242C3185BE86A008C039E /* UIImage+ProportionalFill.h */,
+				3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */,
+				3E9242C6185BEF85008C039E /* UIImageView+ParseFileSupport.h */,
+				3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */,
 				3E5B86F7183711870017E2BE /* Images.xcassets */,
 				3E5B86E6183711870017E2BE /* Supporting Files */,
 			);
@@ -389,6 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */,
 				3ED273C4184AD93800B5821E /* UserProfileViewController.m in Sources */,
 				3E5B872F1837169C0017E2BE /* LoginViewController.m in Sources */,
 				3E5B873218371B100017E2BE /* SignUpViewController.m in Sources */,
@@ -403,6 +419,8 @@
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,
+				3E9242C218596701008C039E /* EditProfileViewController.m in Sources */,
+				3E9242C5185BE86A008C039E /* UIImage+ProportionalFill.m in Sources */,
 				3E5B8754183EDE140017E2BE /* MLBGamesViewController.m in Sources */,
 				3E5B86EC183711870017E2BE /* main.m in Sources */,
 				3ED273B8183EE1A600B5821E /* NASCARRacesViewController.m in Sources */,

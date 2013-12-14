@@ -122,7 +122,8 @@
         NSIndexPath *chosenIndexPath = [self.tableView indexPathForSelectedRow];
         
         self.className = [[NSString alloc] initWithString:[NSString stringWithFormat:@"MLB%d",chosenIndexPath.row]];
-        
+        viewController.gameTitle = [self.games objectAtIndex:chosenIndexPath.row];
+
         NSLog(@"CLASSNAME (prepareForSegue): %@",self.className);
         viewController.className = [[NSString alloc] initWithString:self.className];
         //viewController.className = self.className;

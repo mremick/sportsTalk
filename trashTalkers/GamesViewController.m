@@ -49,7 +49,6 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -7,6 +7,7 @@
 //
 
 #import "UserProfileViewController.h"
+#import "UIImageView+ParseFileSupport.h"
 
 @interface UserProfileViewController ()
 
@@ -18,8 +19,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self loadUser];
-    [self loadFriends];
+    
     
     //setting up the image temporarily
     self.userImage.image = [UIImage imageNamed:@"placeholder.jpg"];
@@ -32,11 +32,21 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.favoriteTeamsLabel.text = @"";
+    self.shortBioLabel.text = @"";
+    
+    
+    [self loadUser];
+    
+    [self loadFriends];
+    
     [super viewWillAppear:animated];
     
     self.userNameLabel.text = self.userName;
     self.navigationItem.title = self.userName;
+    self.editProfileButton.hidden = YES;
     
+    [self performSelector:@selector(checkForCurrentUser) withObject:nil afterDelay:2.0];
 }
 
 - (void)buttonTitleMethod
@@ -66,13 +76,26 @@
            
             self.user = objects;
             
+            //assiging properties
             self.userProfile = [self.user objectAtIndex:0];
+            
+            NSLog(@"USER: %@",self.userProfile);
+            
             self.favoriteTeams = self.userProfile[@"favoriteTeams"];
             self.shortBio = self.userProfile[@"shortBio"];
+            self.lastChatRoom = self.userProfile[@"lastChatRoom"];
+            self.onlineStatus = self.userProfile[@"Online"];
+            self.imageFile = self.userProfile[@"avatar"];
             self.objectId = self.userProfile.objectId;
             
+            NSLog(@"USER FAVROITE TEAMS:%@",self.favoriteTeams);
+            
+            //setting labels text
             self.favoriteTeamsLabel.text = self.favoriteTeams;
             self.shortBioLabel.text = self.shortBio;
+            self.lastChatRoomLabel.text = self.lastChatRoom;
+            self.onlineStatusLabel.text = self.onlineStatus;
+            self.userImage.file = self.imageFile;
             
 
         }
@@ -81,6 +104,25 @@
             NSLog(@"An error occurred querying for a user");
         }
     }];
+    
+}
+
+- (void)checkForCurrentUser
+{
+    PFUser *currentUser = [PFUser currentUser];
+    
+    NSLog(@"check for current user called");
+    
+    if ([currentUser.objectId isEqualToString:self.userProfile.objectId]) {
+        self.addFriendButton.hidden = YES;
+        self.editProfileButton.hidden = NO; 
+        
+    }
+    
+    else {
+        self.addFriendButton.hidden = NO;
+        self.editProfileButton.hidden = YES;
+    }
 }
 
 - (void)loadFriends
@@ -156,19 +198,14 @@
     return NO;
 }
 
-//helper method to check is someone is a friend
-/*
-- (BOOL)isFriend:(PFUser *)user
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //for in loop to iterate through all friends
-    for (PFUser *friend in self.convertedFriends) {
-        //comparing friends and all users and comparing their unique Ids
-        if ([friend.objectId isEqualToString:user.objectId]) {
-            return YES;
-        }
+    if ([segue.identifier isEqualToString:@"editProfile"]) {
+        EditProfileViewController *vc = [segue destinationViewController];
+        vc.bio = self.shortBio;
+        vc.favoriteTeams = self.favoriteTeams;
+        vc.userName = self.userName;
+        vc.image = self.userImage.image;
     }
-    
-    return NO;
 }
- */
 @end

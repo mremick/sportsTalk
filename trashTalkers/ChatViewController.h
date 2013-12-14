@@ -34,7 +34,8 @@
 
 - (IBAction)closeKeyboard:(id)sender;
 
-@property (strong,nonatomic) NSString *gameTitle; 
+@property (strong,nonatomic) NSString *gameTitle;
+@property (nonatomic,strong) NSNumber *numberOfUsers;
 
 
 
