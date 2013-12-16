@@ -151,7 +151,7 @@
             </objects>
             <point key="canvasLocation" x="1727" y="-1282"/>
         </scene>
-        <!--User Profile View Controller-->
+        <!--User Profile View Controller - Me-->
         <scene sceneID="E7X-WI-AL4">
             <objects>
                 <viewController id="pdK-Jc-ubt" customClass="UserProfileViewController" sceneMemberID="viewController">
@@ -240,6 +240,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Me" id="ima-ec-b1C"/>
                     <navigationItem key="navigationItem" id="iph-zB-g9x"/>
                     <connections>
                         <outlet property="addFriendButton" destination="G3s-kC-ZOO" id="oOC-t9-2h2"/>
@@ -358,7 +359,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5if-Uw-2mi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2708" y="-1280"/>
+            <point key="canvasLocation" x="2941" y="-1154"/>
         </scene>
         <!--Games View Controller - NFL Games-->
         <scene sceneID="wJA-oS-uXu">
@@ -1053,7 +1054,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="aIS-et-rEa"/>
         <segue reference="mjx-3B-PI4"/>
-        <segue reference="57C-2B-0B0"/>
     </inferredMetricsTieBreakers>
 </document>

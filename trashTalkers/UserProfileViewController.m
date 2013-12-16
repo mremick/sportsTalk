@@ -35,6 +35,7 @@
     self.favoriteTeamsLabel.text = @"";
     self.shortBioLabel.text = @"";
     
+    NSLog(@"IN USER PROFILE"); 
     
     [self loadUser];
     
@@ -46,7 +47,6 @@
     self.navigationItem.title = self.userName;
     self.editProfileButton.hidden = YES;
     
-    [self performSelector:@selector(checkForCurrentUser) withObject:nil afterDelay:2.0];
 }
 
 - (void)buttonTitleMethod
@@ -103,6 +103,10 @@
         else {
             NSLog(@"An error occurred querying for a user");
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self checkForCurrentUser];
+        });
     }];
     
 }
@@ -142,9 +146,14 @@
             NSLog(@"IS FRIEND:%d",[self isFriend:self.userProfile]);
 
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self buttonTitleMethod];
+
+        });
     }];
     
-    [self performSelector:@selector(buttonTitleMethod) withObject:nil afterDelay:2.0];
+    //[self performSelector:@selector(buttonTitleMethod) withObject:nil afterDelay:2.0];
 }
 
 - (IBAction)addFriend:(id)sender {

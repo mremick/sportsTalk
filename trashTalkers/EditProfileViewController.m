@@ -8,6 +8,7 @@
 
 #import "EditProfileViewController.h"
 #import "UIImage+ProportionalFill.h"
+#import "UserProfileViewController.h"
 
 @interface EditProfileViewController ()
 
@@ -64,7 +65,7 @@
     
     [currentUser saveInBackground];
     
-    [self.navigationController popViewControllerAnimated:YES]; 
+    [self.navigationController popViewControllerAnimated:YES];
     
 }
 
@@ -130,5 +131,15 @@
     });
     
 }
+
+/*
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    UserProfileViewController *vc = [segue destinationViewController];
+    vc.userImage.image = self.avatarImageView.image;
+}
+ 
+*/
 
 @end

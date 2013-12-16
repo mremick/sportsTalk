@@ -286,6 +286,7 @@
     if (row < [self.chatData count]) {
         
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
+        
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         PFFile *imageFile = [[self.chatData objectAtIndex:row] objectForKey:@"avatar"];
 
@@ -313,7 +314,15 @@
         [cell.textString sizeToFit];
         cell.timeLabel.text = timeString;
         cell.userLabel.text = theUserName;
-        cell.userAvatar.file = imageFile;
+        
+        if (imageFile) {
+            cell.userAvatar.file = imageFile;
+        }
+        
+        else {
+            cell.userAvatar.image = [UIImage imageNamed:@"avatar.png"]; 
+        }
+        
     }
     
     
@@ -331,8 +340,8 @@
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
                                              context:nil];
-
-    return boundingRect.size.height + 40;
+                                     //40
+    return boundingRect.size.height + 50;
 }
 
 #pragma mark - Parse! 
@@ -345,7 +354,6 @@
     //if no objects are loaded in memory, we look to the cache first to fill the table
     //and the subsequently do a query against the network
     
-    [self.chatData removeAllObjects];
     
     if ([self.chatData count] == 0) {
         
@@ -381,74 +389,82 @@
         
     }
     
-
-    
-    __block int totalNumberOfEntries = 0;
-    PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
-    [countQuery orderByAscending:@"createdAt"];
-    
-
-    [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
-        if (!error) {
-            //NSLog(@"There are currently %d entries",number);
-            totalNumberOfEntries = number;
-            
-            if (totalNumberOfEntries > [self.chatData count]) {
-                //NSLog(@"Retrieving data");
-                int theLimit;
+    else {
+        
+        __block int totalNumberOfEntries = 0;
+        PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
+        [countQuery orderByAscending:@"createdAt"];
+        
+        
+        [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+            if (!error) {
+                //NSLog(@"There are currently %d entries",number);
+                totalNumberOfEntries = number;
                 
-                if ((totalNumberOfEntries - [self.chatData count]) > MAX_ENTRIES_LOADED) {
-                    theLimit = MAX_ENTRIES_LOADED;
-                }
-                
-                else {
-                    theLimit = totalNumberOfEntries - [self.chatData count];
-                }
-                
-                //there may be a problem here
-                countQuery.limit = theLimit;
-                
-                [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                    if (!error) {
-                        //find succeeded
-                        //NSLog(@"Successfully retrieved %d chats",[objects count]);
-                        
-                        
-                        
-                        [self.chatData addObjectsFromArray:objects];
-                        NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
-                        
-                        //NSLog(@"CHAT DATA: %@",self.chatData);
-                        
-                        for (int ind = 0; ind < [objects count]; ind++) {
-                            NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
-                            [insertIndexPaths addObject:newPath];
-                        }
-                        
-                        //getting back to the main thread to update the UI
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.chatTable beginUpdates];
-                            [self.chatTable reloadData];
-                            [self.chatTable scrollsToTop];
-                            [SVProgressHUD dismiss];
-
-                        });
-                        
+                if (totalNumberOfEntries > [self.chatData count]) {
+                    //NSLog(@"Retrieving data");
+                    int theLimit;
+                    
+                    if ((totalNumberOfEntries - [self.chatData count]) > MAX_ENTRIES_LOADED) {
+                        theLimit = MAX_ENTRIES_LOADED;
                     }
                     
                     else {
-                        NSLog(@"An error occurred");
+                        theLimit = totalNumberOfEntries - [self.chatData count];
                     }
-                }];
+                    
+                    //there may be a problem here
+                    countQuery.limit = theLimit;
+                    
+                    [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                        if (!error) {
+                            //find succeeded
+                            //NSLog(@"Successfully retrieved %d chats",[objects count]);
+                            
+                            
+                            
+                            [self.chatData addObjectsFromArray:objects];
+                            NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                            
+                            //NSLog(@"CHAT DATA: %@",self.chatData);
+                            
+                            for (int ind = 0; ind < [objects count]; ind++) {
+                                NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
+                                [insertIndexPaths addObject:newPath];
+                            }
+                            
+                            //getting back to the main thread to update the UI
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self.chatTable beginUpdates];
+                                [self.chatTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                                [self.chatTable endUpdates];
+                                [self.chatTable reloadData];
+                                [self.chatTable scrollsToTop];
+                                [SVProgressHUD dismiss];
+                                
+                            });
+                            
+                        }
+                        
+                        else {
+                            NSLog(@"An error occurred");
+                        }
+                    }];
+                    
+                    
+                }
                 
-                
+                else {
+                    number = [self.chatData count];
+                }
             }
-            
-            else {
-                number = [self.chatData count];
-            }
-        }
-    }];
+        }];
+
+        
+    }
+    
+
+    
     
 }
 

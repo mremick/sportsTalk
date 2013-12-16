@@ -21,6 +21,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self registerForKeyboardNotification];
+    
+    self.avatarImageView.image = [UIImage imageNamed:@"avatar.png"]; 
 }
 
 - (void)viewWillAppear:(BOOL)animated
