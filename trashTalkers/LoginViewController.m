@@ -15,15 +15,6 @@
 
 @implementation LoginViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -31,6 +22,22 @@
     
     //hide back button
     self.navigationItem.hidesBackButton = YES;
+    self.tabBarController.tabBar.hidden = YES;
+    
+    if ([UIScreen mainScreen].bounds.size.height == 568) {
+        //set background image to the larger one
+        //self.backgroundImageView.image = [UIImage imageNamed:@"TheLargerImage"];
+    }
+    
+    [self setupToolbar];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,6 +80,25 @@
             }
         }];
     }
+}
+
+- (void)setupToolbar
+{
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleBlackTranslucent;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           nil];
+    [numberToolbar sizeToFit];
+    self.usernameTextField.inputAccessoryView = numberToolbar;
+    self.passwordTextField.inputAccessoryView = numberToolbar;
+}
+
+
+-(void)doneWithNumberPad{
+    [self.usernameTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
+    
 }
 
 

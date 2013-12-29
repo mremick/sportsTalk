@@ -86,6 +86,7 @@
             self.lastChatRoom = self.userProfile[@"lastChatRoom"];
             self.onlineStatus = self.userProfile[@"Online"];
             self.imageFile = self.userProfile[@"avatar"];
+            self.location = self.userProfile[@"location"];
             self.objectId = self.userProfile.objectId;
             
             NSLog(@"USER FAVROITE TEAMS:%@",self.favoriteTeams);
@@ -96,6 +97,7 @@
             self.lastChatRoomLabel.text = self.lastChatRoom;
             self.onlineStatusLabel.text = self.onlineStatus;
             self.userImage.file = self.imageFile;
+            self.locationLabel.text = self.location;
             
 
         }
@@ -168,6 +170,22 @@
         for (PFUser *friend in self.friends) {
             if ([friend.objectId isEqualToString:self.userProfile.objectId]) {
                 [self.friends removeObject:self.userProfile];
+                
+
+                /*
+                NSString *message = [NSString stringWithFormat:@"%@ has been removed from your friends",friend.username];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Friend Removed"
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil];
+                [alert show];
+                 
+                 */
+                
+                self.addFriendButton.titleLabel.text = @"Add Friend";
+                
                 break;
             }
         }
@@ -214,6 +232,7 @@
         vc.bio = self.shortBio;
         vc.favoriteTeams = self.favoriteTeams;
         vc.userName = self.userName;
+        vc.location = self.location; 
         vc.image = self.userImage.image;
     }
 }

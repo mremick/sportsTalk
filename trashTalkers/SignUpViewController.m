@@ -22,6 +22,13 @@
 	// Do any additional setup after loading the view.
     [self registerForKeyboardNotification];
     
+    if ([UIScreen mainScreen].bounds.size.height == 568) {
+        //set background image to the larger one
+        //self.backgroundImageView.image = [UIImage imageNamed:@"TheLargerImage"];
+    }
+    
+    [self setupToolbar];
+    
     self.avatarImageView.image = [UIImage imageNamed:@"avatar.png"]; 
 }
 
@@ -44,8 +51,6 @@
     NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *retypedPassword = [self.retypePasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *favoriteTeams = [self.favoriteTeamsTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *shortBio = [self.shortBioTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     //weak error checking
     if ([username length] == 0 || [password length] == 0 || [retypedPassword length] == 0 || [email length] == 0) {
@@ -75,8 +80,9 @@
         user.username = username;
         user.password = password;
         user.email = email;
-        user[@"favoriteTeams"] = favoriteTeams;
-        user[@"shortBio"] = shortBio;
+        user[@"favoriteTeams"] = @"I haven't filled this out yet.";
+        user[@"shortBio"] = @"This either.";
+        user[@"location"] = @"Websphere"; 
         
         NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
         PFFile *avatar = [PFFile fileWithData:imageData];
@@ -140,6 +146,28 @@
     [self.emailTextField resignFirstResponder];
     [self.shortBioTextField resignFirstResponder];
     [self.favoriteTeamsTextField resignFirstResponder];
+}
+
+- (void)setupToolbar
+{
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleBlackTranslucent;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           nil];
+    [numberToolbar sizeToFit];
+    self.usernameTextField.inputAccessoryView = numberToolbar;
+    self.passwordTextField.inputAccessoryView = numberToolbar;
+    self.retypePasswordTextField.inputAccessoryView = numberToolbar;
+    self.emailTextField.inputAccessoryView = numberToolbar;
+}
+
+
+-(void)doneWithNumberPad{
+    [self.usernameTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
+    [self.retypePasswordTextField resignFirstResponder];
+    [self.emailTextField resignFirstResponder];
 }
 
 - (IBAction)addPhoto:(id)sender {

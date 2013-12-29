@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *shortBioTextField;
 @property (weak, nonatomic) IBOutlet UIButton *dismissKeyboardButton;
 
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 
 - (IBAction)dismissKeyboard:(id)sender;

@@ -24,13 +24,15 @@
 {
     [super viewDidLoad];
     
-    [self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
-            
+    //[self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
+    
     NSLog(@"TESTING CLASS NAME: %@",self.className); 
     
 	// Do any additional setup after loading the view.
     self.chatTextField.delegate = self;
     self.chatTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.chatData = [[NSMutableArray alloc] init];
+
     
     
     /*
@@ -43,8 +45,12 @@
     [self registerForKeyboardNotifications];
     
     //Implementing the pull to refresh view
-    
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - (self.chatTable.bounds.size.height + 0), self.view.frame.size.width, self.chatTable.bounds.size.height)];
+    [self.chatTable addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(loadLocalChat) forControlEvents:UIControlEventValueChanged];
     //
+    
+    /*
     
     //The problem with the pull to refresh is more than likely here
     if (self.refreshheaderView == nil) {
@@ -59,6 +65,10 @@
     
     //setting up the toolbar above the keyboard
     //[self toolbarSetup];
+     
+     */
+    
+    [self.chatTable reloadData];
 }
 
 
@@ -67,7 +77,8 @@
     [super viewWillAppear:animated];
     
     
-    self.chatData = [[NSMutableArray alloc] init];
+    
+    
     [self loadLocalChat];
     self.closeKeyboardButton.hidden = YES;
     
@@ -75,6 +86,7 @@
    
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"lastChatRoom"] = self.gameTitle;
+    self.userAvatar = currentUser[@"avatar"];
     [currentUser saveInBackground]; 
 }
 
@@ -116,8 +128,8 @@
         
         PFUser *currentUser = [PFUser currentUser];
         
-        NSArray *objects = [NSArray arrayWithObjects:self.chatTextField.text,currentUser.username,[NSDate date], nil];
-        NSArray *keys = [NSArray arrayWithObjects:@"text",@"userName",@"date", nil];
+        NSArray *objects = [NSArray arrayWithObjects:self.chatTextField.text,currentUser.username,[NSDate date],currentUser[@"avatar"], nil];
+        NSArray *keys = [NSArray arrayWithObjects:@"text",@"userName",@"date",@"avatar", nil];
         
         NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
         
@@ -128,13 +140,18 @@
         [insertIndexPaths addObject:newPath];
         
         [self.chatTable beginUpdates];
-        
-        [self.chatTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-        
+        [self.chatTable insertRowsAtIndexPaths:[NSArray arrayWithObject:newPath] withRowAnimation:UITableViewRowAnimationTop];
         [self.chatTable endUpdates];
+        
         [self.chatTable reloadData];
         
-        //NSLog(@"CLASSNAME (TextFieldShouldreturn): %@",self.className);
+        /*
+         ORIGINAL CODE
+        [self.chatTable beginUpdates];
+        [self.chatTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [self.chatTable endUpdates];
+        [self.chatTable reloadData];
+        */
         
         //going for the parsing
         PFObject *newMessage = [PFObject objectWithClassName:self.className];
@@ -218,6 +235,8 @@
 
 #pragma mark - Refresh Table View Methods / Data Source Loading / Reloading methods
 
+/*
+
 - (void)reloadTableViewDataSource
 {
     //shoule be call the tableview's data source model to reload
@@ -234,6 +253,8 @@
     self.reloading = NO;
     [self.refreshheaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.chatTable];
 }
+ 
+ */
 
 #pragma mark - ScrollView Delegate Methods 
 
@@ -246,6 +267,8 @@
 {
     [self.refreshheaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
+
+/*
 
 #pragma mark - EGORefreshTableHeader Delegate Methods
 
@@ -268,6 +291,8 @@
 {
     return [NSDate date];
 }
+ 
+ */
 
 #pragma mark - Table View Delegate Methods
 
@@ -286,7 +311,6 @@
     if (row < [self.chatData count]) {
         
         NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
-        
         NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         PFFile *imageFile = [[self.chatData objectAtIndex:row] objectForKey:@"avatar"];
 
@@ -340,8 +364,8 @@
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
                                              context:nil];
-                                     //40
-    return boundingRect.size.height + 50;
+                                     //50
+    return boundingRect.size.height + 60;
 }
 
 #pragma mark - Parse! 
@@ -353,9 +377,14 @@
     
     //if no objects are loaded in memory, we look to the cache first to fill the table
     //and the subsequently do a query against the network
+    //[self.chatData removeAllObjects];
     
     
-    if ([self.chatData count] == 0) {
+    
+    //if ([self.chatData count] == 0) {
+    
+    if (![self.className isEqualToString:self.classNameHolder]) {
+        [self.chatData removeAllObjects];
         
         //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
         query.cachePolicy = kPFCachePolicyNetworkElseCache;
@@ -363,7 +392,10 @@
         [query orderByAscending:@"createdAt"];
         NSLog(@"Trying to retrieve from cache");
         
-        [SVProgressHUD showWithStatus:@"Loading Chat"];
+        
+        if (![self.refreshControl isRefreshing]) {
+            [SVProgressHUD showWithStatus:@"Loading Chat"];
+        }
 
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
@@ -374,11 +406,18 @@
                 //getting back on the main thread to update the UI
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.chatTable reloadData];
-                    [SVProgressHUD dismiss];
+                    
+                    if ([self.refreshControl isRefreshing]) {
+                        [self.refreshControl endRefreshing];
+                    }
+                    
+                    else {
+                        [SVProgressHUD dismiss];
+                    }
                 });
                 
-                NSLog(@"CHAT DATA COUNT: %d",[self.chatData count]);
-                NSLog(@"CHAT DATA: %@",self.chatData);
+                NSLog(@"CHAT DATA COUNT: %lu",(unsigned long)[self.chatData count]);
+                //NSLog(@"CHAT DATA: %@",self.chatData);
 
             }
             
@@ -391,82 +430,95 @@
     
     else {
         
-        __block int totalNumberOfEntries = 0;
-        PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
-        [countQuery orderByAscending:@"createdAt"];
-        
-        
-        [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
-            if (!error) {
-                //NSLog(@"There are currently %d entries",number);
-                totalNumberOfEntries = number;
+    __block int totalNumberOfEntries = 0;
+    PFQuery *countQuery = [PFQuery queryWithClassName:self.className];
+    [countQuery orderByDescending:@"createdAt"];
+
+    [countQuery countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+        if (!error) {
+            NSLog(@"There are currently %d entries and the count of CHAT DATA IS:%d",number,[self.chatData count]);
+            totalNumberOfEntries = number;
+            
+            if (totalNumberOfEntries > [self.chatData count]) {
+                //NSLog(@"Retrieving data");
+                int theLimit;
                 
-                if (totalNumberOfEntries > [self.chatData count]) {
-                    //NSLog(@"Retrieving data");
-                    int theLimit;
-                    
-                    if ((totalNumberOfEntries - [self.chatData count]) > MAX_ENTRIES_LOADED) {
-                        theLimit = MAX_ENTRIES_LOADED;
-                    }
-                    
-                    else {
-                        theLimit = totalNumberOfEntries - [self.chatData count];
-                    }
-                    
-                    //there may be a problem here
-                    countQuery.limit = theLimit;
-                    
-                    [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                        if (!error) {
-                            //find succeeded
-                            //NSLog(@"Successfully retrieved %d chats",[objects count]);
-                            
-                            
-                            
-                            [self.chatData addObjectsFromArray:objects];
-                            NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
-                            
-                            //NSLog(@"CHAT DATA: %@",self.chatData);
-                            
-                            for (int ind = 0; ind < [objects count]; ind++) {
-                                NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
-                                [insertIndexPaths addObject:newPath];
-                            }
-                            
-                            //getting back to the main thread to update the UI
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [self.chatTable beginUpdates];
-                                [self.chatTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                                [self.chatTable endUpdates];
-                                [self.chatTable reloadData];
-                                [self.chatTable scrollsToTop];
-                                [SVProgressHUD dismiss];
-                                
-                            });
-                            
-                        }
-                        
-                        else {
-                            NSLog(@"An error occurred");
-                        }
-                    }];
-                    
-                    
+                NSLog(@"THE COUNT WAS OFF!!");
+                
+                if ((totalNumberOfEntries - [self.chatData count]) > MAX_ENTRIES_LOADED) {
+                    theLimit = MAX_ENTRIES_LOADED;
                 }
                 
                 else {
-                    number = [self.chatData count];
+                    theLimit = totalNumberOfEntries - [self.chatData count];
+                }
+                
+                //there may be a problem here
+                countQuery.limit = theLimit;
+                NSLog(@"THE LIMIT:%d",theLimit);
+                
+                [countQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    if (!error) {
+                        //find succeeded
+                        //NSLog(@"Successfully retrieved %d chats",[objects count]);
+                        
+                        
+                        
+                        [self.chatData addObjectsFromArray:objects];
+                        NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                        
+                        //NSLog(@"CHAT DATA: %@",self.chatData);
+                        
+                        for (int ind = 0; ind < [objects count]; ind++) {
+                            NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
+                            [insertIndexPaths addObject:newPath];
+                        }
+                        
+                        //getting back to the main thread to update the UI
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.chatTable beginUpdates];
+                            [self.chatTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                            [self.chatTable endUpdates];
+                            [self.chatTable reloadData];
+                            [self.chatTable scrollsToTop];
+                           
+                            
+                            
+                            if ([self.refreshControl isRefreshing]) {
+                                [self.refreshControl endRefreshing];
+                            }
+                            
+                            else {
+                                [SVProgressHUD dismiss];
+                            }
+                            
+                        });
+                        
+                    }
+                    
+                    else {
+                        NSLog(@"An error occurred");
+                    }
+                }];
+                
+                
+            }
+            
+            else {
+                number = [self.chatData count];
+                if ([self.refreshControl isRefreshing]) {
+                    [self.refreshControl endRefreshing];
                 }
             }
-        }];
+        }
+    }];
 
         
     }
-    
-
-    
-    
+    self.classNameHolder = self.className; 
+    [self.chatTable reloadData];
 }
+
 
 - (IBAction)closeKeyboard:(id)sender
 {

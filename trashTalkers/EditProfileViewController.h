@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface EditProfileViewController : UIViewController <UITextFieldDelegate,UIImagePickerControllerDelegate>
+@interface EditProfileViewController : UIViewController <UITextFieldDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate>
 
 @property (strong,nonatomic) NSString *bio;
 @property (strong,nonatomic) NSString *favoriteTeams;
 @property (strong,nonatomic) NSString *userName;
+@property (strong,nonatomic) NSString *location; 
 @property (strong,nonatomic) UIImage *image; 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 

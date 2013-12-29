@@ -30,6 +30,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [self registerForKeyboardNotification];
+    
+    [self setupToolbar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -40,7 +42,7 @@
     self.favoriteTeamsTextField.text = self.favoriteTeams;
     self.avatarImageView.image = self.image; 
     self.dismissKeyboardButton.hidden = YES;
-
+    self.locationTextField.text = self.location;
     
 }
 
@@ -50,6 +52,28 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Toolbar setup
+
+- (void)setupToolbar
+{
+    UIToolbar* numberToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
+    numberToolbar.barStyle = UIBarStyleBlackTranslucent;
+    numberToolbar.items = [NSArray arrayWithObjects:
+                           [[UIBarButtonItem alloc]initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithNumberPad)],
+                           nil];
+    [numberToolbar sizeToFit];
+    self.bioTextField.inputAccessoryView = numberToolbar;
+    self.favoriteTeamsTextField.inputAccessoryView = numberToolbar;
+    self.locationTextField.inputAccessoryView = numberToolbar;
+}
+
+
+-(void)doneWithNumberPad{
+    [self.bioTextField resignFirstResponder];
+    [self.favoriteTeamsTextField resignFirstResponder];
+    [self.locationTextField resignFirstResponder];
+
+}
 
 
 - (IBAction)submitEdits:(id)sender {
@@ -58,15 +82,29 @@
     
     currentUser[@"shortBio"] = self.bioTextField.text;
     currentUser[@"favoriteTeams"] = self.favoriteTeamsTextField.text;
-    
+    currentUser[@"location"] = self.locationTextField.text;
     NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
     PFFile *avatar = [PFFile fileWithData:imageData];
     currentUser[@"avatar"] = avatar;
     
     [currentUser saveInBackground];
     
-    [self.navigationController popViewControllerAnimated:YES];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Changes Made!"
+                                                     message:@"Changes will show soon"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil, nil];
+    [alert show];
     
+    //[self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)registerForKeyboardNotification
@@ -101,10 +139,14 @@
     
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary | UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    
+    /* Camera wasn't working on my device */
+    
+    /*
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         imagePicker.sourceType |= UIImagePickerControllerSourceTypeCamera;
     }
-    
+    */
     imagePicker.delegate = self;
     
     [self presentViewController:imagePicker

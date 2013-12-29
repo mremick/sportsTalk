@@ -7,6 +7,7 @@
 //
 
 #import "FriendsViewController.h"
+#import "UIImageView+ParseFileSupport.h"
 
 @interface FriendsViewController ()
 
@@ -18,6 +19,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.friends = [NSMutableArray array];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -25,7 +28,6 @@
     [super viewWillAppear:animated];
     
     self.currentUser = [PFUser currentUser];
-    self.friends = [NSMutableArray array];
     
     PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
     PFQuery *query = [relation query];
@@ -36,15 +38,24 @@
         }
         
         else {
+            [self.friends removeAllObjects];
             [self.friends addObjectsFromArray:results];
+            NSLog(@"FRIENDS: %@",self.friends);
             [self.tableView reloadData];
         }
     }];
+    
+    [self performSelector:@selector(reloadTheTable) withObject:nil afterDelay:1.0];
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)reloadTheTable
+{
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -64,6 +75,16 @@
     // Configure the cell...
     PFUser *friend = [self.friends objectAtIndex:indexPath.row];
     cell.textLabel.text = friend.username;
+    
+    if (friend[@"avatar"]) {
+        cell.imageView.file = friend[@"avatar"];
+    }
+    
+    else {
+        cell.imageView.image = [UIImage imageNamed:@"avatar.png"];
+    }
+    
+    
     
     
     return cell;

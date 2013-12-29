@@ -9,21 +9,13 @@
 #import "SportsViewController.h"
 #import <Parse/Parse.h>
 #import "GamesViewController.h"
+#import "MSCellAccessory.h"
 
 @interface SportsViewController ()
 
 @end
 
 @implementation SportsViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -41,7 +33,17 @@
         //perform segue to login view
         [self performSegueWithIdentifier:@"showLogin" sender:self]; 
     }
+    
+    
 
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = NO;
+    self.tabBarController.tabBar.hidden = NO;
+    
+    NSLog(@"VIEW DID LOAD CALLED!");
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,6 +67,10 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    UIColor *disclosureColor = [UIColor colorWithRed:0.2274 green:0.7647 blue:0.3568 alpha:1.0];
+    
+    cell.accessoryView = [MSCellAccessory accessoryWithType:FLAT_DISCLOSURE_INDICATOR color:disclosureColor];
+    
     // Configure the cell...
     
     return cell;
@@ -80,7 +86,6 @@
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     

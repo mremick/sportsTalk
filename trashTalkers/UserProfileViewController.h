@@ -18,6 +18,7 @@
 @property (strong,nonatomic) NSString *objectId;
 @property (strong,nonatomic) NSString *lastChatRoom;
 @property (strong,nonatomic) NSString *onlineStatus;
+@property (strong,nonatomic) NSString *location;
 
 @property (strong,nonatomic) NSArray *user;
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *shortBioLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *userImage;
 @property (weak, nonatomic) IBOutlet UILabel *lastChatRoomLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 

@@ -14,11 +14,15 @@
 @interface ChatViewController : UIViewController <UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,PF_EGORefreshTableHeaderDelegate>
 
 @property (nonatomic,retain) IBOutlet UITableView *chatTable;
+
 @property (nonatomic,retain) PF_EGORefreshTableHeaderView *refreshheaderView;
+@property (strong,nonatomic) UIRefreshControl *refreshControl; 
+
 @property (nonatomic) BOOL reloading; 
 
 //this was a NSArray in the tutorial (thought he was wrong)
 @property (nonatomic,retain) NSMutableArray *chatData;
+@property (strong,nonatomic) UIImage *userAvatar; 
 
 @property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 
@@ -29,6 +33,7 @@
 
 //className methods and properties
 @property (strong,nonatomic) NSString *className;
+@property (strong,nonatomic) NSString *classNameHolder; 
 
 @property (weak, nonatomic) IBOutlet UIButton *closeKeyboardButton;
 
@@ -37,6 +42,5 @@
 @property (strong,nonatomic) NSString *gameTitle;
 @property (nonatomic,strong) NSNumber *numberOfUsers;
 
-
-
+@property (nonatomic) int firstLoad;
 @end

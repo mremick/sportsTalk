@@ -20,6 +20,8 @@
     [Parse setApplicationId:@"kYmwfwIJgcjSqPSJb3ma87F92jX1XB3yrewOmAwb"
                   clientKey:@"2uMxJJOrtqc5x35C0XU4KEQ5JwDzOWlzWt6ylVfE"];
     
+    [self settingUpDesign];
+        
     //Analytics for app opens
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
@@ -71,5 +73,19 @@
     currentUser[@"Online"] = @"Offline";
     [currentUser saveInBackground];
 }
+
+- (void)settingUpDesign
+{
+    //UITextAttributeTextColor depriciated in iOS 7
+    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0.145 green:0.635 blue:0.3058 alpha:1.0]];
+}
+
+
+
+
+
+
+
+
 
 @end
