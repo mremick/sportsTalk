@@ -76,9 +76,6 @@
 {
     [super viewWillAppear:animated];
     
-    
-    
-    
     [self loadLocalChat];
     self.closeKeyboardButton.hidden = YES;
     
@@ -159,6 +156,10 @@
         [newMessage setObject:currentUser.username forKey:@"userName"];
         [newMessage setObject:[NSDate date] forKey:@"date"];
         [newMessage setObject:currentUser[@"avatar"] forKey:@"avatar"];
+        
+        /* Number of Users code needs to be commented until I can subtract from the number when the view dissapears */
+        
+        //[newMessage setObject:self.numberOfUsers forKey:@"numberOfUsers"];
         
         /* Things to add once someone enters text so they can be saved */
         
@@ -417,7 +418,18 @@
                 });
                 
                 NSLog(@"CHAT DATA COUNT: %lu",(unsigned long)[self.chatData count]);
-                //NSLog(@"CHAT DATA: %@",self.chatData);
+                NSLog(@"CHAT DATA: %@",self.chatData);
+                
+                
+                //accessing the number of users
+                PFObject *testObject = [self.chatData lastObject];
+                //get the number
+                NSNumber *numberOfUsers = [testObject objectForKey:@"numberOfUsers"];
+                //add one to the number
+                int addOne = [numberOfUsers intValue] + 1;
+                //save the number
+                self.numberOfUsers = [NSNumber numberWithInt:addOne];
+                
 
             }
             
@@ -524,6 +536,9 @@
 {
     [self.chatTextField resignFirstResponder];
 }
+
+#pragma mark - number of Users in chatroom
+
 
 #pragma mark - Navigation 
 

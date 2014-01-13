@@ -8,6 +8,7 @@
 
 #import "UserProfileViewController.h"
 #import "UIImageView+ParseFileSupport.h"
+#import "SVProgressHUD.h"
 
 @interface UserProfileViewController ()
 
@@ -71,6 +72,9 @@
 {
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" equalTo:self.userName];
+    
+    [SVProgressHUD showWithStatus:@"Loading User"];
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
            
@@ -108,6 +112,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self checkForCurrentUser];
+            [SVProgressHUD dismiss];
         });
     }];
     

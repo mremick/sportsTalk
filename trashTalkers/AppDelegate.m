@@ -27,7 +27,11 @@
     
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"Online"] = @"Online";
-    [currentUser saveInBackground];
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
     
     return YES;
 }
@@ -38,7 +42,11 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"Online"] = @"Offline";
-    [currentUser saveInBackground];
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -49,12 +57,26 @@
     
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"Online"] = @"Offline";
-    [currentUser saveInBackground];
+    /*
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
+     */
+    [currentUser saveInBackground]; 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser[@"Online"] = @"Offline";
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -63,7 +85,11 @@
     NSLog(@"AC");
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"Online"] = @"Online";
-    [currentUser saveInBackground];
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -71,7 +97,11 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"Online"] = @"Offline";
-    [currentUser saveInBackground];
+    [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Online status should have been changed on Parse");
+        }
+    }];
 }
 
 - (void)settingUpDesign
