@@ -43,4 +43,7 @@
 @property (nonatomic,strong) NSNumber *numberOfUsers;
 
 @property (nonatomic) int firstLoad;
+
+@property (nonatomic, weak) PFObject *room;
+
 @end

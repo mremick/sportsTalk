@@ -13,6 +13,9 @@
 		3E17BF561863A3F6001B32F8 /* chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E17BF541863A3F6001B32F8 /* chat@2x.png */; };
 		3E17BF591863A5D4001B32F8 /* glyphicons_043_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E17BF571863A5D4001B32F8 /* glyphicons_043_group.png */; };
 		3E17BF5A1863A5D4001B32F8 /* glyphicons_003_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E17BF581863A5D4001B32F8 /* glyphicons_003_user.png */; };
+		3E342A15189314ED004C262A /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E342A14189314ED004C262A /* Room.m */; };
+		3E342A18189314FA004C262A /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E342A17189314FA004C262A /* Post.m */; };
+		3E342A1B18931510004C262A /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E342A1A18931510004C262A /* User.m */; };
 		3E5B86E0183711870017E2BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86DF183711870017E2BE /* Foundation.framework */; };
 		3E5B86E2183711870017E2BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E1183711870017E2BE /* CoreGraphics.framework */; };
 		3E5B86E4183711870017E2BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E3183711870017E2BE /* UIKit.framework */; };
@@ -84,6 +87,12 @@
 		3E17BF541863A3F6001B32F8 /* chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat@2x.png"; sourceTree = "<group>"; };
 		3E17BF571863A5D4001B32F8 /* glyphicons_043_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_043_group.png; sourceTree = "<group>"; };
 		3E17BF581863A5D4001B32F8 /* glyphicons_003_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_003_user.png; sourceTree = "<group>"; };
+		3E342A13189314ED004C262A /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		3E342A14189314ED004C262A /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
+		3E342A16189314FA004C262A /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
+		3E342A17189314FA004C262A /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
+		3E342A1918931510004C262A /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		3E342A1A18931510004C262A /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		3E5B86DC183711870017E2BE /* trashTalkers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trashTalkers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5B86DF183711870017E2BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E5B86E1183711870017E2BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -287,6 +296,12 @@
 				3E5B873D1838559F0017E2BE /* ChatCell.m */,
 				3E5B874C183C4B580017E2BE /* ChatViewController.h */,
 				3E5B874D183C4B580017E2BE /* ChatViewController.m */,
+				3E342A13189314ED004C262A /* Room.h */,
+				3E342A14189314ED004C262A /* Room.m */,
+				3E342A16189314FA004C262A /* Post.h */,
+				3E342A17189314FA004C262A /* Post.m */,
+				3E342A1918931510004C262A /* User.h */,
+				3E342A1A18931510004C262A /* User.m */,
 				3ED273C2184AD93800B5821E /* UserProfileViewController.h */,
 				3ED273C3184AD93800B5821E /* UserProfileViewController.m */,
 				3E9242BB18568037008C039E /* FriendsViewController.h */,
@@ -466,12 +481,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E342A1B18931510004C262A /* User.m in Sources */,
 				3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */,
 				3E76BB7F185EA7C900582E1E /* CurrentUserProfileViewController.m in Sources */,
 				3ED273C4184AD93800B5821E /* UserProfileViewController.m in Sources */,
 				3E5B872F1837169C0017E2BE /* LoginViewController.m in Sources */,
 				3E5B873218371B100017E2BE /* SignUpViewController.m in Sources */,
 				3E5B8716183712000017E2BE /* SportsViewController.m in Sources */,
+				3E342A15189314ED004C262A /* Room.m in Sources */,
 				3E17BF5118639295001B32F8 /* MSCellAccessory.m in Sources */,
 				3E5B86F0183711870017E2BE /* AppDelegate.m in Sources */,
 				3E5B8738183821C70017E2BE /* GamesViewController.m in Sources */,
@@ -480,6 +497,7 @@
 				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
 				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
 				3E9242BD18568037008C039E /* FriendsViewController.m in Sources */,
+				3E342A18189314FA004C262A /* Post.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,

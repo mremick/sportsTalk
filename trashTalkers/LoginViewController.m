@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 
 @interface LoginViewController ()
+- (IBAction)signInAnonymously:(id)sender;
 
 @end
 
@@ -102,4 +103,16 @@
 }
 
 
+- (IBAction)signInAnonymously:(id)sender {
+    
+    [PFAnonymousUtils logInWithBlock:^(PFUser *user, NSError *error) {
+        if (error) {
+            NSLog(@"Anonymous login failed.");
+        } else {
+            NSLog(@"Anonymous user logged in.");
+        }
+    }];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 @end

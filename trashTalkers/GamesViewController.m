@@ -129,7 +129,10 @@
         viewController.gameTitle = [self.games objectAtIndex:chosenIndexPath.row];
         NSLog(@"CLASSNAME (prepareForSegue): %@",self.className);
         viewController.className = [[NSString alloc] initWithString:self.className];
-        //viewController.className = self.className;
+        self.className = self.games[chosenIndexPath.row];
+        PFObject *room = self.games[chosenIndexPath.row];
+        
+        viewController.room = room;
     }
 }
 
