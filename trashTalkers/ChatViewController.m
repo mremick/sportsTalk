@@ -52,6 +52,9 @@
     [self.refreshControl addTarget:self action:@selector(loadLocalChat) forControlEvents:UIControlEventValueChanged];
     
     [self.chatTable reloadData];
+    
+    self.firstLoad = 0;
+    NSLog(@"viewDidLoad");
 }
 
 
@@ -67,7 +70,9 @@
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"lastChatRoom"] = self.gameTitle;
     self.userAvatar = currentUser[@"avatar"];
-    [currentUser saveInBackground]; 
+    [currentUser saveInBackground];
+    NSLog(@"ViewWillAppear");
+    self.firstLoad += 1;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -361,6 +366,9 @@
         cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
         cell.textString.textAlignment = NSLineBreakByWordWrapping;
         
+        cell.imageView.layer.cornerRadius = 35;
+        cell.imageView.layer.masksToBounds = YES;
+        
         //NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm a"];
@@ -408,6 +416,12 @@
 //need to find where this is called
 - (void)loadLocalChat
 {
+    NSLog(@"FIRSTLOAD: %d",self.firstLoad);
+    if (self.firstLoad != 0) {
+        if (![self.className isEqualToString:self.classNameHolder]) {
+            [self.chatData removeAllObjects];
+        }
+    }
     
     
     if ([self.chatData count] == 0) {
@@ -427,18 +441,23 @@
             NSLog(@"results were not found");
         }
         
+        [SVProgressHUD setStatus:@"Loading Chat"];
+        [SVProgressHUD show];
+        
         PFRelation *postsRelation = room[@"Posts"];
-        [postsRelation.query orderByAscending:@"createdAt"];
+        [postsRelation.query orderByDescending:@"createdAt"];
+        //[postsRelation.query addAscendingOrder:@"date"];
         [postsRelation.query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (error) {
                 NSLog(@"Error Fetching Posts: %@", error);
             } else {
                 NSArray *posts = objects;
+                NSLog(@"OBJECTS: %@",objects);
+
                 __block int i = 0;
                 for (NSDictionary *dict in posts) {
                     Post *post = [[Post alloc] init];
                     post.text = [dict objectForKey:@"text"];
-                    NSLog(@"text:%@",post.text);
                     post.date = [dict objectForKey:@"date"];
                     PFUser *authorObjectId = [dict objectForKey:@"author"];
                     PFQuery *userQuery = [PFUser query];
@@ -452,6 +471,8 @@
                                 //NSLog(@"%d",i);
                                 i++;
                                 [self.chatData addObject:post];
+                                //NSLog(@"text:%@",post.text);
+
                                 
                             }
                         }
