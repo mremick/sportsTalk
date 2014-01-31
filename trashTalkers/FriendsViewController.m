@@ -27,25 +27,43 @@
 {
     [super viewWillAppear:animated];
     
-    self.currentUser = [PFUser currentUser];
+    NSLog(@"friends viewcontroller viewed"); 
     
-    PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
-    PFQuery *query = [relation query];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        //[self enableSignUpButton];
         
-        if (error) {
-            NSLog(@"Error fetvhing friends");
-        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Friends"
+                                                        message:@"Please create an account to be able to add friends" delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
         
-        else {
-            [self.friends removeAllObjects];
-            [self.friends addObjectsFromArray:results];
-            NSLog(@"FRIENDS: %@",self.friends);
-            [self.tableView reloadData];
-        }
-    }];
+        [alert show];
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    } else {
+        self.currentUser = [PFUser currentUser];
+        
+        PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
+        PFQuery *query = [relation query];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+            
+            if (error) {
+                NSLog(@"Error fetvhing friends");
+            }
+            
+            else {
+                [self.friends removeAllObjects];
+                [self.friends addObjectsFromArray:results];
+                NSLog(@"FRIENDS: %@",self.friends);
+                [self.tableView reloadData];
+            }
+        }];
+        
+        [self performSelector:@selector(reloadTheTable) withObject:nil afterDelay:1.0];
+    }
     
-    [self performSelector:@selector(reloadTheTable) withObject:nil afterDelay:1.0];
+    
 }
 - (void)didReceiveMemoryWarning
 {

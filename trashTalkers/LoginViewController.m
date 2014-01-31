@@ -8,8 +8,10 @@
 
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
+#import <QuartzCore/QuartzCore.h>
+#import "DTAlertView.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <UIAlertViewDelegate>
 - (IBAction)signInAnonymously:(id)sender;
 
 @end
@@ -113,6 +115,29 @@
         }
     }];
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Need a Username" message:@"Enter a temporary username" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show]; 
+    
+    
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UITextField *textField = [alertView textFieldAtIndex:0];
+
+    if (buttonIndex == 0) {
+        if (textField.text.length == 0) {
+            //[self.navigationController popViewControllerAnimated:YES];
+        } else {
+            [PFUser currentUser].username = textField.text;
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+        
+
+    }else {
+        //[self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 @end

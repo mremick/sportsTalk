@@ -60,6 +60,8 @@
 		3E9242C218596701008C039E /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C118596701008C039E /* EditProfileViewController.m */; };
 		3E9242C5185BE86A008C039E /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */; };
 		3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */; };
+		3EA41947189B4CFE003E47DF /* DTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA41944189B4CFE003E47DF /* DTAlertView.m */; };
+		3EA41948189B4CFE003E47DF /* DTProgressStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA41946189B4CFE003E47DF /* DTProgressStatus.m */; };
 		3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB671852B667000FC942 /* placeholder.jpg */; };
 		3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */; };
 		3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */; };
@@ -156,6 +158,10 @@
 		3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ProportionalFill.m"; sourceTree = "<group>"; };
 		3E9242C6185BEF85008C039E /* UIImageView+ParseFileSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ParseFileSupport.h"; sourceTree = "<group>"; };
 		3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ParseFileSupport.m"; sourceTree = "<group>"; };
+		3EA41943189B4CFE003E47DF /* DTAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAlertView.h; sourceTree = "<group>"; };
+		3EA41944189B4CFE003E47DF /* DTAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTAlertView.m; sourceTree = "<group>"; };
+		3EA41945189B4CFE003E47DF /* DTProgressStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTProgressStatus.h; sourceTree = "<group>"; };
+		3EA41946189B4CFE003E47DF /* DTProgressStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTProgressStatus.m; sourceTree = "<group>"; };
 		3EC6BB671852B667000FC942 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -210,6 +216,7 @@
 				3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */,
 				3E9242C6185BEF85008C039E /* UIImageView+ParseFileSupport.h */,
 				3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */,
+				3EA41942189B4CFE003E47DF /* DTAlertView */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -358,6 +365,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		3EA41942189B4CFE003E47DF /* DTAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				3EA41943189B4CFE003E47DF /* DTAlertView.h */,
+				3EA41944189B4CFE003E47DF /* DTAlertView.m */,
+				3EA41945189B4CFE003E47DF /* DTProgressStatus.h */,
+				3EA41946189B4CFE003E47DF /* DTProgressStatus.m */,
+			);
+			path = DTAlertView;
+			sourceTree = "<group>";
+		};
 		3EC6BB691852BA04000FC942 /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,8 +509,10 @@
 				3E342A15189314ED004C262A /* Room.m in Sources */,
 				3E17BF5118639295001B32F8 /* MSCellAccessory.m in Sources */,
 				3E5B86F0183711870017E2BE /* AppDelegate.m in Sources */,
+				3EA41948189B4CFE003E47DF /* DTProgressStatus.m in Sources */,
 				3E5B8738183821C70017E2BE /* GamesViewController.m in Sources */,
 				3E5B8751183DB0B50017E2BE /* NFLGamesViewController.m in Sources */,
+				3EA41947189B4CFE003E47DF /* DTAlertView.m in Sources */,
 				3E5B873E1838559F0017E2BE /* ChatCell.m in Sources */,
 				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
 				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
