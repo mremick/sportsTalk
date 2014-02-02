@@ -413,14 +413,12 @@
         }
 
 
-        
-        
         if (imageFile) {
             cell.userAvatar.file = imageFile;
         }
         
         else {
-            cell.userAvatar.image = [UIImage imageNamed:@"1024px_2.png"]; 
+            cell.userAvatar.image = [UIImage imageNamed:@"1024px_2.png"];
         }
         
     }
