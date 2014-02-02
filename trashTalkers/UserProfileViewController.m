@@ -9,8 +9,11 @@
 #import "UserProfileViewController.h"
 #import "UIImageView+ParseFileSupport.h"
 #import "SVProgressHUD.h"
+#import "SportsViewController.h"
 
 @interface UserProfileViewController ()
+
+@property (strong,nonatomic) SportsViewController *sportsVC;
 
 @end
 
@@ -27,12 +30,17 @@
     
     self.currentUser = [PFUser currentUser];
     
-
+    
     
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
+        
+        //pop them to chat room
+
+    
     self.favoriteTeamsLabel.text = @"";
     self.shortBioLabel.text = @"";
     

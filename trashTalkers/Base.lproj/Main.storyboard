@@ -1090,6 +1090,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6jz-Zk-la1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" image="chat.png" id="jt3-wd-pxZ"/>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Ad2-l0-0if"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FNe-5O-c4B">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1244,7 +1245,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLt-jV-jEC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1406" y="657"/>
+            <point key="canvasLocation" x="1300" y="851"/>
         </scene>
         <!--Navigation Controller - Me-->
         <scene sceneID="hdV-5w-t6U">

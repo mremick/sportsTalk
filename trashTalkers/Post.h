@@ -15,7 +15,8 @@
 @property (strong,nonatomic) NSString *text;
 @property (strong,nonatomic) NSDate *date;
 @property (strong,nonatomic) PFUser *author;
-@property (strong,nonatomic) PFFile *avatar; 
-
+@property (strong,nonatomic) PFFile *avatar;
+@property (strong,nonatomic) PFUser *authorObjectId;
+@property (strong,nonatomic) NSString *username; 
 
 @end

@@ -16,6 +16,8 @@
 
 @interface ChatViewController ()
 
+@property (strong,nonatomic) NSOperationQueue *backgroundQueue;
+
 
 @end
 
@@ -34,6 +36,8 @@
     self.chatTextField.delegate = self;
     self.chatTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.chatData = [[NSMutableArray alloc] init];
+    
+    self.backgroundQueue.maxConcurrentOperationCount = 1;
 
     
     
@@ -120,6 +124,17 @@
         newPost.date = [NSDate date];
         newPost.avatar = currentUser[@"avatar"];
         
+        NSString *usernameForUser = [NSString new];
+        
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            usernameForUser = [PFUser currentUser][@"usernameForAnonUser"];
+        } else {
+            usernameForUser = [PFUser currentUser].username;
+        }
+        
+        newPost.username = usernameForUser;
+        
+        
         
         [self.chatData insertObject:newPost atIndex:0];
         
@@ -154,6 +169,8 @@
         post[@"text"] = newPost.text;
         post[@"author"] = [PFUser currentUser];
         post[@"date"] = [NSDate date];
+        post[@"username"] = usernameForUser;
+    
         [post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
             if (!error) {
@@ -343,6 +360,10 @@
     
     if (row < [self.chatData count]) {
         
+        
+        
+        
+        
 //        NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
 //        NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
         
@@ -380,8 +401,18 @@
         cell.textString.attributedText = attrString;
         [cell.textString sizeToFit];
         cell.timeLabel.text = timeString;
-        cell.userLabel.text = currentPost.author.username;
         
+        //cell.userLabel.text = currentPost.author.username;
+        
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            cell.userLabel.text = currentPost.author[@"usernameForAnonUser"];
+            
+        } else {
+            cell.userLabel.text = currentPost.author.username;
+
+        }
+
+
         
         
         if (imageFile) {
@@ -389,7 +420,7 @@
         }
         
         else {
-            cell.userAvatar.image = [UIImage imageNamed:@"avatar.png"]; 
+            cell.userAvatar.image = [UIImage imageNamed:@"1024px_2.png"]; 
         }
         
     }
@@ -400,20 +431,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Post *currentPost = [self.chatData objectAtIndex:self.chatData.count-indexPath.row-1];
+    
+    Post *currentPost = [self.chatData objectAtIndex:indexPath.row];//[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1];
     
    // NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
     
     NSString *cellText = currentPost.text;
+    
 
     UIFont *cellFont = [UIFont fontWithName:@"Arial" size:13.0];
     CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
     
     CGRect boundingRect = [cellText boundingRectWithSize:constraintSize
-                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                             options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                           attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
                                              context:nil];
-                                     //50
+                                     //60
     return boundingRect.size.height + 60;
 }
 
@@ -448,95 +481,111 @@
     //beahves differently or the same?
     
     
-    
-    
-    
+    NSMutableArray *postHolder = [NSMutableArray new];
+
     PFRelation *postsRelation = room[@"Posts"];
     PFQuery *query = postsRelation.query;
-    [query orderByAscending:@"createdAt"];
+    [query orderByDescending:@"createdAt"];
     //[postsRelation.query addAscendingOrder:@"date"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
             NSLog(@"Error Fetching Posts: %@", error);
         } else {
             NSArray *posts = objects;
-            NSLog(@"OBJECTS: %@",objects);
+            //NSLog(@"OBJECTS: %@",objects);
             
-            __block int i = 0;
             for (NSDictionary *dict in posts) {
                 Post *post = [[Post alloc] init];
                 post.text = [dict objectForKey:@"text"];
                 post.date = [dict objectForKey:@"date"];
-                NSLog(@"TEXT: %@",post.text);
-                PFUser *authorObjectId = [dict objectForKey:@"author"];
+                post.username = [dict objectForKey:@"username"];
+                //NSLog(@"TEXT: %@",post.text);
+                //PFUser *authorObjectId = [dict objectForKey:@"author"];
+                post.authorObjectId = [dict objectForKey:@"author"];
+                //[postHolder addObject:post];
                 PFQuery *userQuery = [PFUser query];
-                [userQuery whereKey:@"objectId" equalTo:authorObjectId.objectId];
-                [userQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                    if (!error) {
-                        if ([objects count]) {
-                            post.author = [objects objectAtIndex:0];
-                            
-                            //NSLog(@"AUTHOR: %@",post.author);
-                            //NSLog(@"%d",i);
-                            i++;
-                            [self.chatData addObject:post];
-                            //NSLog(@"text:%@",post.text);
-                            
-                            
-                        }
-                    }
-                    
-                    if ([posts indexOfObject:dict] == posts.count - 1) {
-                        //this is all being called multiple times
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.chatTable reloadData];
-                            if ([self.refreshControl isRefreshing]) {
-                                [self.refreshControl endRefreshing];
-                            } else {
-                                [SVProgressHUD dismiss];
-                            }
-                            
-                        });
-                    }
-                }];
+                [userQuery whereKey:@"objectId" equalTo:post.authorObjectId.objectId];
+                NSArray *returnedUser = [userQuery findObjects];
+                if ([results count]) {
+                    post.author = [returnedUser objectAtIndex:0];
+                    [self.chatData addObject:post];
+                }
                 
+                
+                
+                
+                //[self.chatData addObject:post];
+                
+                //NSLog(@"INDEX OF DICTS IN POSTS: %d and POST COUNT: %d",[posts indexOfObject:dict],posts.count-1);
+
+                
+                
+                    if ([posts indexOfObject:dict] == posts.count - 1) {
+                        
+                        //if (self.chatData.count == postHolder.count) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                NSLog(@"RELOAD TALBE VIEW");
+                                
+                                [self.chatTable reloadData];
+                                if ([self.refreshControl isRefreshing]) {
+                                    [self.refreshControl endRefreshing];
+                                } else {
+                                    [SVProgressHUD dismiss];
+                                }
+                            });
+                        //}
+
+                        
+                        /*
+                        for (Post *aPost in postHolder) {
+                            PFQuery *userQuery = [PFUser query];
+                            [userQuery whereKey:@"objectId" equalTo:aPost.authorObjectId.objectId]; //authorObjectId.objectId
+                            NSLog(@"aPost:%@",aPost);
+                            //[self.backgroundQueue addOperationWithBlock:^{
+                                NSError *error;
+                                NSArray *results = [[NSArray alloc] init];
+                                results = [userQuery findObjects:&error];
+                                
+                                if ([results count]) {
+                                    NSLog(@"USER QUERY RESULTS: %@",results);
+                                    post.author = [results objectAtIndex:0];
+                                    [self.chatData addObject:post];
+                                    [self.chatTable reloadData];
+                                }
+                                
+                                else {
+                                    NSLog(@"ERROR QUERYING USERS:%@",error);
+                                }
+                            //}];
+                            
+                           // NSLog(@"chatdata count:%d and postholder count:%d",self.chatData.count,postHolder.count);
+                            
+                            //                            [userQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                                if (!error) {
+//                                    if ([objects count]) {
+//                                        post.author = [objects objectAtIndex:0];
+//                                        NSLog(@"post text :%@",aPost.text);
+//
+//                                        [self.chatData addObject:post];
+//                                        [self.chatTable reloadData];
+//                                        
+//                                        NSLog(@"added an object to chatdata");
+//                                    }
+//                                } else {
+//                                    NSLog(@"ERROR:%@",error);
+//                                }
+//                                
+//                                
+//                            }];
+                        }*/
+                    }
             }
-            
-            
-            NSLog(@"a test");
-            
         }
-        
-        
-        
-        NSLog(@"last line of block");
     }];
     
-    
-    //if no objects are loaded in memory, we look to the cache first to fill the table
-    //and the subsequently do a query against the network
-    //[self.chatData removeAllObjects];
-    
-    
-    
-    /*
-     if (![self.className isEqualToString:self.classNameHolder]) {
-     NSLog(@"ALL OBJECTS WERE REMOVED");
-     [self.chatData removeAllObjects];
      
      //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
      //query.cachePolicy = kPFCachePolicyNetworkElseCache;
-     
-     //[query orderByAscending:@"createdAt"];
-     //NSLog(@"Trying to retrieve from cache");
-     
-     
-     if (![self.refreshControl isRefreshing]) {
-     [SVProgressHUD showWithStatus:@"Loading Chat"];
-     }
-     
-     }
-     */
     NSLog(@"last line of the initial load method");
 }
 

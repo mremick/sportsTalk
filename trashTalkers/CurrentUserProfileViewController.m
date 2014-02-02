@@ -39,31 +39,55 @@
 
 - (void)loadUser
 {
-    PFUser *currentUser = [PFUser currentUser];
     
+    //disable edit profile button
     
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" equalTo:currentUser.username];
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        //[self enableSignUpButton];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Your Profile"
+                                                        message:@"Please create an account to be able to customzise a profile"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        
+        [alert show];
+        
+        
+        
+        //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+        
+        //[self performSegueWithIdentifier:@"fromFriendsToSports" sender:nil];
+        
+        
+    } else {
+        PFUser *currentUser = [PFUser currentUser];
+        
+        PFQuery *query = [PFUser query];
+        [query whereKey:@"username" equalTo:currentUser.username];
+        
+        [SVProgressHUD showWithStatus:@"Loading Profile"];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                
+                self.userProfile = [objects objectAtIndex:0];
+                
+                //assign objects based on a success
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //assign labels in the UI here on the main thread
+                    self.userNameLabel.text = self.userProfile.username;
+                    self.favoriteTeamsLabel.text = self.userProfile[@"favoriteTeams"];
+                    self.shortBioLabel.text = self.userProfile[@"shortBio"];
+                    self.userImage.file = self.userProfile[@"avatar"];
+                    self.locationLabel.text = self.userProfile[@"location"];
+                    [SVProgressHUD dismiss];
+                });
+            }
+        }];
+
+    }
     
-    [SVProgressHUD showWithStatus:@"Loading Profile"];
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            
-            self.userProfile = [objects objectAtIndex:0];
-            
-            //assign objects based on a success
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //assign labels in the UI here on the main thread
-                self.userNameLabel.text = self.userProfile.username;
-                self.favoriteTeamsLabel.text = self.userProfile[@"favoriteTeams"];
-                self.shortBioLabel.text = self.userProfile[@"shortBio"];
-                self.userImage.file = self.userProfile[@"avatar"];
-                self.locationLabel.text = self.userProfile[@"location"];
-                [SVProgressHUD dismiss];
-            });
-        }
-    }];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

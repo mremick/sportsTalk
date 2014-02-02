@@ -130,7 +130,7 @@
         if (textField.text.length == 0) {
             //[self.navigationController popViewControllerAnimated:YES];
         } else {
-            [PFUser currentUser].username = textField.text;
+            [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
         

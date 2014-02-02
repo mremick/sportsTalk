@@ -8,8 +8,11 @@
 
 #import "FriendsViewController.h"
 #import "UIImageView+ParseFileSupport.h"
+#import "SportsViewController.h"
 
 @interface FriendsViewController ()
+
+@property (strong,nonatomic) SportsViewController *sportsVC;
 
 @end
 
@@ -20,6 +23,8 @@
 {
     [super viewDidLoad];
     self.friends = [NSMutableArray array];
+    
+    self.sportsVC = [[SportsViewController alloc] init];
 
 }
 
@@ -39,7 +44,10 @@
         
         [alert show];
         
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+        
+        //[self performSegueWithIdentifier:@"fromFriendsToSports" sender:nil];
+
         
     } else {
         self.currentUser = [PFUser currentUser];
