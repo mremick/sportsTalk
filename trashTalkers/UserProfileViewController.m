@@ -48,7 +48,6 @@
         
         //pop them to chat room
     
-    self.navigationController.navigationBar.hidden = YES;
 
     
     self.favoriteTeamsLabel.text = @"";

@@ -488,6 +488,14 @@
     [SVProgressHUD setStatus:@"Loading Chat"];
     [SVProgressHUD show];
     
+    PFRelation *usersForRoom = self.currentRoom[@"Users"];
+    [usersForRoom.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            self.navigationItem.title = [NSString stringWithFormat:@"%@ (%d Users)",self.gameTitle,number];
+            NSLog(@"nav title should be changes no.:%d",number);
+        }];
+    }];
+    
     PFRelation *postsRelation = self.currentRoom[@"Posts"];
     PFQuery *query = postsRelation.query;
     [query orderByDescending:@"createdAt"];

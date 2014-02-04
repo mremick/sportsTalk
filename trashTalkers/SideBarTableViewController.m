@@ -12,7 +12,10 @@
 #import "CurrentUserProfileViewController.h"
 #import "UIImageView+ParseFileSupport.h"
 
-@interface SideBarTableViewController ()
+@interface SideBarTableViewController () {
+    UIImageView *navBarHairlineImageView;
+}
+
 @property (weak, nonatomic) IBOutlet UIImageView *userAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
@@ -43,6 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
+
 
     self.tableView.delegate = self;
     
@@ -54,7 +60,7 @@
     self.usernameLabel.text = [PFUser currentUser].username;
     
     self.avatarBackground.layer.masksToBounds = YES;
-    self.avatarBackground.layer.cornerRadius = 51; 
+    self.avatarBackground.layer.cornerRadius = 46;
 
     
     self.navigationController.navigationBar.backgroundColor = barColor;
@@ -78,12 +84,24 @@
      
 }
 
+- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
+    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
+        return (UIImageView *)view;
+    }
+    for (UIView *subview in view.subviews) {
+        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.navigationController.navigationBar.hidden = NO;
-
+    navBarHairlineImageView.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,6 +110,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    //navBarHairlineImageView.hidden = NO;
+
+}
 #pragma mark - Gesture Recognizer
 
 - (void)setupPanGesture
@@ -188,22 +212,22 @@
     //animate old view out
     //animate new view in
     
-    if (indexPath.row == 0) {
+//    if (indexPath.row == 0) {
+//        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+//            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
+//        } completion:^(BOOL finished) {
+//            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+//                //changed to bounds for profile becuase I'm taking out the nav bar
+//                newVC.view.frame = self.view.bounds;
+//            } completion:^(BOOL finished) {
+//                NSLog(@"setup pan gesture on new view controller");
+//                [self setupPanGesture];
+//            }];
+//        }];
+//
+//    } else {
         [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-                //changed to bounds for profile becuase I'm taking out the nav bar
-                newVC.view.frame = self.view.bounds;
-            } completion:^(BOOL finished) {
-                NSLog(@"setup pan gesture on new view controller");
-                [self setupPanGesture];
-            }];
-        }];
-
-    } else {
-        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
+            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y - 1, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
                 newVC.view.frame = self.view.frame; //bounds
@@ -213,7 +237,7 @@
             }];
         }];
 
-    }
+    //}
     
     //remove child
     [self.topVC.view removeFromSuperview];

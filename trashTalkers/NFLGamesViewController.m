@@ -9,7 +9,11 @@
 #import "NFLGamesViewController.h"
 #import "ChatViewController.h"
 
+
 @interface NFLGamesViewController ()
+
+@property (strong,nonatomic) NSMutableArray *roomNames;
+@property (strong,nonatomic) NSMutableArray *roomCount;
 
 @end
 
@@ -20,10 +24,10 @@
 {
     [super viewDidLoad];
     
+    
     self.games = [[NSMutableArray alloc] init];
     self.className = [[NSString alloc] init];
     
-    [self loadCountOfRooms];
     
     PFQuery *gamesQuery = [PFQuery queryWithClassName:@"GameLists"];
     
@@ -34,8 +38,7 @@
             
             [self.games removeAllObjects];
             [self.games addObjectsFromArray:[[objects objectAtIndex:0] objectForKey:@"NFLGames"]];
-            NSLog(@"Games: %@",self.games);
-            NSLog(@"Games Count: %d",[self.games count]);
+
             [self.tableView reloadData];
             
         }
@@ -51,6 +54,13 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.roomNames = [NSMutableArray new];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,39 +79,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = [self.games objectAtIndex:indexPath.row];
+
+    
+    
     
     // Configure the cell...
     
     return cell;
 }
 
-- (void)loadCountOfRooms
-{
-    //get the count of the how many room
-    
-//    for (int i = 0; i < [self.games count]; i++) {
-//        PFRelation *postsForUser = [PFUser currentUser][@"Posts"];
-//        
-//        [postsForUser.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
-//            if (!error) {
-//                self.postCountString = [NSString new];
-//                self.postCountString = [NSString stringWithFormat:@"%d Posts",number];
-//                self.postsLabel.text = self.postCountString;
-//            } else {
-//                self.postsLabel.text = @"error retrieving posts";
-//            }
-//        }];
-//
-//    }
-    //subtract each by one and append that number to the end of NFL
-    //query the count as many times as the count and store them in an array
-    //put the array in cellForRow as the subtitle text
-    
-}
 
 #pragma mark - Navigation
 
