@@ -34,14 +34,13 @@
         [self performSegueWithIdentifier:@"showLogin" sender:self]; 
     }
     
-    
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationController.navigationBarHidden = NO;
     self.tabBarController.tabBar.hidden = NO;
+    
     
     NSLog(@"VIEW DID LOAD CALLED!");
 }

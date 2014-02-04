@@ -10,8 +10,15 @@
 #import "SVProgressHUD.h"
 #import "UIImageView+ParseFileSupport.h"
 #import "EditProfileViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface CurrentUserProfileViewController ()
+@property (weak, nonatomic) IBOutlet UIView *avatarBackground;
+@property (weak, nonatomic) IBOutlet UILabel *bioLabel;
+- (IBAction)goBackButtonSelected:(id)sender;
+@property (strong,nonatomic) NSString *postCountString;
+@property (weak, nonatomic) IBOutlet UILabel *postsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 
 @end
 
@@ -21,12 +28,27 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.avatarBackground.layer.masksToBounds = YES;
+    self.avatarBackground.layer.cornerRadius = 69;
+    
+    self.userImage.layer.masksToBounds = YES;
+    self.userImage.layer.cornerRadius = 65;
+    
+    self.editProfileButton.layer.masksToBounds = YES;
+    self.editProfileButton.layer.cornerRadius = 20.0f;
+    
+    [[self.editProfileButton layer] setBorderWidth:1.0f];
+    [[self.editProfileButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+    
     
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.hidden = YES;
+    
     
     [self loadUser];
 }
@@ -78,7 +100,7 @@
                     //assign labels in the UI here on the main thread
                     self.userNameLabel.text = self.userProfile.username;
                     self.favoriteTeamsLabel.text = self.userProfile[@"favoriteTeams"];
-                    self.shortBioLabel.text = self.userProfile[@"shortBio"];
+                    self.bioLabel.text = self.userProfile[@"shortBio"];
                     self.userImage.file = self.userProfile[@"avatar"];
                     self.locationLabel.text = self.userProfile[@"location"];
                     [SVProgressHUD dismiss];
@@ -88,7 +110,27 @@
 
     }
     
+    [self loadUserPosts];
+    
 }
+
+- (void)loadUserPosts
+{
+    PFRelation *postsForUser = [PFUser currentUser][@"Posts"];
+    
+    [postsForUser.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+        if (!error) {
+            self.postCountString = [NSString new];
+            self.postCountString = [NSString stringWithFormat:@"%d Posts",number];
+            self.postsLabel.text = self.postCountString;
+        } else {
+            self.postsLabel.text = @"error retrieving posts";
+        }
+    }];
+
+}
+
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -101,4 +143,14 @@
     }
 }
 
+
+- (IBAction)goBackButtonSelected:(id)sender {
+    
+    [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+        self.view.frame = CGRectMake(self.view.frame.size.width * .8, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
+    } completion:^(BOOL finished) {
+        //
+    }];
+
+}
 @end

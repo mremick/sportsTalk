@@ -77,6 +77,9 @@
     [currentUser saveInBackground];
     NSLog(@"ViewWillAppear");
     self.firstLoad += 1;
+    
+    self.navigationController.navigationBar.hidden = NO;
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -271,7 +274,7 @@
 - (void) animateTextField: (UITextField*) textField up: (BOOL) up
 {
     //was 209
-    const int movementDistance = 167; // tweak as needed
+    const int movementDistance = 215; // tweak as needed
     const float movementDuration = 0.3f; // tweak as needed
     
     int movement = (up ? -movementDistance : movementDistance);
@@ -475,16 +478,9 @@
     [SVProgressHUD setStatus:@"Loading Chat"];
     [SVProgressHUD show];
     
-    //log out each object as they come in
-    //beahves differently or the same?
-    
-    
-    NSMutableArray *postHolder = [NSMutableArray new];
-
     PFRelation *postsRelation = room[@"Posts"];
     PFQuery *query = postsRelation.query;
     [query orderByDescending:@"createdAt"];
-    //[postsRelation.query addAscendingOrder:@"date"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
             NSLog(@"Error Fetching Posts: %@", error);
@@ -497,10 +493,7 @@
                 post.text = [dict objectForKey:@"text"];
                 post.date = [dict objectForKey:@"date"];
                 post.username = [dict objectForKey:@"username"];
-                //NSLog(@"TEXT: %@",post.text);
-                //PFUser *authorObjectId = [dict objectForKey:@"author"];
                 post.authorObjectId = [dict objectForKey:@"author"];
-                //[postHolder addObject:post];
                 PFQuery *userQuery = [PFUser query];
                 [userQuery whereKey:@"objectId" equalTo:post.authorObjectId.objectId];
                 NSArray *returnedUser = [userQuery findObjects];
@@ -531,51 +524,7 @@
                                     [SVProgressHUD dismiss];
                                 }
                             });
-                        //}
 
-                        
-                        /*
-                        for (Post *aPost in postHolder) {
-                            PFQuery *userQuery = [PFUser query];
-                            [userQuery whereKey:@"objectId" equalTo:aPost.authorObjectId.objectId]; //authorObjectId.objectId
-                            NSLog(@"aPost:%@",aPost);
-                            //[self.backgroundQueue addOperationWithBlock:^{
-                                NSError *error;
-                                NSArray *results = [[NSArray alloc] init];
-                                results = [userQuery findObjects:&error];
-                                
-                                if ([results count]) {
-                                    NSLog(@"USER QUERY RESULTS: %@",results);
-                                    post.author = [results objectAtIndex:0];
-                                    [self.chatData addObject:post];
-                                    [self.chatTable reloadData];
-                                }
-                                
-                                else {
-                                    NSLog(@"ERROR QUERYING USERS:%@",error);
-                                }
-                            //}];
-                            
-                           // NSLog(@"chatdata count:%d and postholder count:%d",self.chatData.count,postHolder.count);
-                            
-                            //                            [userQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                                if (!error) {
-//                                    if ([objects count]) {
-//                                        post.author = [objects objectAtIndex:0];
-//                                        NSLog(@"post text :%@",aPost.text);
-//
-//                                        [self.chatData addObject:post];
-//                                        [self.chatTable reloadData];
-//                                        
-//                                        NSLog(@"added an object to chatdata");
-//                                    }
-//                                } else {
-//                                    NSLog(@"ERROR:%@",error);
-//                                }
-//                                
-//                                
-//                            }];
-                        }*/
                     }
             }
         }

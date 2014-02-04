@@ -22,6 +22,7 @@
 
 @property (strong,nonatomic) NSArray *user;
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
+@property (weak, nonatomic) IBOutlet UIView *avatarBackground;
 
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *favoriteTeamsLabel;
@@ -36,6 +37,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 - (IBAction)addFriend:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *postsLabel;
 
 @property (strong,nonatomic) PFFile *imageFile; 
 @property (strong,nonatomic) PFUser *userProfile; 

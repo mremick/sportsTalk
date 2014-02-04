@@ -13,7 +13,9 @@
 
 @interface UserProfileViewController ()
 
+@property (strong,nonatomic) NSString *postCountString;
 @property (strong,nonatomic) SportsViewController *sportsVC;
+- (IBAction)backButtonSelected:(id)sender;
 
 @end
 
@@ -30,6 +32,12 @@
     
     self.currentUser = [PFUser currentUser];
     
+    self.avatarBackground.layer.masksToBounds = YES;
+    self.avatarBackground.layer.cornerRadius = 69;
+    
+    self.userImage.layer.masksToBounds = YES;
+    self.userImage.layer.cornerRadius = 65;
+    
     
     
 }
@@ -39,6 +47,8 @@
     
         
         //pop them to chat room
+    
+    self.navigationController.navigationBar.hidden = YES;
 
     
     self.favoriteTeamsLabel.text = @"";
@@ -47,6 +57,7 @@
     NSLog(@"IN USER PROFILE"); 
     
     [self loadUser];
+    [self loadPostsCount];
     
     [self loadFriends];
     
@@ -238,6 +249,22 @@
     return NO;
 }
 
+- (void)loadPostsCount
+{
+    PFRelation *postsForUser = [PFUser currentUser][@"Posts"];
+    
+    [postsForUser.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+        if (!error) {
+            self.postCountString = [NSString new];
+            self.postCountString = [NSString stringWithFormat:@"%d Posts",number];
+            self.postsLabel.text = self.postCountString;
+        } else {
+            self.postsLabel.text = @"error retrieving posts";
+        }
+    }];
+
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"editProfile"]) {
@@ -248,5 +275,9 @@
         vc.location = self.location; 
         vc.image = self.userImage.image;
     }
+}
+- (IBAction)backButtonSelected:(id)sender {
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end

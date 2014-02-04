@@ -11,6 +11,10 @@
 #import "UserProfileViewController.h"
 
 @interface EditProfileViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *changeImageButton;
+@property (weak, nonatomic) IBOutlet UIButton *submitChangesButton;
+@property (weak, nonatomic) IBOutlet UIView *avatarBackground;
+- (IBAction)backButtonSelected:(id)sender;
 
 @end
 
@@ -32,17 +36,39 @@
     [self registerForKeyboardNotification];
     
     [self setupToolbar];
+    
+    self.changeImageButton.layer.masksToBounds = YES;
+    self.changeImageButton.layer.cornerRadius = 20.0f;
+    
+    [[self.changeImageButton layer] setBorderWidth:1.0f];
+    [[self.changeImageButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+    
+    self.submitChangesButton.layer.masksToBounds = YES;
+    self.submitChangesButton.layer.cornerRadius = 20.0f;
+    
+    [[self.submitChangesButton layer] setBorderWidth:1.0f];
+    [[self.submitChangesButton layer] setBorderColor:[UIColor whiteColor].CGColor];
+    
+    self.avatarBackground.layer.masksToBounds = YES;
+    self.avatarBackground.layer.cornerRadius = 69;
+    
+    self.avatarImageView.layer.masksToBounds = YES;
+    self.avatarImageView.layer.cornerRadius = 65;
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.bioTextField.text = self.bio;
-    self.favoriteTeamsTextField.text = self.favoriteTeams;
+    NSLog(@"BIO:%@   LOCATION:%@",[PFUser currentUser][@"shortBio"],[PFUser currentUser][@"location"]);
+    
+    self.bioTextField.text = [PFUser currentUser][@"shortBio"];
+    //self.favoriteTeamsTextField.text = self.favoriteTeams;
     self.avatarImageView.image = self.image; 
     self.dismissKeyboardButton.hidden = YES;
-    self.locationTextField.text = self.location;
+    self.locationTextField.text = [PFUser currentUser][@"location"];
     
 }
 
@@ -184,4 +210,8 @@
  
 */
 
+- (IBAction)backButtonSelected:(id)sender {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
 @end
