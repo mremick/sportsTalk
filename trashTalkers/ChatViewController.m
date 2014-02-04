@@ -17,6 +17,7 @@
 @interface ChatViewController ()
 
 @property (strong,nonatomic) NSOperationQueue *backgroundQueue;
+@property (strong,nonatomic) PFObject *currentRoom;
 
 
 @end
@@ -75,6 +76,7 @@
     currentUser[@"lastChatRoom"] = self.gameTitle;
     self.userAvatar = currentUser[@"avatar"];
     [currentUser saveInBackground];
+
     NSLog(@"ViewWillAppear");
     self.firstLoad += 1;
     
@@ -85,6 +87,11 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
+    [usersForRoom addObject:[PFUser currentUser]];
+    [usersForRoom removeObject:[PFUser currentUser]];
+    [self.currentRoom saveInBackground];
     
     
 }
@@ -195,9 +202,11 @@
                 PFRelation *postsRelation = [room relationforKey:@"Posts"];
                 [postsRelation addObject:post];
                 
+                
+                
                 [room saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     if (!error) {
-                        NSLog(@"room should be saved");
+                        NSLog(@"ROOM SHOULD BE SAVED");
                     } else {
                         NSLog(@"%@",error);
                     }
@@ -466,10 +475,11 @@
     NSError *error;
     NSArray *results = [roomQuery findObjects:&error];
     
-    PFObject *room;
-    
     if ([results count]) {
-        room = [results objectAtIndex:0];
+        self.currentRoom = [results objectAtIndex:0];
+        PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
+        [usersForRoom addObject:[PFUser currentUser]];
+        [self.currentRoom saveInBackground];
         NSLog(@"results were found");
     } else {
         NSLog(@"results were not found");
@@ -478,7 +488,7 @@
     [SVProgressHUD setStatus:@"Loading Chat"];
     [SVProgressHUD show];
     
-    PFRelation *postsRelation = room[@"Posts"];
+    PFRelation *postsRelation = self.currentRoom[@"Posts"];
     PFQuery *query = postsRelation.query;
     [query orderByDescending:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -552,6 +562,8 @@
     if ([results1 count]) {
         room1 = [results1 objectAtIndex:0];
         NSLog(@"results were found");
+        
+        
     } else {
         NSLog(@"results were not found");
     }

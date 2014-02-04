@@ -26,7 +26,6 @@
     PFUser *currenetUser = [PFUser currentUser];
     
     if (currenetUser) {
-        NSLog(@"Current User: %@",currenetUser.username);
     }
     
     else {
@@ -42,7 +41,6 @@
     self.tabBarController.tabBar.hidden = NO;
     
     
-    NSLog(@"VIEW DID LOAD CALLED!");
 }
 
 - (void)didReceiveMemoryWarning

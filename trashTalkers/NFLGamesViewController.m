@@ -21,7 +21,9 @@
     [super viewDidLoad];
     
     self.games = [[NSMutableArray alloc] init];
-    self.className = [[NSString alloc] init]; 
+    self.className = [[NSString alloc] init];
+    
+    [self loadCountOfRooms];
     
     PFQuery *gamesQuery = [PFQuery queryWithClassName:@"GameLists"];
     
@@ -77,44 +79,29 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)loadCountOfRooms
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    //get the count of the how many room
+    
+//    for (int i = 0; i < [self.games count]; i++) {
+//        PFRelation *postsForUser = [PFUser currentUser][@"Posts"];
+//        
+//        [postsForUser.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+//            if (!error) {
+//                self.postCountString = [NSString new];
+//                self.postCountString = [NSString stringWithFormat:@"%d Posts",number];
+//                self.postsLabel.text = self.postCountString;
+//            } else {
+//                self.postsLabel.text = @"error retrieving posts";
+//            }
+//        }];
+//
+//    }
+    //subtract each by one and append that number to the end of NFL
+    //query the count as many times as the count and store them in an array
+    //put the array in cellForRow as the subtitle text
+    
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Navigation
 
@@ -129,7 +116,6 @@
         
         self.className = [[NSString alloc] initWithString:[NSString stringWithFormat:@"NFL%d",chosenIndexPath.row]];
         
-        NSLog(@"CLASSNAME (prepareForSegue): %@",self.className);
         viewController.gameTitle = [self.games objectAtIndex:chosenIndexPath.row];
         viewController.className = [[NSString alloc] initWithString:self.className];
         

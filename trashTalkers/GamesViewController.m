@@ -29,8 +29,6 @@
         
             [self.games removeAllObjects];
             [self.games addObjectsFromArray:[[objects objectAtIndex:0] objectForKey:@"NBAGames"]];
-            NSLog(@"Games: %@",self.games);
-            NSLog(@"Games Count: %d",[self.games count]);
             [self.tableView reloadData];
 
         }
@@ -127,7 +125,6 @@
         
         self.className = [[NSString alloc] initWithString:[NSString stringWithFormat:@"NBA%d",chosenIndexPath.row]];
         viewController.gameTitle = [self.games objectAtIndex:chosenIndexPath.row];
-        NSLog(@"CLASSNAME (prepareForSegue): %@",self.className);
         viewController.className = [[NSString alloc] initWithString:self.className];
         self.className = self.games[chosenIndexPath.row];
         PFObject *room = self.games[chosenIndexPath.row];
