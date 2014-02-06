@@ -10,6 +10,8 @@
 #import "UserProfileViewController.h"
 #import "UIImageView+ParseFileSupport.h"
 #import "Post.h"
+#import <QuartzCore/QuartzCore.h>
+#import "ChatCellContentView.h"
 
 #define MAX_ENTRIES_LOADED 25
 
@@ -18,6 +20,7 @@
 
 @property (strong,nonatomic) NSOperationQueue *backgroundQueue;
 @property (strong,nonatomic) PFObject *currentRoom;
+@property (strong,nonatomic) UIColor *backgroundColor;
 
 
 @end
@@ -31,7 +34,9 @@
     
     //[self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
     
-    NSLog(@"TESTING CLASS NAME: %@",self.className); 
+    NSLog(@"TESTING CLASS NAME: %@",self.className);
+    
+    self.chatTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
 	// Do any additional setup after loading the view.
     self.chatTextField.delegate = self;
@@ -39,8 +44,10 @@
     self.chatData = [[NSMutableArray alloc] init];
     
     self.backgroundQueue.maxConcurrentOperationCount = 1;
-
     
+    self.backgroundColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
+    self.chatTable.backgroundColor = self.backgroundColor;
+
     
     /*
     CGRect rect = CGRectMake(self.tabBarController.view.bounds.size.width + 30, self.tabBarController.view.bounds.size.height, 100, 100);
@@ -365,25 +372,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ChatCell *cell = (ChatCell *)[tableView dequeueReusableCellWithIdentifier:@"chatCellIdentifier"];
+    
+    ChatCell *cell;
+    UIColor *myGreenColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
+    UIColor *myBlueColor = [UIColor colorWithRed:0.688 green:0.714 blue:0.732 alpha:1.000];
     
     NSUInteger row = [self.chatData count]-[indexPath row]-1;
     
-    
     if (row < [self.chatData count]) {
         
-        
-        
-        
-        
-//        NSString *chatText = [[self.chatData objectAtIndex:row] objectForKey:@"text"];
-//        NSString *theUserName = [[self.chatData objectAtIndex:row] objectForKey:@"userName"];
-        
         Post *currentPost = [self.chatData objectAtIndex:indexPath.row];
-        
         PFFile *imageFile = currentPost.author[@"avatar"];
-
-
+        
+        
+        
         UIFont *font = [UIFont fontWithName:@"Arial" size:13.0];
         NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
         
@@ -391,57 +393,102 @@
         
         
         CGRect rect = [currentPost.text boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
-                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                       attributes:attributes
-                                          context:nil];
+                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                  attributes:attributes
+                                                     context:nil];
         CGSize size = rect.size;
         
-        cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
-        cell.textString.textAlignment = NSLineBreakByWordWrapping;
-        
-        cell.userAvatar.layer.masksToBounds = YES;
-        cell.userAvatar.layer.cornerRadius = 35;
-        
-        cell.imageView.layer.cornerRadius = 35;
-        cell.imageView.layer.masksToBounds = YES;
-        
-        //NSDate *theDate = [[self.chatData objectAtIndex:row] objectForKey:@"date"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm a"];
         NSString *timeString = [formatter stringFromDate:currentPost.date];
         
-        cell.textString.attributedText = attrString;
-        [cell.textString sizeToFit];
-        cell.timeLabel.text = timeString;
+//        UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
+//        CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
+//        
+//        CGRect boundingRect = [currentPost.text boundingRectWithSize:constraintSize
+//                                                     options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+//                                                  attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
+//                                                     context:nil];
+//
+
         
-        //cell.userLabel.text = currentPost.author.username;
-        
-        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
-            cell.userLabel.text = currentPost.author[@"usernameForAnonUser"];
-            
-        } else {
-            cell.userLabel.text = currentPost.author.username;
-
-        }
-
-
-        if (imageFile) {
-            cell.userAvatar.file = imageFile;
+        if ([[PFUser currentUser].username isEqualToString:currentPost.author.username]) {
+            cell = (ChatCell *)[tableView dequeueReusableCellWithIdentifier:@"CurrentUserCell"];
+            cell.chatBubbleView.isLeft = NO;
+//            cell.chatBubbleView.frame = CGRectMake(0, 0, boundingRect.size.width + 10, boundingRect.size.height + 12);
+            //cell.backgroundColor = [UIColor clearColor];
+            //cell.textString.backgroundColor = [];
         }
         
         else {
-            cell.userAvatar.image = [UIImage imageNamed:@"1024px_2.png"];
+            cell = (ChatCell *)[tableView dequeueReusableCellWithIdentifier:@"chatCellIdentifier"];
+            cell.chatBubbleView.isLeft = YES;
+//            cell.chatBubbleView.frame = CGRectMake(0, 0, boundingRect.size.width + 10, boundingRect.size.height + 10);
+            //cell.backgroundColor = [UIColor clearColor];
+            //cell.textString.backgroundColor = myGreenColor;
         }
+    
+//    [cell.layer setCornerRadius:8.0f];
+//    [cell.layer setMasksToBounds:YES];
+//    [cell.layer setBorderWidth:5.0f];
+//    [cell.layer setBorderColor:self.backgroundColor.CGColor];
+    
+    
+//    cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
+    cell.textString.textAlignment = NSLineBreakByWordWrapping;
+//        [cell.textString.layer setBorderWidth:3.0];
+//        [cell.textString.layer setBorderColor:[UIColor whiteColor].CGColor];
+//        cell.textString.layer.masksToBounds = YES;
+//        cell.textString.layer.cornerRadius = 4.0;
+    
+    cell.userAvatar.layer.masksToBounds = YES;
+    cell.userAvatar.layer.cornerRadius = 32;
+        
+    cell.avatarBackground.layer.masksToBounds = YES;
+        cell.avatarBackground.layer.cornerRadius = 34;
+    
+    cell.imageView.layer.cornerRadius = 35;
+    cell.imageView.layer.masksToBounds = YES;
+    
+    
+    
+    cell.textString.attributedText = attrString;
+    [cell.textString sizeToFit];
+    cell.timeLabel.text = timeString;
+    
+    
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        cell.userLabel.text = currentPost.author[@"usernameForAnonUser"];
+        
+    } else {
+        cell.userLabel.text = currentPost.author.username;
         
     }
     
     
+    if (imageFile) {
+        cell.userAvatar.file = imageFile;
+        cell.userAvatar.layer.borderWidth = 2.0;
+        cell.userAvatar.layer.borderColor = [UIColor whiteColor].CGColor;
+         
+    }
+    
+    else {
+        cell.userAvatar.image = [UIImage imageNamed:@"1024px_2.png"];
+    }
+
+    } else {
+        NSLog(@"A PROBLEM");
+    }
+        
     return cell;
+
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     Post *currentPost = [self.chatData objectAtIndex:indexPath.row];//[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1];
     
    // NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
@@ -457,8 +504,10 @@
                                           attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
                                              context:nil];
                                      //60
-    return boundingRect.size.height + 60;
+    return boundingRect.size.height + 70;
+
 }
+
 
 #pragma mark - Parse! 
 - (void)loadPostsForEmptyRoom
@@ -504,7 +553,10 @@
             NSLog(@"Error Fetching Posts: %@", error);
         } else {
             NSArray *posts = objects;
-            //NSLog(@"OBJECTS: %@",objects);
+            
+            if (![posts count]) {
+                [SVProgressHUD dismiss];
+            }
             
             for (NSDictionary *dict in posts) {
                 Post *post = [[Post alloc] init];

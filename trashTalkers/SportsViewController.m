@@ -10,8 +10,10 @@
 #import <Parse/Parse.h>
 #import "GamesViewController.h"
 #import "MSCellAccessory.h"
+#import "LoginViewController.h"
 
 @interface SportsViewController ()
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -21,7 +23,7 @@
 {
     [super viewDidLoad];
     
-   
+    self.tableView.backgroundColor = [UIColor whiteColor];
     
     PFUser *currenetUser = [PFUser currentUser];
     
@@ -30,7 +32,9 @@
     
     else {
         //perform segue to login view
-        [self performSegueWithIdentifier:@"showLogin" sender:self]; 
+        LoginViewController *loginViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+        
+        [self presentViewController:(LoginViewController *)loginViewController animated:YES completion:nil];
     }
     
 }

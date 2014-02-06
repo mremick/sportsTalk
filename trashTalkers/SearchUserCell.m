@@ -1,22 +1,20 @@
 //
-//  ChatCell.m
+//  SearchUserCell.m
 //  trashTalkers
 //
-//  Created by Matt Remick on 11/16/13.
-//  Copyright (c) 2013 Matt Remick. All rights reserved.
+//  Created by Matt Remick on 2/5/14.
+//  Copyright (c) 2014 Matt Remick. All rights reserved.
 //
 
-#import "ChatCell.h"
-#import "ChatCellContentView.h"
+#import "SearchUserCell.h"
 
-@implementation ChatCell
+@implementation SearchUserCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        
     }
     return self;
 }
@@ -27,8 +25,5 @@
 
     // Configure the view for the selected state
 }
-
-
-
 
 @end

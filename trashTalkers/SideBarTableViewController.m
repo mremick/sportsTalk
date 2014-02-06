@@ -11,10 +11,13 @@
 #import "FriendsViewController.h"
 #import "CurrentUserProfileViewController.h"
 #import "UIImageView+ParseFileSupport.h"
+#import "SearchUsersViewController.h"
+#import "LoginViewController.h"
 
 @interface SideBarTableViewController () {
     UIImageView *navBarHairlineImageView;
 }
+- (IBAction)logOutSelected:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIImageView *userAvatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -22,6 +25,8 @@
 @property (strong,nonatomic) ChatViewController *chatVC;
 @property (strong,nonatomic) FriendsViewController *friendsVC;
 @property (strong,nonatomic) CurrentUserProfileViewController *currentUserProfileVC;
+@property (strong,nonatomic) SearchUsersViewController *searchUsersVC;
+@property (strong,nonatomic) LoginViewController *loginVC;
 @property (strong,nonatomic) NSArray *viewControllerArray;
 @property (strong,nonatomic) UIViewController *topVC;
 - (IBAction)openSideBar:(id)sender;
@@ -29,6 +34,7 @@
 //should this be strong?
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *avatarBackground;
+- (IBAction)logOut:(id)sender;
 
 @end
 
@@ -49,10 +55,11 @@
     
     navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
 
-
     self.tableView.delegate = self;
     
     UIColor *barColor = [UIColor colorWithRed:0.201 green:0.769 blue:0.380 alpha:1.000];
+    
+    
     
     self.userAvatarImageView.layer.masksToBounds = YES;
     self.userAvatarImageView.layer.cornerRadius = 48;
@@ -67,11 +74,13 @@
     self.chatVC = [self.storyboard instantiateViewControllerWithIdentifier:@"chatVC"];
     self.friendsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"friendsVC"];
     self.currentUserProfileVC = [self.storyboard instantiateViewControllerWithIdentifier:@"currentUserProfileVC"];
+    self.searchUsersVC = [self.storyboard instantiateViewControllerWithIdentifier:@"searchUsersVC"];
 
     self.topVC = self.chatVC;
+
     
     self.viewControllerArray = [NSArray new];
-    self.viewControllerArray = @[self.currentUserProfileVC,self.chatVC,self.friendsVC];
+    self.viewControllerArray = @[self.currentUserProfileVC,self.chatVC,self.friendsVC,@"holderForLeaderboard",self.searchUsersVC];
     
     [self addChildViewController:self.chatVC];
     self.chatVC.view.frame = self.view.frame;
@@ -100,6 +109,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (![PFUser currentUser]) {
+        self.topVC = self.loginVC;
+    }
     
     navBarHairlineImageView.hidden = YES;
 }
@@ -199,33 +212,36 @@
 {
     UIViewController *newVC = [self.viewControllerArray objectAtIndex:indexPath.row];
     
-    //adding the view controller as a child view controller
-    [self addChildViewController:newVC];
-    
-    //setting the frame of the new of the new view controller to the size of the view
-    //newVC.view.frame = self.view.bounds;
-    
-    //adding the view
-    [self.view addSubview:newVC.view];
-    [newVC didMoveToParentViewController:newVC];
-    
-    //animate old view out
-    //animate new view in
-    
-//    if (indexPath.row == 0) {
-//        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-//            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
-//        } completion:^(BOOL finished) {
-//            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-//                //changed to bounds for profile becuase I'm taking out the nav bar
-//                newVC.view.frame = self.view.bounds;
-//            } completion:^(BOOL finished) {
-//                NSLog(@"setup pan gesture on new view controller");
-//                [self setupPanGesture];
-//            }];
-//        }];
-//
-//    } else {
+    if ([newVC isKindOfClass:[self.topVC class]]) {
+        [self closeSideBar];
+    } else {
+        //adding the view controller as a child view controller
+        [self addChildViewController:newVC];
+        
+        //setting the frame of the new of the new view controller to the size of the view
+        //newVC.view.frame = self.view.bounds;
+        
+        //adding the view
+        [self.view addSubview:newVC.view];
+        [newVC didMoveToParentViewController:newVC];
+        
+        //animate old view out
+        //animate new view in
+        
+        //    if (indexPath.row == 0) {
+        //        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+        //            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
+        //        } completion:^(BOOL finished) {
+        //            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+        //                //changed to bounds for profile becuase I'm taking out the nav bar
+        //                newVC.view.frame = self.view.bounds;
+        //            } completion:^(BOOL finished) {
+        //                NSLog(@"setup pan gesture on new view controller");
+        //                [self setupPanGesture];
+        //            }];
+        //        }];
+        //
+        //    } else {
         [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y - 1, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
         } completion:^(BOOL finished) {
@@ -236,15 +252,18 @@
                 [self setupPanGesture];
             }];
         }];
+        
+        //}
+        
+        //remove child
+        [self.topVC.view removeFromSuperview];
+        [self.topVC removeFromParentViewController];
+        
+        self.topVC = newVC;
 
-    //}
+    }
     
-    //remove child
-    [self.topVC.view removeFromSuperview];
-    [self.topVC removeFromParentViewController];
     
-    self.topVC = newVC;
-
 }
 
 - (IBAction)openSideBar:(id)sender {
@@ -255,6 +274,18 @@
     } else {
         [self lockSideBar];
     }
+    
+}
+- (IBAction)logOut:(id)sender {
+    
+}
+- (IBAction)logOutSelected:(id)sender {
+    
+    LoginViewController *loginViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
+    
+    [self presentViewController:(LoginViewController *)loginViewController animated:YES completion:^{
+        [PFUser logOut];
+    }];
     
 }
 @end

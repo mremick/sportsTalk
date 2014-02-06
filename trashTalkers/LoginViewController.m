@@ -13,6 +13,8 @@
 
 @interface LoginViewController () <UIAlertViewDelegate>
 - (IBAction)signInAnonymously:(id)sender;
+- (IBAction)signUpButtonSelected:(id)sender;
+
 
 @end
 
@@ -79,7 +81,8 @@
             }
             
             else {
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                //pop VC
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
         }];
     }
@@ -108,11 +111,15 @@
 - (IBAction)signInAnonymously:(id)sender {
     
     [PFAnonymousUtils logInWithBlock:^(PFUser *user, NSError *error) {
+        
+        //user[@"isAnon"] = @"YES";
+        
         if (error) {
             NSLog(@"Anonymous login failed.");
         } else {
             NSLog(@"Anonymous user logged in.");
         }
+        
     }];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Need a Username" message:@"Enter a temporary username" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
@@ -120,6 +127,11 @@
     [alert show]; 
     
     
+}
+
+- (IBAction)signUpButtonSelected:(id)sender {
+    //[self.navigationController performSegueWithIdentifier:@"showLoginPage" sender:self];
+    NSLog(@"Button selected");
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -131,7 +143,8 @@
             //[self.navigationController popViewControllerAnimated:YES];
         } else {
             [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            //popVC
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         
 

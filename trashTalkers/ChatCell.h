@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ChatCellContentView.h"
 
 @interface ChatCell : UITableViewCell
 
@@ -14,7 +15,8 @@
 @property (nonatomic,retain) IBOutlet UITextView *textString;
 @property (nonatomic,retain) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *userAvatar;
-
+@property (weak, nonatomic) IBOutlet UIView *avatarBackground;
+@property (weak, nonatomic) IBOutlet ChatCellContentView *chatBubbleView;
 
 
 @end

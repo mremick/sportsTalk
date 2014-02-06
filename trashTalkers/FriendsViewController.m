@@ -9,6 +9,7 @@
 #import "FriendsViewController.h"
 #import "UIImageView+ParseFileSupport.h"
 #import "SportsViewController.h"
+#import "FriendsCell.h"
 
 @interface FriendsViewController ()
 
@@ -96,18 +97,28 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    FriendsCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    cell.backgroundColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
+    self.tableView.backgroundColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
+    
+    cell.avatarBackground.layer.masksToBounds = YES;
+    cell.avatarBackground.layer.cornerRadius = 33;
+    
+    cell.avatarImageView.layer.masksToBounds = YES;
+    cell.avatarImageView.layer.cornerRadius = 32;
     
     // Configure the cell...
     PFUser *friend = [self.friends objectAtIndex:indexPath.row];
-    cell.textLabel.text = friend.username;
+    cell.usernameLabel.text = friend.username;
+    cell.onlineLabel.text = friend[@"Online"];
     
     if (friend[@"avatar"]) {
-        cell.imageView.file = friend[@"avatar"];
+        cell.avatarImageView.file = friend[@"avatar"];
     }
     
     else {
-        cell.imageView.image = [UIImage imageNamed:@"avatar.png"];
+        cell.avatarImageView.image = [UIImage imageNamed:@"avatar.png"];
     }
     
     

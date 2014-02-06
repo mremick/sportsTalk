@@ -80,9 +80,8 @@
         user.username = username;
         user.password = password;
         user.email = email;
-        user[@"favoriteTeams"] = @"I haven't filled this out yet.";
-        user[@"shortBio"] = @"This either.";
-        user[@"location"] = @"Websphere"; 
+        user[@"shortBio"] = @"I haven't filled out a bio yet..";
+        user[@"location"] = @"Webspere, INTERNET"; 
         
         NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
         PFFile *avatar = [PFFile fileWithData:imageData];

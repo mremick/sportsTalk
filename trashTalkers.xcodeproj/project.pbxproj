@@ -26,6 +26,13 @@
 		3E4508A118A05E3500CD7AE2 /* 1096-direction-arrow copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E45089F18A05E3500CD7AE2 /* 1096-direction-arrow copy.png */; };
 		3E4508A218A05E3500CD7AE2 /* 1096-direction-arrow@2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E4508A018A05E3500CD7AE2 /* 1096-direction-arrow@2x copy.png */; };
 		3E4508A618A0678300CD7AE2 /* backArrow2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E4508A518A0678300CD7AE2 /* backArrow2.png */; };
+		3E4508AB18A2C81100CD7AE2 /* SearchUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508AA18A2C81100CD7AE2 /* SearchUsersViewController.m */; };
+		3E4508B618A2C8D600CD7AE2 /* BBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508AF18A2C8D600CD7AE2 /* BBCell.m */; };
+		3E4508B718A2C8D600CD7AE2 /* BBTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508B118A2C8D600CD7AE2 /* BBTableView.m */; };
+		3E4508B918A2C8D600CD7AE2 /* BBTableViewInterceptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508B518A2C8D600CD7AE2 /* BBTableViewInterceptor.m */; };
+		3E4508BC18A2D25700CD7AE2 /* SearchUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508BB18A2D25700CD7AE2 /* SearchUserCell.m */; };
+		3E4508BF18A2EA2000CD7AE2 /* FriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508BE18A2EA2000CD7AE2 /* FriendsCell.m */; };
+		3E4508C218A2F5A900CD7AE2 /* ChatCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508C118A2F5A900CD7AE2 /* ChatCellContentView.m */; };
 		3E5B86E0183711870017E2BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86DF183711870017E2BE /* Foundation.framework */; };
 		3E5B86E2183711870017E2BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E1183711870017E2BE /* CoreGraphics.framework */; };
 		3E5B86E4183711870017E2BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E3183711870017E2BE /* UIKit.framework */; };
@@ -112,6 +119,20 @@
 		3E45089F18A05E3500CD7AE2 /* 1096-direction-arrow copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1096-direction-arrow copy.png"; sourceTree = "<group>"; };
 		3E4508A018A05E3500CD7AE2 /* 1096-direction-arrow@2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1096-direction-arrow@2x copy.png"; sourceTree = "<group>"; };
 		3E4508A518A0678300CD7AE2 /* backArrow2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backArrow2.png; sourceTree = "<group>"; };
+		3E4508A918A2C81100CD7AE2 /* SearchUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUsersViewController.h; sourceTree = "<group>"; };
+		3E4508AA18A2C81100CD7AE2 /* SearchUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchUsersViewController.m; sourceTree = "<group>"; };
+		3E4508AE18A2C8D600CD7AE2 /* BBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBCell.h; sourceTree = "<group>"; };
+		3E4508AF18A2C8D600CD7AE2 /* BBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBCell.m; sourceTree = "<group>"; };
+		3E4508B018A2C8D600CD7AE2 /* BBTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBTableView.h; sourceTree = "<group>"; };
+		3E4508B118A2C8D600CD7AE2 /* BBTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBTableView.m; sourceTree = "<group>"; };
+		3E4508B418A2C8D600CD7AE2 /* BBTableViewInterceptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBTableViewInterceptor.h; sourceTree = "<group>"; };
+		3E4508B518A2C8D600CD7AE2 /* BBTableViewInterceptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBTableViewInterceptor.m; sourceTree = "<group>"; };
+		3E4508BA18A2D25700CD7AE2 /* SearchUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUserCell.h; sourceTree = "<group>"; };
+		3E4508BB18A2D25700CD7AE2 /* SearchUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchUserCell.m; sourceTree = "<group>"; };
+		3E4508BD18A2EA2000CD7AE2 /* FriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsCell.h; sourceTree = "<group>"; };
+		3E4508BE18A2EA2000CD7AE2 /* FriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsCell.m; sourceTree = "<group>"; };
+		3E4508C018A2F5A900CD7AE2 /* ChatCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatCellContentView.h; sourceTree = "<group>"; };
+		3E4508C118A2F5A900CD7AE2 /* ChatCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatCellContentView.m; sourceTree = "<group>"; };
 		3E5B86DC183711870017E2BE /* trashTalkers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trashTalkers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5B86DF183711870017E2BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E5B86E1183711870017E2BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -247,6 +268,35 @@
 			path = MSCellAccessory;
 			sourceTree = "<group>";
 		};
+		3E4508AC18A2C8D600CD7AE2 /* BBTableView */ = {
+			isa = PBXGroup;
+			children = (
+				3E4508AD18A2C8D600CD7AE2 /* BBCell */,
+				3E4508B018A2C8D600CD7AE2 /* BBTableView.h */,
+				3E4508B118A2C8D600CD7AE2 /* BBTableView.m */,
+				3E4508B318A2C8D600CD7AE2 /* Interceptor */,
+			);
+			path = BBTableView;
+			sourceTree = "<group>";
+		};
+		3E4508AD18A2C8D600CD7AE2 /* BBCell */ = {
+			isa = PBXGroup;
+			children = (
+				3E4508AE18A2C8D600CD7AE2 /* BBCell.h */,
+				3E4508AF18A2C8D600CD7AE2 /* BBCell.m */,
+			);
+			path = BBCell;
+			sourceTree = "<group>";
+		};
+		3E4508B318A2C8D600CD7AE2 /* Interceptor */ = {
+			isa = PBXGroup;
+			children = (
+				3E4508B418A2C8D600CD7AE2 /* BBTableViewInterceptor.h */,
+				3E4508B518A2C8D600CD7AE2 /* BBTableViewInterceptor.m */,
+			);
+			path = Interceptor;
+			sourceTree = "<group>";
+		};
 		3E5B86D3183711870017E2BE = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +368,8 @@
 				3E5B873D1838559F0017E2BE /* ChatCell.m */,
 				3E5B874C183C4B580017E2BE /* ChatViewController.h */,
 				3E5B874D183C4B580017E2BE /* ChatViewController.m */,
+				3E4508C018A2F5A900CD7AE2 /* ChatCellContentView.h */,
+				3E4508C118A2F5A900CD7AE2 /* ChatCellContentView.m */,
 				3E342A13189314ED004C262A /* Room.h */,
 				3E342A14189314ED004C262A /* Room.m */,
 				3E342A16189314FA004C262A /* Post.h */,
@@ -334,9 +386,16 @@
 				3E76BB7E185EA7C900582E1E /* CurrentUserProfileViewController.m */,
 				3E89C1C0189DEA8C007B787A /* SideBarTableViewController.h */,
 				3E89C1C1189DEA8C007B787A /* SideBarTableViewController.m */,
+				3E4508A918A2C81100CD7AE2 /* SearchUsersViewController.h */,
+				3E4508AA18A2C81100CD7AE2 /* SearchUsersViewController.m */,
+				3E4508BA18A2D25700CD7AE2 /* SearchUserCell.h */,
+				3E4508BB18A2D25700CD7AE2 /* SearchUserCell.m */,
+				3E4508BD18A2EA2000CD7AE2 /* FriendsCell.h */,
+				3E4508BE18A2EA2000CD7AE2 /* FriendsCell.m */,
 				3E17BF4B18639286001B32F8 /* Categories */,
 				3E17BF4C18639295001B32F8 /* MSCellAccessory */,
 				3E5B86F7183711870017E2BE /* Images.xcassets */,
+				3E4508AC18A2C8D600CD7AE2 /* BBTableView */,
 				3E5B86E6183711870017E2BE /* Supporting Files */,
 			);
 			path = trashTalkers;
@@ -529,13 +588,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E342A1B18931510004C262A /* User.m in Sources */,
+				3E4508B918A2C8D600CD7AE2 /* BBTableViewInterceptor.m in Sources */,
 				3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */,
 				3E76BB7F185EA7C900582E1E /* CurrentUserProfileViewController.m in Sources */,
 				3ED273C4184AD93800B5821E /* UserProfileViewController.m in Sources */,
 				3E5B872F1837169C0017E2BE /* LoginViewController.m in Sources */,
 				3E5B873218371B100017E2BE /* SignUpViewController.m in Sources */,
 				3E5B8716183712000017E2BE /* SportsViewController.m in Sources */,
+				3E4508BC18A2D25700CD7AE2 /* SearchUserCell.m in Sources */,
 				3E342A15189314ED004C262A /* Room.m in Sources */,
+				3E4508C218A2F5A900CD7AE2 /* ChatCellContentView.m in Sources */,
 				3E17BF5118639295001B32F8 /* MSCellAccessory.m in Sources */,
 				3E5B86F0183711870017E2BE /* AppDelegate.m in Sources */,
 				3EA41948189B4CFE003E47DF /* DTProgressStatus.m in Sources */,
@@ -543,8 +605,11 @@
 				3E5B8751183DB0B50017E2BE /* NFLGamesViewController.m in Sources */,
 				3EA41947189B4CFE003E47DF /* DTAlertView.m in Sources */,
 				3E5B873E1838559F0017E2BE /* ChatCell.m in Sources */,
+				3E4508B718A2C8D600CD7AE2 /* BBTableView.m in Sources */,
 				3ED273C11845920D00B5821E /* ResetPasswordViewController.m in Sources */,
 				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
+				3E4508AB18A2C81100CD7AE2 /* SearchUsersViewController.m in Sources */,
+				3E4508BF18A2EA2000CD7AE2 /* FriendsCell.m in Sources */,
 				3E9242BD18568037008C039E /* FriendsViewController.m in Sources */,
 				3E342A18189314FA004C262A /* Post.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
@@ -553,6 +618,7 @@
 				3E89C1C2189DEA8C007B787A /* SideBarTableViewController.m in Sources */,
 				3E17BF5218639295001B32F8 /* UIView+AccessViewController.m in Sources */,
 				3E9242C218596701008C039E /* EditProfileViewController.m in Sources */,
+				3E4508B618A2C8D600CD7AE2 /* BBCell.m in Sources */,
 				3E9242C5185BE86A008C039E /* UIImage+ProportionalFill.m in Sources */,
 				3E5B8754183EDE140017E2BE /* MLBGamesViewController.m in Sources */,
 				3E5B86EC183711870017E2BE /* main.m in Sources */,
