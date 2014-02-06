@@ -9,6 +9,7 @@
 #import "SignUpViewController.h"
 #import <Parse/Parse.h>
 #import "UIImage+ProportionalFill.h"
+#import "LoginViewController.h"
 
 @interface SignUpViewController ()
 
@@ -110,7 +111,8 @@
                     [SVProgressHUD dismiss];
                 });
                 
-                [self.navigationController popToRootViewControllerAnimated:YES]; 
+                [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+                
             }
         }];
     }

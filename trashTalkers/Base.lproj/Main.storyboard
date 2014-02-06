@@ -1018,7 +1018,6 @@
                                         </state>
                                         <connections>
                                             <action selector="signUpButtonSelected:" destination="UnK-zL-h9Y" eventType="touchUpInside" id="l4d-Sx-X7o"/>
-                                            <segue destination="8UO-OF-Pik" kind="push" identifier="showLogin" id="drK-X1-SPY"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyN-VN-Uv6">
@@ -1030,7 +1029,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="ure-md-CRb" kind="push" id="wmH-Io-70K"/>
+                                            <action selector="resetPasswordSelected:" destination="UnK-zL-h9Y" eventType="touchUpInside" id="iZf-9z-A7A"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Don't have an account?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQr-4P-Xgc">
@@ -1096,7 +1095,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YSb-5T-8uL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="828" y="675"/>
+            <point key="canvasLocation" x="-16" y="711"/>
         </scene>
         <!--Friends View Controller - Friends-->
         <scene sceneID="trY-0X-XAl">
@@ -1162,7 +1161,7 @@
         <!--Reset Password View Controller-->
         <scene sceneID="a4t-yb-ssg">
             <objects>
-                <viewController id="ure-md-CRb" customClass="ResetPasswordViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="resetPasswordVC" id="ure-md-CRb" customClass="ResetPasswordViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="noH-pT-ifP"/>
                         <viewControllerLayoutGuide type="bottom" id="kFN-k9-v0W"/>
@@ -1172,20 +1171,20 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email Address: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVU-Dg-NrH">
-                                <rect key="frame" x="20" y="139" width="120" height="21"/>
+                                <rect key="frame" x="20" y="51" width="120" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1kB-6d-Fm1">
-                                <rect key="frame" x="140" y="135" width="160" height="30"/>
+                                <rect key="frame" x="140" y="47" width="160" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4Y-Hf-cpe">
-                                <rect key="frame" x="99" y="270" width="123" height="30"/>
+                                <rect key="frame" x="99" y="131" width="123" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Send me an email">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1227,12 +1226,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5kZ-HC-mmE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="120" y="1106"/>
+            <point key="canvasLocation" x="16" y="1418"/>
         </scene>
         <!--Sign Up View Controller - Sign Up-->
         <scene sceneID="0Qa-GV-rd7">
             <objects>
-                <viewController id="8UO-OF-Pik" customClass="SignUpViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="signUpVC" id="8UO-OF-Pik" customClass="SignUpViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xuO-lZ-wBb"/>
                         <viewControllerLayoutGuide type="bottom" id="ssP-hH-NYv"/>

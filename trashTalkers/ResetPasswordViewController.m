@@ -107,11 +107,18 @@
     [self.emailTextField resignFirstResponder];
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.emailTextField resignFirstResponder];
+    
+    return YES; 
+}
+
 #pragma mark - UIAlertView Delegate Method
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self.navigationController popViewControllerAnimated:YES]; 
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

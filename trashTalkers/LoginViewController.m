@@ -10,10 +10,12 @@
 #import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
 #import "DTAlertView.h"
-
+#import "SignUpViewController.h"
+#import "ResetPasswordViewController.h"
 @interface LoginViewController () <UIAlertViewDelegate>
 - (IBAction)signInAnonymously:(id)sender;
 - (IBAction)signUpButtonSelected:(id)sender;
+- (IBAction)resetPasswordSelected:(id)sender;
 
 
 @end
@@ -129,8 +131,18 @@
 }
 
 - (IBAction)signUpButtonSelected:(id)sender {
-    [self.navigationController performSegueWithIdentifier:@"showLogin" sender:self];
-    NSLog(@"Button selected");
+    
+    SignUpViewController *signUpVC = [self.storyboard instantiateViewControllerWithIdentifier:@"signUpVC"];
+    signUpVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:signUpVC animated:YES completion:nil];
+
+}
+
+- (IBAction)resetPasswordSelected:(id)sender {
+    
+    ResetPasswordViewController *resetPasswordVC = [self.storyboard instantiateViewControllerWithIdentifier:@"resetPasswordVC"];
+    [self presentViewController:resetPasswordVC animated:YES completion:nil];
+                                                    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

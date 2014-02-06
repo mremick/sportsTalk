@@ -459,6 +459,7 @@
     
     if ([PFUser currentUser].username.length > 20) {
         cell.userLabel.text = currentPost.author[@"usernameForAnonUser"];
+        NSLog(@"anon user");
         
     } else {
         cell.userLabel.text = currentPost.author.username;

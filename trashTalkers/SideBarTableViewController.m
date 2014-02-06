@@ -30,6 +30,8 @@
 @property (strong,nonatomic) NSArray *viewControllerArray;
 @property (strong,nonatomic) UIViewController *topVC;
 - (IBAction)openSideBar:(id)sender;
+@property (strong,nonatomic) PFUser *currentUser;
+@property (nonatomic) BOOL isFirstLoad;
 
 //should this be strong?
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -53,6 +55,8 @@
 {
     [super viewDidLoad];
     
+    self.isFirstLoad = YES;
+    
     navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
 
     self.tableView.delegate = self;
@@ -61,10 +65,10 @@
     
     
     
+    
     self.userAvatarImageView.layer.masksToBounds = YES;
     self.userAvatarImageView.layer.cornerRadius = 48;
-    self.userAvatarImageView.file = [PFUser currentUser][@"avatar"];
-    self.usernameLabel.text = [PFUser currentUser].username;
+    
     
     self.avatarBackground.layer.masksToBounds = YES;
     self.avatarBackground.layer.cornerRadius = 46;
@@ -113,6 +117,27 @@
     if (![PFUser currentUser]) {
         self.topVC = self.loginVC;
     }
+    
+    if (self.isFirstLoad) {
+        PFQuery *getUser = [PFUser query];
+        [getUser whereKey:@"username" equalTo:[PFUser currentUser].username];
+        [getUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if ([objects count]) {
+                self.currentUser = [objects objectAtIndex:0];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    self.userAvatarImageView.file = self.currentUser[@"avatar"];
+                    self.usernameLabel.text = [PFUser currentUser].username;
+                }];
+                
+                self.isFirstLoad = NO;
+
+            }
+        }];
+
+    }
+    
+    
     
     navBarHairlineImageView.hidden = YES;
 }
@@ -276,15 +301,19 @@
     }
     
 }
-- (IBAction)logOut:(id)sender {
-    
-}
+
 - (IBAction)logOutSelected:(id)sender {
     
     LoginViewController *loginViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"loginVC"];
     
+//    self.userAvatarImageView.image = nil;
+//    self.usernameLabel.text = @"";
+    [PFUser logOut];
+    
+    self.isFirstLoad = YES; 
+    
     [self presentViewController:(LoginViewController *)loginViewController animated:YES completion:^{
-        [PFUser logOut];
+        
     }];
     
 }
