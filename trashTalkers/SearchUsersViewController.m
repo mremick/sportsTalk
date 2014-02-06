@@ -91,7 +91,7 @@
             self.userResponse = objects;
             
             for (PFUser *user in self.userResponse) {
-                if (!user[@"authData"]) {
+                if (user.username.length < 20) {
                     [self.nonAnonUsers addObject:user];
                 }
             }

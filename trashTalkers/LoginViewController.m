@@ -27,7 +27,6 @@
     
     //hide back button
     self.navigationItem.hidesBackButton = YES;
-    self.tabBarController.tabBar.hidden = YES;
     
     if ([UIScreen mainScreen].bounds.size.height == 568) {
         //set background image to the larger one
@@ -130,7 +129,7 @@
 }
 
 - (IBAction)signUpButtonSelected:(id)sender {
-    //[self.navigationController performSegueWithIdentifier:@"showLoginPage" sender:self];
+    [self.navigationController performSegueWithIdentifier:@"showLogin" sender:self];
     NSLog(@"Button selected");
 }
 

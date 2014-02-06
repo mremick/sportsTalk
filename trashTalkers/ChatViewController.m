@@ -457,7 +457,7 @@
     cell.timeLabel.text = timeString;
     
     
-    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+    if ([PFUser currentUser].username.length > 20) {
         cell.userLabel.text = currentPost.author[@"usernameForAnonUser"];
         
     } else {

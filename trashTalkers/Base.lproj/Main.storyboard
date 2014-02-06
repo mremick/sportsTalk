@@ -1018,7 +1018,7 @@
                                         </state>
                                         <connections>
                                             <action selector="signUpButtonSelected:" destination="UnK-zL-h9Y" eventType="touchUpInside" id="l4d-Sx-X7o"/>
-                                            <segue destination="8UO-OF-Pik" kind="push" id="drK-X1-SPY"/>
+                                            <segue destination="8UO-OF-Pik" kind="push" identifier="showLogin" id="drK-X1-SPY"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyN-VN-Uv6">
@@ -1096,7 +1096,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YSb-5T-8uL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-104" y="395"/>
+            <point key="canvasLocation" x="828" y="675"/>
         </scene>
         <!--Friends View Controller - Friends-->
         <scene sceneID="trY-0X-XAl">
@@ -1227,7 +1227,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5kZ-HC-mmE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-40" y="998"/>
+            <point key="canvasLocation" x="120" y="1106"/>
         </scene>
         <!--Sign Up View Controller - Sign Up-->
         <scene sceneID="0Qa-GV-rd7">
@@ -1346,7 +1346,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d9U-q0-CFm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-462" y="998"/>
+            <point key="canvasLocation" x="-698" y="1106"/>
         </scene>
         <!--Side Bar Table View Controller - Sports-->
         <scene sceneID="fEr-Aj-5Sh">
@@ -1639,25 +1639,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dr7-Wv-Nzm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="900" y="382"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="v3h-jk-CX2">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Sn3-Mi-cPd" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="msM-Pu-wro">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="UnK-zL-h9Y" kind="relationship" relationship="rootViewController" id="5JJ-vc-tBp"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oOp-wG-OFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-554" y="395"/>
+            <point key="canvasLocation" x="368" y="382"/>
         </scene>
     </scenes>
     <resources>
