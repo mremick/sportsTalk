@@ -46,4 +46,6 @@
 
 @property (nonatomic, weak) PFObject *room;
 
+@property (strong,nonatomic) PFObject *selectedGame; 
+
 @end

@@ -34,8 +34,6 @@
     
     //[self.chatTable setContentInset:UIEdgeInsetsMake(0,300,100,0)];
     
-    NSLog(@"TESTING CLASS NAME: %@",self.className);
-    
     self.chatTable.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
 	// Do any additional setup after loading the view.
@@ -80,7 +78,7 @@
     self.navigationItem.title = self.gameTitle;
    
     PFUser *currentUser = [PFUser currentUser];
-    currentUser[@"lastChatRoom"] = self.gameTitle;
+    //currentUser[@"lastChatRoom"] = self.gameTitle;
     self.userAvatar = currentUser[@"avatar"];
     [currentUser saveInBackground];
 
@@ -96,7 +94,7 @@
     [super viewWillDisappear:animated];
     
     PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
-    [usersForRoom addObject:[PFUser currentUser]];
+    //[usersForRoom addObject:[PFUser currentUser]];
     [usersForRoom removeObject:[PFUser currentUser]];
     [self.currentRoom saveInBackground];
     
@@ -192,7 +190,7 @@
             
             if (!error) {
                 PFQuery *roomQuery = [PFQuery queryWithClassName:@"Room"];
-                [roomQuery whereKey:@"name" equalTo:self.className];
+                [roomQuery whereKey:@"name" equalTo:self.selectedGame.objectId];
                 
                 NSError *error;
                 NSArray *results = [roomQuery findObjects:&error];
@@ -203,7 +201,7 @@
                     room = [results objectAtIndex:0];
                 } else {
                     room = [PFObject objectWithClassName:@"Room"];
-                    room[@"name"] = self.className;
+                    room[@"name"] = self.selectedGame.objectId;
                 }
 
                 PFRelation *postsRelation = [room relationforKey:@"Posts"];
@@ -402,14 +400,14 @@
         [formatter setDateFormat:@"HH:mm a"];
         NSString *timeString = [formatter stringFromDate:currentPost.date];
         
-//        UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
-//        CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
-//        
+        UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
+        CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
+        
 //        CGRect boundingRect = [currentPost.text boundingRectWithSize:constraintSize
 //                                                     options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
 //                                                  attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
 //                                                     context:nil];
-//
+
 
         
         if ([[PFUser currentUser].username isEqualToString:currentPost.author.username]) {
@@ -434,7 +432,7 @@
 //    [cell.layer setBorderColor:self.backgroundColor.CGColor];
     
     
-//    cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
+    cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
     cell.textString.textAlignment = NSLineBreakByWordWrapping;
 //        [cell.textString.layer setBorderWidth:3.0];
 //        [cell.textString.layer setBorderColor:[UIColor whiteColor].CGColor];
@@ -446,6 +444,7 @@
         
     cell.avatarBackground.layer.masksToBounds = YES;
         cell.avatarBackground.layer.cornerRadius = 34;
+        [cell.chatBubbleView sizeToFit];
     
     cell.imageView.layer.cornerRadius = 35;
     cell.imageView.layer.masksToBounds = YES;
@@ -454,6 +453,7 @@
     
     cell.textString.attributedText = attrString;
     [cell.textString sizeToFit];
+    
     cell.timeLabel.text = timeString;
     
     
@@ -518,12 +518,14 @@
 //    [query orderByAscending:@"createdAt"];
 //    //[query findObjectsInBackgroundWithBlock:
     
+    NSLog(@"NAME: %@",self.selectedGame.objectId);
+    
     
     PFQuery *roomQuery = [PFQuery queryWithClassName:@"Room"];
-    [roomQuery whereKey:@"name" equalTo:self.className];
+    [roomQuery whereKey:@"name" equalTo:self.selectedGame.objectId];
     
-    NSError *error;
-    NSArray *results = [roomQuery findObjects:&error];
+    NSError *error1;
+    NSArray *results = [roomQuery findObjects:&error1];
     
     if ([results count]) {
         self.currentRoom = [results objectAtIndex:0];
@@ -539,6 +541,7 @@
     [SVProgressHUD show];
     
     PFRelation *usersForRoom = self.currentRoom[@"Users"];
+    NSLog(@"CURRENT ROOM:%@",self.currentRoom);
     [usersForRoom.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             self.navigationItem.title = [NSString stringWithFormat:@"%@ (%d Users)",self.gameTitle,number];
@@ -553,6 +556,7 @@
         if (error) {
             NSLog(@"Error Fetching Posts: %@", error);
         } else {
+            
             NSArray *posts = objects;
             
             if (![posts count]) {
@@ -613,7 +617,7 @@
     
     
     PFQuery *countQuery = [PFQuery queryWithClassName:@"Room"];
-    [countQuery whereKey:@"name" equalTo:self.className];
+    [countQuery whereKey:@"name" equalTo:self.selectedGame.objectId];
     
     NSError *error1;
     NSArray *results1 = [countQuery findObjects:&error1];
@@ -740,7 +744,7 @@
 {
     NSLog(@"FIRSTLOAD: %d",self.firstLoad);
     if (self.firstLoad != 0) {
-        if (![self.className isEqualToString:self.classNameHolder]) {
+        if (![self.selectedGame.objectId isEqualToString:self.classNameHolder]) {
             [self.chatData removeAllObjects];
         }
     }
@@ -755,7 +759,7 @@
         
     
         
-    self.classNameHolder = self.className;
+    self.classNameHolder = self.selectedGame.objectId;
     [self.chatTable reloadData];
         NSLog(@"end of loadLoaclChat");
 

@@ -33,6 +33,7 @@
 		3E4508BC18A2D25700CD7AE2 /* SearchUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508BB18A2D25700CD7AE2 /* SearchUserCell.m */; };
 		3E4508BF18A2EA2000CD7AE2 /* FriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508BE18A2EA2000CD7AE2 /* FriendsCell.m */; };
 		3E4508C218A2F5A900CD7AE2 /* ChatCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508C118A2F5A900CD7AE2 /* ChatCellContentView.m */; };
+		3E4508C518A4226A00CD7AE2 /* GamesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4508C418A4226A00CD7AE2 /* GamesTableViewController.m */; };
 		3E5B86E0183711870017E2BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86DF183711870017E2BE /* Foundation.framework */; };
 		3E5B86E2183711870017E2BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E1183711870017E2BE /* CoreGraphics.framework */; };
 		3E5B86E4183711870017E2BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E3183711870017E2BE /* UIKit.framework */; };
@@ -133,6 +134,8 @@
 		3E4508BE18A2EA2000CD7AE2 /* FriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsCell.m; sourceTree = "<group>"; };
 		3E4508C018A2F5A900CD7AE2 /* ChatCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatCellContentView.h; sourceTree = "<group>"; };
 		3E4508C118A2F5A900CD7AE2 /* ChatCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatCellContentView.m; sourceTree = "<group>"; };
+		3E4508C318A4226A00CD7AE2 /* GamesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamesTableViewController.h; sourceTree = "<group>"; };
+		3E4508C418A4226A00CD7AE2 /* GamesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamesTableViewController.m; sourceTree = "<group>"; };
 		3E5B86DC183711870017E2BE /* trashTalkers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trashTalkers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5B86DF183711870017E2BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E5B86E1183711870017E2BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -344,6 +347,8 @@
 				3E5B86EE183711870017E2BE /* AppDelegate.h */,
 				3E5B86EF183711870017E2BE /* AppDelegate.m */,
 				3E5B86F1183711870017E2BE /* Main.storyboard */,
+				3E4508C318A4226A00CD7AE2 /* GamesTableViewController.h */,
+				3E4508C418A4226A00CD7AE2 /* GamesTableViewController.m */,
 				3E5B8714183712000017E2BE /* SportsViewController.h */,
 				3E5B8715183712000017E2BE /* SportsViewController.m */,
 				3E5B872D1837169C0017E2BE /* LoginViewController.h */,
@@ -614,6 +619,7 @@
 				3E342A18189314FA004C262A /* Post.m in Sources */,
 				3E5B8757183EDF400017E2BE /* MLSGamesViewController.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,
+				3E4508C518A4226A00CD7AE2 /* GamesTableViewController.m in Sources */,
 				3E5B875A183EE0430017E2BE /* NHLGamesViewController.m in Sources */,
 				3E89C1C2189DEA8C007B787A /* SideBarTableViewController.m in Sources */,
 				3E17BF5218639295001B32F8 /* UIView+AccessViewController.m in Sources */,

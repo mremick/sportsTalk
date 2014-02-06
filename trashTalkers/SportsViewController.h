@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SportsViewController : UITableViewController
+@interface SportsViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
 
 
 

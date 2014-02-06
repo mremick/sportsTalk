@@ -11,9 +11,12 @@
 #import "GamesViewController.h"
 #import "MSCellAccessory.h"
 #import "LoginViewController.h"
+#import "SVProgressHUD.h"
+#import "GamesTableViewController.h"
 
 @interface SportsViewController ()
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong,nonatomic) NSArray *leaguesReturned;
 
 @end
 
@@ -24,6 +27,8 @@
     [super viewDidLoad];
     
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     
     PFUser *currenetUser = [PFUser currentUser];
     
@@ -36,6 +41,24 @@
         
         [self presentViewController:(LoginViewController *)loginViewController animated:YES completion:nil];
     }
+    
+    [SVProgressHUD show];
+    
+    PFQuery *leagueQuery = [PFQuery queryWithClassName:@"League"];
+    [leagueQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            self.leaguesReturned = objects;
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [SVProgressHUD dismiss];
+                [self.tableView reloadData];
+            }];
+
+            
+        } else {
+            NSLog(@"There was an error querying leagues");
+        }
+    }];
     
 }
 
@@ -54,47 +77,36 @@
 }
 
 #pragma mark - Table view data source
-/*
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
+    return [self.leaguesReturned count];
 }
- */
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    UIColor *disclosureColor = [UIColor colorWithRed:0.2274 green:0.7647 blue:0.3568 alpha:1.0];
+    //UIColor *disclosureColor = [UIColor colorWithRed:0.2274 green:0.7647 blue:0.3568 alpha:1.0];
     
-    cell.accessoryView = [MSCellAccessory accessoryWithType:FLAT_DISCLOSURE_INDICATOR color:disclosureColor];
+    cell.textLabel.text = [[self.leaguesReturned objectAtIndex:indexPath.row] objectForKey:@"name"];
     
     // Configure the cell...
     
     return cell;
 }
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    [self performSegueWithIdentifier:@"showGames" sender:indexPath];
+    if ([segue.identifier isEqualToString:@"gamesSegue"]) {
+        GamesTableViewController *gamesVC = (GamesTableViewController *)[segue destinationViewController];
+        NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
+        gamesVC.leagueName = [[self.leaguesReturned objectAtIndex:selectedPath.row] objectForKey:@"name"];
+    }
 }
 
 
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-    
-}
-
-
-*/
 - (IBAction)logOut:(id)sender {
     [PFUser logOut];
     [self performSegueWithIdentifier:@"showLogin" sender:self]; 
