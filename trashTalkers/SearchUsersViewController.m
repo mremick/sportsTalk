@@ -7,10 +7,10 @@
 //
 
 #import "SearchUsersViewController.h"
-#import "BBTableView.h"
 #import <Parse/Parse.h>
 #import "SearchUserCell.h"
 #import "UIImageView+ParseFileSupport.h"
+#import "UserProfileViewController.h"
 
 @interface SearchUsersViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *searchBar;
@@ -104,6 +104,16 @@
     
     return YES;
     
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showUserFromSearch"]) {
+        UserProfileViewController *vc = [segue destinationViewController];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        PFUser *searchedUser = [self.nonAnonUsers objectAtIndex:indexPath.row];
+        vc.userName = searchedUser.username;
+    }
 }
 
 @end

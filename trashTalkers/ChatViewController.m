@@ -383,18 +383,23 @@
         PFFile *imageFile = currentPost.author[@"avatar"];
         
         
-        
-        UIFont *font = [UIFont fontWithName:@"Arial" size:13.0];
-        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
-        
-        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:currentPost.text attributes:attributes];
-        
-        
-        CGRect rect = [currentPost.text boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
-                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                  attributes:attributes
-                                                     context:nil];
-        CGSize size = rect.size;
+//        
+//        UIFont *font = [UIFont fontWithName:@"Avenir-Roman" size:13.0];
+//        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+//        
+//        NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:currentPost.text attributes:attributes];
+//        
+//        
+//        CGRect rect = [currentPost.text boundingRectWithSize:CGSizeMake(225.0f, CGFLOAT_MAX)
+//                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+//                                                  attributes:attributes
+//                                                     context:nil];
+//        CGSize size = rect.size;
+//        
+//        cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
+//        cell.textString.textAlignment = NSLineBreakByWordWrapping;
+//        
+//        cell.chatBubbleView.frame = CGRectMake(0, 0, size.width + 25, size.height + 25);
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"HH:mm a"];
@@ -432,8 +437,7 @@
 //    [cell.layer setBorderColor:self.backgroundColor.CGColor];
     
     
-    cell.textString.frame = CGRectMake(76, 23, size.width +20, size.height + 20);
-    cell.textString.textAlignment = NSLineBreakByWordWrapping;
+    
 //        [cell.textString.layer setBorderWidth:3.0];
 //        [cell.textString.layer setBorderColor:[UIColor whiteColor].CGColor];
 //        cell.textString.layer.masksToBounds = YES;
@@ -444,15 +448,17 @@
         
     cell.avatarBackground.layer.masksToBounds = YES;
         cell.avatarBackground.layer.cornerRadius = 34;
-        [cell.chatBubbleView sizeToFit];
     
     cell.imageView.layer.cornerRadius = 35;
     cell.imageView.layer.masksToBounds = YES;
     
     
     
-    cell.textString.attributedText = attrString;
-    [cell.textString sizeToFit];
+        cell.textString.text = currentPost.text; //attrString;
+        NSLog(@"Content Size: %f", cell.textString.contentSize.height);
+        cell.chatBubbleView.frame = CGRectMake(0, 0, cell.chatBubbleView.frame.size.width, cell.chatBubbleView.frame.size.height + cell.textString.contentSize.height - 72);
+        
+    //[cell.textString sizeToFit];
     
     cell.timeLabel.text = timeString;
     
@@ -490,23 +496,24 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    Post *currentPost = [self.chatData objectAtIndex:indexPath.row];//[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1];
-    
-   // NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
-    
-    NSString *cellText = currentPost.text;
-    
+//    Post *currentPost = [self.chatData objectAtIndex:indexPath.row];//[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1];
+//    
+//   // NSString *cellText = [[self.chatData objectAtIndex:self.chatData.count-indexPath.row-1] objectForKey:@"text"];
+//    
+//    NSString *cellText = currentPost.text;
+//    
+//
+//    UIFont *cellFont = [UIFont fontWithName:@"Arial" size:13.0];
+//    CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
+//    
+//    CGRect boundingRect = [cellText boundingRectWithSize:constraintSize
+//                                             options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+//                                          attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
+//                                             context:nil];
+//                                     //60
+//    return boundingRect.size.height + 70;
 
-    UIFont *cellFont = [UIFont fontWithName:@"Arial" size:13.0];
-    CGSize constraintSize = CGSizeMake(225.0f, MAXFLOAT);
-    
-    CGRect boundingRect = [cellText boundingRectWithSize:constraintSize
-                                             options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                          attributes:[NSDictionary dictionaryWithObjectsAndKeys:cellFont, NSFontAttributeName, nil]
-                                             context:nil];
-                                     //60
-    return boundingRect.size.height + 70;
-
+    return 250;
 }
 
 

@@ -8,7 +8,6 @@
 
 #import "SportsViewController.h"
 #import <Parse/Parse.h>
-#import "GamesViewController.h"
 #import "MSCellAccessory.h"
 #import "LoginViewController.h"
 #import "SVProgressHUD.h"

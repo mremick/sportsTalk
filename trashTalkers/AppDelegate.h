@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AMBubbleTableViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
