@@ -10,6 +10,7 @@
 #import "UIImageView+ParseFileSupport.h"
 #import "SVProgressHUD.h"
 #import "SportsViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface UserProfileViewController ()
 
@@ -32,11 +33,13 @@
     
     self.currentUser = [PFUser currentUser];
     
-    self.avatarBackground.layer.masksToBounds = YES;
-    self.avatarBackground.layer.cornerRadius = 69;
+    
     
     self.userImage.layer.masksToBounds = YES;
     self.userImage.layer.cornerRadius = 65;
+    
+    [self.userImage.layer setBorderWidth:3.0];
+    [self.userImage.layer setBorderColor:[UIColor whiteColor].CGColor];
     
     
     
@@ -53,7 +56,8 @@
     self.favoriteTeamsLabel.text = @"";
     self.shortBioLabel.text = @"";
     
-    NSLog(@"IN USER PROFILE"); 
+    NSLog(@"IN USER PROFILE");
+    NSLog(@"USERNAME:%@",self.userName);
     
     [self loadUser];
     [self loadPostsCount];

@@ -9,10 +9,12 @@
 #import "GamesTableViewController.h"
 #import <Parse/Parse.h>
 #import "ChatViewController.h"
+#import "ChatBubbleViewController.h"
 
 @interface GamesTableViewController ()
 
 @property (strong,nonatomic) NSMutableArray *games;
+
 
 @end
 
@@ -158,8 +160,12 @@
 {
     if ([segue.identifier isEqualToString:@"goToChatroom"]) {
         NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
-        ChatViewController *chatVC = (ChatViewController *)[segue destinationViewController];
-        chatVC.selectedGame = [self.games objectAtIndex:selectedPath.row];
+        //ChatViewController *chatVC = (ChatViewController *)[segue destinationViewController];
+        PFObject *game = [self.games objectAtIndex:selectedPath.row];
+        NSString *gameName = [NSString stringWithFormat:@"%@ vs. %@",game[@"team1Name"],game[@"team2Name"]];
+        ChatBubbleViewController *chatBubbleVC = (ChatBubbleViewController *)[segue destinationViewController];
+        chatBubbleVC.gameName = gameName; 
+        chatBubbleVC.selectedGame = [self.games objectAtIndex:selectedPath.row];
         
     }
 }

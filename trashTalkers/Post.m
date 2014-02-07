@@ -10,4 +10,36 @@
 
 @implementation Post
 
+-(id)init
+{
+    if (self = [super init]) {
+        self.backgroundQueue = [NSOperationQueue new];
+    }
+    
+    return self;
+}
+
+- (void)downloadUserAvatar:(NSIndexPath *)indexPath
+{
+    
+    _isDownloading = YES;
+    
+    PFFile *aFile = _author[@"avatar"];
+    
+    [aFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                if (!error) {
+                    _avatarImage = [UIImage imageWithData:data];
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self.delegate imageWasDownloaded:indexPath];
+                    }];
+        
+                }
+        
+                else {
+                    NSLog(@"ERROR: %@",error);
+                }
+            }];
+    
+}
+
 @end

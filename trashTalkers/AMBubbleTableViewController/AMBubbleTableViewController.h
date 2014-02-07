@@ -8,7 +8,7 @@
 
 #import "AMBubbleGlobals.h"
 
-@interface AMBubbleTableViewController : UIViewController
+@interface AMBubbleTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) UITableView*	tableView;
 @property (nonatomic, strong) UITextView*	textView;
@@ -18,5 +18,7 @@
 - (void)reloadTableScrollingToBottom:(BOOL)scroll;
 - (void)setBubbleTableOptions:(NSDictionary *)options;
 - (void)setTableStyle:(AMBubbleTableStyle)style;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
 
 @end

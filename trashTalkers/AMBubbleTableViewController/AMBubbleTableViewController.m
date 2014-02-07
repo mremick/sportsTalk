@@ -14,7 +14,7 @@
 #define kButtonWidth 78.0f
 
 
-@interface AMBubbleTableViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface AMBubbleTableViewController () 
 
 @property (strong, nonatomic) NSMutableDictionary*	options;
 @property (nonatomic, strong) UIImageView*	imageInput;
@@ -92,9 +92,9 @@
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
 																						action:@selector(handleTapGesture:)];
 	// Table View
-    CGRect tableFrame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height - kInputHeight);
+    CGRect tableFrame = CGRectMake(0.0f, 64.0f, self.view.frame.size.width, self.view.frame.size.height - kInputHeight);
 	self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
-	[self.tableView addGestureRecognizer:gestureRecognizer];
+	//[self.tableView addGestureRecognizer:gestureRecognizer];
 	[self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	[self.tableView setDataSource:self];
 	[self.tableView setDelegate:self];
@@ -188,6 +188,12 @@
 	return [self.dataSource numberOfRows];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"INDEX PATH SLECTED:%d",indexPath.row);
+    
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	AMBubbleCellType type = [self.dataSource cellTypeForRowAtIndexPath:indexPath];
@@ -278,6 +284,7 @@
 		}
 	}
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -418,6 +425,8 @@
 - (void)handleTapGesture:(UIGestureRecognizer*)gesture
 {
 	[self.textView resignFirstResponder];
+    NSLog(@"hello");
+    
 }
 
 - (void)textViewDidChange:(UITextView *)textView
