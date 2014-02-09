@@ -24,9 +24,9 @@
     
     _isDownloading = YES;
     
-    PFFile *aFile = _author[@"avatar"];
+    //PFFile *aFile = _author[@"avatar"];
     
-    [aFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+    [self.avatar getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
                 if (!error) {
                     _avatarImage = [UIImage imageWithData:data];
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{

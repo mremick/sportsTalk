@@ -22,6 +22,7 @@
 @property (strong,nonatomic) UIRefreshControl *refreshControl;
 
 @property (nonatomic) BOOL reloading;
+@property (nonatomic) int chatDataCountHolder;
 
 //this was a NSArray in the tutorial (thought he was wrong)
 @property (nonatomic,retain) NSMutableArray *chatData;
@@ -163,7 +164,7 @@
 {
     Post *currentPost = [self.chatData objectAtIndex:indexPath.row];
     
-    if ([[PFUser currentUser].username isEqualToString:currentPost.author.username]) {
+    if ([[PFUser currentUser].username isEqualToString:currentPost.username]) {
         
         return AMBubbleCellSent;
             }
@@ -274,7 +275,7 @@
         [insertIndexPaths addObject:newPath];
         
         [self.tableView beginUpdates];
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newPath] withRowAnimation:UITableViewRowAnimationBottom];
+        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newPath] withRowAnimation:UITableViewRowAnimationTop];
         [self.tableView endUpdates];
         
         
@@ -302,6 +303,7 @@
         post[@"author"] = [PFUser currentUser];
         post[@"date"] = [NSDate date];
         post[@"username"] = usernameForUser;
+        post[@"avatar"] = [PFUser currentUser][@"avatar"];
         
         [post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
@@ -386,6 +388,9 @@
     
     NSLog(@"NAME: %@",self.selectedGame.objectId);
     
+    [SVProgressHUD setStatus:@"Loading Chat"];
+    [SVProgressHUD show];
+    
     
     PFQuery *roomQuery = [PFQuery queryWithClassName:@"Room"];
     [roomQuery whereKey:@"name" equalTo:self.selectedGame.objectId];
@@ -401,10 +406,11 @@
         NSLog(@"results were found");
     } else {
         NSLog(@"results were not found");
+        [SVProgressHUD dismiss];
+
     }
     
-    [SVProgressHUD setStatus:@"Loading Chat"];
-    [SVProgressHUD show];
+    
     
     PFRelation *usersForRoom = self.currentRoom[@"Users"];
     NSLog(@"CURRENT ROOM:%@",self.currentRoom);
@@ -434,14 +440,19 @@
                 post.text = [dict objectForKey:@"text"];
                 post.date = [dict objectForKey:@"date"];
                 post.username = [dict objectForKey:@"username"];
+                post.avatar = [dict objectForKey:@"avatar"];
+                NSLog(@"USERNAME :%@",post.username);
                 post.authorObjectId = [dict objectForKey:@"author"];
-                PFQuery *userQuery = [PFUser query];
-                [userQuery whereKey:@"objectId" equalTo:post.authorObjectId.objectId];
-                NSArray *returnedUser = [userQuery findObjects];
-                if ([results count]) {
-                    post.author = [returnedUser objectAtIndex:0];
-                    [self.chatData addObject:post];
-                }
+                [self.chatData addObject:post];
+                //NSLog(@"USERNAME: %@",post.authorObjectId.username);
+//                PFQuery *userQuery = [PFUser query];
+//                userQuery.limit = 1;
+//                [userQuery whereKey:@"objectId" equalTo:post.authorObjectId.objectId];
+//                NSArray *returnedUser = [userQuery findObjects];
+//                if ([results count]) {
+//                    post.author = [returnedUser objectAtIndex:0];
+//                    [self.chatData addObject:post];
+//                }
                 
                 
                 
@@ -453,6 +464,8 @@
                 
                 
                 if ([posts indexOfObject:dict] == posts.count - 1) {
+                    
+                    self.chatDataCountHolder = (int)[self.chatData count];
                     
                     //if (self.chatData.count == postHolder.count) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -497,6 +510,7 @@
         
     } else {
         NSLog(@"results were not found");
+        [SVProgressHUD dismiss];
     }
     
     
@@ -519,73 +533,105 @@
                 }
                 
                 else {
-                    
+                    //may have lost precision with a casting
                     theLimit = totalNumberOfEntries - (int)[self.chatData count];
                 }
                 
-                //there may be a problem here
-                postsRelation1.query.limit = theLimit;
-                NSLog(@"limit: %d",theLimit);
                 
-                [postsRelation1.query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                //there may be a problem here
+                PFQuery *lastQuery = postsRelation1.query;
+                [lastQuery orderByDescending:@"date"];
+                lastQuery.limit = theLimit;
+                
+                NSLog(@"LIMIT: %d",theLimit);
+                
+                [lastQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                     if (!error) {
                         //find succeeded
                         //NSLog(@"Successfully retrieved %d chats",[objects count]);
                         
                         NSArray *posts = objects;
-                        for (NSDictionary *dict in posts) {
+                        NSMutableArray *sortedArray = [NSMutableArray new];
+                        
+                        //reverse the posts array
+                        for (int i = (posts.count -1); i >= 0; i--) {
+                            NSLog(@"i:%d",i);
+                            [sortedArray addObject:[posts objectAtIndex:i]];
+                        }
+                        
+                        
+                        
+                        for (NSDictionary *dict in sortedArray) {
                             Post *post = [[Post alloc] init];
                             post.text = [dict objectForKey:@"text"];
                             post.date = [dict objectForKey:@"date"];
-                            PFUser *authorObjectId = [dict objectForKey:@"author"];
-                            PFQuery *userQuery = [PFUser query];
-                            [userQuery whereKey:@"objectId" equalTo:authorObjectId.objectId];
-                            [userQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                                if (!error) {
-                                    if ([objects count]) {
-                                        post.author = [objects objectAtIndex:0];
-                                        
-                                        //NSLog(@"AUTHOR: %@",post.author);
-                                        [self.chatData addObject:post];
-                                        NSLog(@"added objects in chatData in SECOND load");
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                            [self.tableView reloadData];
-                                        });
-                                    }
+                            post.avatar = [dict objectForKey:@"avatar"];
+                            NSLog(@"POST: %@",post.text);
+                            //[self.chatData addObject:post];
+                            [self.chatData insertObject:post atIndex:0];
+//                            PFQuery *userQuery = [PFUser query];
+//                            [userQuery whereKey:@"objectId" equalTo:authorObjectId.objectId];
+//                            [userQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                                if (!error) {
+//                                    if ([objects count]) {
+//                                        post.author = [objects objectAtIndex:0];
+//                                        
+//                                        //NSLog(@"AUTHOR: %@",post.author);
+//                                        [self.chatData insertObject:post atIndex:0];
+//                                        NSLog(@"POST: %@",post.text);
+//                                        dispatch_async(dispatch_get_main_queue(), ^{
+//                                            //[self.tableView reloadData];
+//                                        });
+//                                    }
+//                                }
+                            
                                 }
-                            }];
-                        }
+
                         
-                        //[self.chatData addObjectsFromArray:objects];
-                        NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                                //if ([posts indexOfObject:dict] == posts.count - 1) {
+                                    
+                                    
+                                    //[self.chatData addObjectsFromArray:objects];
+                                    NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                                    
+                                    //NSLog(@"CHAT DATA: %@",self.chatData);
+                                    int ind;
+                                    
+                                    for (ind = 0; ind < posts.count; ind++) {
+                                        NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
+                                        [insertIndexPaths addObject:newPath];
+                                    }
+                                    
+                                    //getting back to the main thread to update the UI
+                                    NSLog(@"table update code got called");
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        
+                                        //error check here
+                                        NSLog(@"CHAT DATA COUNT: %d   COUNT HOLDER: %d",[self.chatData count],self.chatDataCountHolder + theLimit);
+                                        if ([self.chatData count] == (self.chatDataCountHolder + theLimit)) {
+                                            self.chatDataCountHolder = [self.chatData count];
+                                            [self.tableView beginUpdates];
+                                            [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                                            [self.tableView endUpdates];
+                                            [self.tableView reloadData];
+                                            [self.tableView scrollsToTop];
+                                            [self.refreshControl endRefreshing];
+                                            [SVProgressHUD dismiss];
+
+
+                                        } else {
+                                            [SVProgressHUD dismiss];
+                                        }
+                                        
+                                        
+                                        
+                                    });
+                                    
+                                //}
+                            //}];
+                            
+
                         
-                        //NSLog(@"CHAT DATA: %@",self.chatData);
-                        NSLog(@"OBJECT COUNT:%d",[objects count]);
-                        
-                        for (int ind = 0; ind < [objects count]; ind++) {
-                            NSIndexPath *newPath = [NSIndexPath indexPathForRow:ind inSection:0];
-                            [insertIndexPaths addObject:newPath];
-                        }
-                        
-                        //getting back to the main thread to update the UI
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.tableView beginUpdates];
-                            [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                            [self.tableView endUpdates];
-                            [self.tableView reloadData];
-                            [self.tableView scrollsToTop];
-                            
-                            
-                            
-                            if ([self.refreshControl isRefreshing]) {
-                                [self.refreshControl endRefreshing];
-                            }
-                            
-                            else {
-                                [SVProgressHUD dismiss];
-                            }
-                            
-                        });
                         
                     }
                     

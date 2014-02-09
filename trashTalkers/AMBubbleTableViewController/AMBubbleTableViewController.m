@@ -118,7 +118,7 @@
     [self.textView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self.textView setScrollIndicatorInsets:UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 8.0f)];
     [self.textView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
-    [self.textView setScrollsToTop:NO];
+    //[self.textView setScrollsToTop:YES];
     [self.textView setUserInteractionEnabled:YES];
     [self.textView setFont:self.options[AMOptionsTextFieldFont]];
     [self.textView setTextColor:self.options[AMOptionsTextFieldFontColor]];
@@ -190,7 +190,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"INDEX PATH SLECTED:%d",indexPath.row);
     
 }
 
@@ -323,7 +322,7 @@
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
 	[self resizeView:notification];
-	[self scrollToBottomAnimated:YES];
+	//[self scrollToBottomAnimated:YES];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
@@ -513,7 +512,7 @@
 	[self textViewDidChange:self.textView];
 	[self resizeTextViewByHeight:self.textView.contentSize.height - self.previousTextFieldHeight];
     [self.buttonSend setEnabled:NO];
-	[self scrollToBottomAnimated:YES];
+	//[self scrollToBottomAnimated:NO];
 }
 
 - (void)reloadTableScrollingToBottom:(BOOL)scroll

@@ -801,6 +801,13 @@
                                             <action selector="signInAnonymously:" destination="UnK-zL-h9Y" eventType="touchUpInside" id="Rwr-km-fwe"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The Huddle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfJ-ra-Lfs">
+                                        <rect key="frame" x="20" y="49" width="280" height="68"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="51"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Jp0-7s-yp9" firstAttribute="leading" secondItem="unw-5Y-DnE" secondAttribute="leading" constant="48" id="Hf8-xZ-k4D"/>
@@ -841,7 +848,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YSb-5T-8uL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16" y="711"/>
+            <point key="canvasLocation" x="-249" y="1034"/>
         </scene>
         <!--Friends View Controller - Friends-->
         <scene sceneID="trY-0X-XAl">
@@ -986,10 +993,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundWithTitle.png" translatesAutoresizingMaskIntoConstraints="NO" id="gdD-vc-04e">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8KF-sH-cmC">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1040,7 +1043,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Csa-SY-Vgg">
                                         <rect key="frame" x="50" y="422" width="224" height="53"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.87843143939971924" green="0.28235295414924622" blue="0.14509804546833038" alpha="1" colorSpace="deviceRGB"/>
+                                        <color key="backgroundColor" red="0.18823531269999999" green="0.6784313917" blue="0.38823533059999998" alpha="1" colorSpace="deviceRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <state key="normal" title="Sign Up">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1049,19 +1052,22 @@
                                             <action selector="signUp:" destination="8UO-OF-Pik" eventType="touchUpInside" id="EbS-2z-Vmd"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create an Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSn-iu-s5e">
+                                        <rect key="frame" x="47" y="56" width="227" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="26"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.22352942819999999" green="0.79607850309999995" blue="0.45490199329999997" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="8KF-sH-cmC" firstAttribute="leading" secondItem="sBX-9U-Tk4" secondAttribute="leading" id="07U-4G-gqe"/>
                             <constraint firstItem="ssP-hH-NYv" firstAttribute="top" secondItem="8KF-sH-cmC" secondAttribute="bottom" id="2yw-te-CU9"/>
-                            <constraint firstItem="ssP-hH-NYv" firstAttribute="top" secondItem="gdD-vc-04e" secondAttribute="bottom" id="MSA-ox-fYu"/>
-                            <constraint firstItem="gdD-vc-04e" firstAttribute="leading" secondItem="sBX-9U-Tk4" secondAttribute="leading" id="Mn9-aZ-NoA"/>
                             <constraint firstAttribute="trailing" secondItem="8KF-sH-cmC" secondAttribute="trailing" id="RqE-g7-xad"/>
                             <constraint firstItem="8KF-sH-cmC" firstAttribute="top" secondItem="sBX-9U-Tk4" secondAttribute="top" id="noF-cf-Bn6"/>
-                            <constraint firstItem="gdD-vc-04e" firstAttribute="top" secondItem="sBX-9U-Tk4" secondAttribute="top" id="tJQ-Q7-G5U"/>
-                            <constraint firstAttribute="trailing" secondItem="gdD-vc-04e" secondAttribute="trailing" id="x5J-mD-Icq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sign Up" id="des-QS-06v">
@@ -1081,7 +1087,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="avatarImageView" destination="h8y-9X-oBy" id="Iab-of-fCI"/>
-                        <outlet property="backgroundImageView" destination="gdD-vc-04e" id="FiS-1j-OXy"/>
                         <outlet property="dismissKeyboardButton" destination="FzE-nR-SD6" id="eP1-Ap-lql"/>
                         <outlet property="emailTextField" destination="nLk-9J-Nkc" id="kp2-s4-FcQ"/>
                         <outlet property="passwordTextField" destination="SIr-QH-5PW" id="KbE-qr-htP"/>
@@ -1394,7 +1399,6 @@
         <image name="945-radar.png" width="28" height="28"/>
         <image name="974-users.png" width="28" height="18"/>
         <image name="backArrow2.png" width="128" height="128"/>
-        <image name="backgroundWithTitle.png" width="640" height="1096"/>
         <image name="loading_screen.png" width="640" height="1136"/>
         <image name="textfield_background.png" width="321" height="49"/>
     </resources>

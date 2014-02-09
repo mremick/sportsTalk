@@ -54,12 +54,11 @@
 
 - (IBAction)login:(id)sender {
     
-    NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     
     //weak error checking
     
-    if ([username length] == 0 || [password length] == 0) {
+    if ([self.usernameTextField.text length] == 0 || [self.passwordTextField.text length] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
                                                         message:@"Please make sure you have entered both a username and a password"
                                                        delegate:self
@@ -69,6 +68,9 @@
     }
     
     else {
+        
+        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error) {
             if (error) {
                 //error checking
@@ -147,21 +149,28 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    UITextField *textField = [alertView textFieldAtIndex:0];
+    
+    if ([alertView.title isEqualToString:@"Need a Username"]) {
+        if (buttonIndex == 0) {
+            UITextField *textField = [alertView textFieldAtIndex:0];
 
-    if (buttonIndex == 0) {
-        if (textField.text.length == 0) {
+            if (textField.text.length == 0) {
+                //[self.navigationController popViewControllerAnimated:YES];
+            } else {
+                [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
+                //popVC
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            
+            
+        }else {
             //[self.navigationController popViewControllerAnimated:YES];
-        } else {
-            [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
-            //popVC
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
-        
 
-    }else {
-        //[self.navigationController popViewControllerAnimated:YES];
+    } else {
+        //nothing
     }
+
 }
 
 @end

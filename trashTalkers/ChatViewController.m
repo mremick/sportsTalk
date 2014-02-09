@@ -665,6 +665,7 @@
                 }
                 
                 //there may be a problem here
+                
                 countQuery.limit = theLimit;
                 
                 [postsRelation1.query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -673,6 +674,7 @@
                         //NSLog(@"Successfully retrieved %d chats",[objects count]);
                         
                         NSArray *posts = objects;
+                        NSLog(@"posts on reload:%@",posts);
                         for (NSDictionary *dict in posts) {
                             Post *post = [[Post alloc] init];
                             post.text = [dict objectForKey:@"text"];
