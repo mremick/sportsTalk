@@ -11,6 +11,7 @@
 #import "SearchUserCell.h"
 #import "UIImageView+ParseFileSupport.h"
 #import "UserProfileViewController.h"
+#import "Reachability.h"
 
 @interface SearchUsersViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *searchBar;
@@ -80,43 +81,59 @@
     
     [self.searchBar resignFirstResponder];
     
-    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable)
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
-                                                        message:@"Please create an account to be able to search for users"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        
-        [alert show];
-
-        
-    } else {
-        self.userResponse = [NSArray new];
-        self.nonAnonUsers = [NSMutableArray new];
-        
-        PFQuery *usersQuery = [PFUser query];
-        [usersQuery whereKey:@"username" containsString:self.searchBar.text];
-        [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                
-                NSLog(@"OBJECTS: %@",objects);
-                self.userResponse = objects;
-                
-                for (PFUser *user in self.userResponse) {
-                    if (user.username.length < 20) {
-                        [self.nonAnonUsers addObject:user];
+    {
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
+                                                            message:@"Please create an account to be able to search for users"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            
+            [alert show];
+            
+            
+        } else {
+            self.userResponse = [NSArray new];
+            self.nonAnonUsers = [NSMutableArray new];
+            
+            PFQuery *usersQuery = [PFUser query];
+            [usersQuery whereKey:@"username" containsString:self.searchBar.text];
+            [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    
+                    NSLog(@"OBJECTS: %@",objects);
+                    self.userResponse = objects;
+                    
+                    for (PFUser *user in self.userResponse) {
+                        if (user.username.length < 20) {
+                            [self.nonAnonUsers addObject:user];
+                        }
                     }
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self.tableView reloadData];
+                    }];
                 }
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self.tableView reloadData];
-                }];
-            }
-        }];
+            }];
+            
+        }
 
     }
-
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to search for users" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
+    
     
     
     return YES;
@@ -143,42 +160,58 @@
     
     [self.searchBar resignFirstResponder];
     
-    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable)
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
-                                                        message:@"Please create an account to be able to search for users"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
+    {
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
+                                                            message:@"Please create an account to be able to search for users"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            
+            [alert show];
+            
+            
+        } else {
+            self.userResponse = [NSArray new];
+            self.nonAnonUsers = [NSMutableArray new];
+            
+            PFQuery *usersQuery = [PFUser query];
+            [usersQuery whereKey:@"username" containsString:self.searchBar.text];
+            [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    
+                    NSLog(@"OBJECTS: %@",objects);
+                    self.userResponse = objects;
+                    
+                    for (PFUser *user in self.userResponse) {
+                        if (user.username.length < 20) {
+                            [self.nonAnonUsers addObject:user];
+                        }
+                    }
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self.tableView reloadData];
+                    }];
+                }
+            }];
+            
+        }
+
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         
         [alert show];
-        
-        
-    } else {
-        self.userResponse = [NSArray new];
-        self.nonAnonUsers = [NSMutableArray new];
-        
-        PFQuery *usersQuery = [PFUser query];
-        [usersQuery whereKey:@"username" containsString:self.searchBar.text];
-        [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                
-                NSLog(@"OBJECTS: %@",objects);
-                self.userResponse = objects;
-                
-                for (PFUser *user in self.userResponse) {
-                    if (user.username.length < 20) {
-                        [self.nonAnonUsers addObject:user];
-                    }
-                }
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self.tableView reloadData];
-                }];
-            }
-        }];
-        
     }
-
+    
+    
 }
 @end

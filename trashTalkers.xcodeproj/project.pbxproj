@@ -71,6 +71,7 @@
 		3E45091E18A47F8600CD7AE2 /* messageBubbleTyping.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E4508F718A47F8500CD7AE2 /* messageBubbleTyping.png */; };
 		3E45091F18A47F8600CD7AE2 /* messageBubbleTyping@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E4508F818A47F8500CD7AE2 /* messageBubbleTyping@2x.png */; };
 		3E45092518A485C600CD7AE2 /* ChatBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E45092418A485C600CD7AE2 /* ChatBubbleViewController.m */; };
+		3E4ABAF118A95E7D009F5752 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4ABAF018A95E7D009F5752 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3E5B86E0183711870017E2BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86DF183711870017E2BE /* Foundation.framework */; };
 		3E5B86E2183711870017E2BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E1183711870017E2BE /* CoreGraphics.framework */; };
 		3E5B86E4183711870017E2BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5B86E3183711870017E2BE /* UIKit.framework */; };
@@ -209,6 +210,8 @@
 		3E4508F818A47F8500CD7AE2 /* messageBubbleTyping@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messageBubbleTyping@2x.png"; sourceTree = "<group>"; };
 		3E45092318A485C600CD7AE2 /* ChatBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBubbleViewController.h; sourceTree = "<group>"; };
 		3E45092418A485C600CD7AE2 /* ChatBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBubbleViewController.m; sourceTree = "<group>"; };
+		3E4ABAEF18A95E7D009F5752 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		3E4ABAF018A95E7D009F5752 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3E5B86DC183711870017E2BE /* trashTalkers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trashTalkers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5B86DF183711870017E2BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E5B86E1183711870017E2BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -365,10 +368,10 @@
 		3E4508C818A457B500CD7AE2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3E4508C318A4226A00CD7AE2 /* GamesTableViewController.h */,
-				3E4508C418A4226A00CD7AE2 /* GamesTableViewController.m */,
 				3E5B8714183712000017E2BE /* SportsViewController.h */,
 				3E5B8715183712000017E2BE /* SportsViewController.m */,
+				3E4508C318A4226A00CD7AE2 /* GamesTableViewController.h */,
+				3E4508C418A4226A00CD7AE2 /* GamesTableViewController.m */,
 				3E5B872D1837169C0017E2BE /* LoginViewController.h */,
 				3E5B872E1837169C0017E2BE /* LoginViewController.m */,
 				3E5B873018371B100017E2BE /* SignUpViewController.h */,
@@ -454,6 +457,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		3E4ABAEE18A95E7D009F5752 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				3E4ABAEF18A95E7D009F5752 /* Reachability.h */,
+				3E4ABAF018A95E7D009F5752 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		3E5B86D3183711870017E2BE = {
 			isa = PBXGroup;
 			children = (
@@ -513,6 +525,7 @@
 		3E5B86E6183711870017E2BE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3E4ABAEE18A95E7D009F5752 /* Reachability */,
 				3E4508CB18A47F8500CD7AE2 /* AMBubbleTableViewController */,
 				3E5B86EE183711870017E2BE /* AppDelegate.h */,
 				3E5B86EF183711870017E2BE /* AppDelegate.m */,
@@ -632,6 +645,11 @@
 				TargetAttributes = {
 					3E5B86DB183711870017E2BE = {
 						DevelopmentTeam = 6SZK592LX3;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					3E5B86FC183711870017E2BE = {
 						TestTargetID = 3E5B86DB183711870017E2BE;
@@ -761,6 +779,7 @@
 				3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */,
 				3E4508AB18A2C81100CD7AE2 /* SearchUsersViewController.m in Sources */,
 				3E4508BF18A2EA2000CD7AE2 /* FriendsCell.m in Sources */,
+				3E4ABAF118A95E7D009F5752 /* Reachability.m in Sources */,
 				3E9242BD18568037008C039E /* FriendsViewController.m in Sources */,
 				3E342A18189314FA004C262A /* Post.m in Sources */,
 				3E5B874E183C4B580017E2BE /* ChatViewController.m in Sources */,

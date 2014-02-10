@@ -7,6 +7,7 @@
 //
 
 #import "ResetPasswordViewController.h"
+#import "Reachability.h"
 
 @interface ResetPasswordViewController ()
 - (IBAction)goBackButtonSelected:(id)sender;
@@ -56,20 +57,36 @@
 
 - (IBAction)sendEmailButton:(id)sender {
     
-    self.emailAddress = self.emailTextField.text;
-    [PFUser requestPasswordResetForEmailInBackground:self.emailAddress block:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Request Successful" message:@"An email has been sent to you to change your password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [alert show];
-        }
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable)
         
-        else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Request Error" message:@"An error occurred sending you an email to chage your password. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    {
+        self.emailAddress = self.emailTextField.text;
+        [PFUser requestPasswordResetForEmailInBackground:self.emailAddress block:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Request Successful" message:@"An email has been sent to you to change your password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [alert show];
+            }
             
-            [alert show];
-        }
-    }];
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Request Error" message:@"An error occurred sending you an email to chage your password. Please try again later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [alert show];
+            }
+        }];
+
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to retrieve a new password" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
     
 }
 

@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "SVProgressHUD.h"
 #import "GamesTableViewController.h"
+#import "Reachability.h"
 
 @interface SportsViewController ()
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -66,6 +67,22 @@
     self.navigationController.navigationBarHidden = NO;
     self.tabBarController.tabBar.hidden = NO;
     
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable)
+        
+    {
+        // Write your code here.
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
     
 }
 
@@ -87,7 +104,10 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    //UIColor *disclosureColor = [UIColor colorWithRed:0.2274 green:0.7647 blue:0.3568 alpha:1.0];
+    UIColor *disclosureColor = [UIColor colorWithRed:0.167 green:0.630 blue:0.319 alpha:1.000];
+    
+    cell.textLabel.textColor = disclosureColor;
+    cell.textLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16.0];
     
     cell.textLabel.text = [[self.leaguesReturned objectAtIndex:indexPath.row] objectForKey:@"name"];
     

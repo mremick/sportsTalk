@@ -11,6 +11,7 @@
 #import "SVProgressHUD.h"
 #import "SportsViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Reachability.h"
 
 @interface UserProfileViewController ()
 
@@ -61,6 +62,8 @@
     
         
         //pop them to chat room
+    [super viewWillAppear:animated];
+
     
 
     
@@ -70,12 +73,26 @@
     NSLog(@"IN USER PROFILE");
     NSLog(@"USERNAME:%@",self.userName);
     
-    [self loadUser];
-    [self loadPostsCount];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    [self loadFriends];
+    if (internetStatus != NotReachable)
+        
+    {
+        [self loadUser];
+        [self loadPostsCount];
+        [self loadFriends];
+    }
     
-    [super viewWillAppear:animated];
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to view your profile" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
+   
+    
     
     self.userNameLabel.text = self.userName;
     self.navigationItem.title = self.userName;

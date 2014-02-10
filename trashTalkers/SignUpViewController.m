@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "UIImage+ProportionalFill.h"
 #import "LoginViewController.h"
+#import "Reachability.h"
 
 @interface SignUpViewController ()
 
@@ -48,74 +49,90 @@
 
 - (IBAction)signUp:(id)sender {
     
-    NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *retypedPassword = [self.retypePasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    //weak error checking
-    if ([username length] == 0 || [password length] == 0 || [retypedPassword length] == 0 || [email length] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                        message:@"Please make sure you have filled all text fields"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    
-    else if (![password isEqualToString:retypedPassword]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                        message:@"Please make sure your passwords are the same"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    
-    else {
+    if (internetStatus != NotReachable)
         
-        [SVProgressHUD showWithStatus:@"Signing Up"];
+    {
+        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *retypedPassword = [self.retypePasswordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        //create a new user
-        PFUser *user = [PFUser user];
-        user.username = username;
-        user.password = password;
-        user.email = email;
-        user[@"shortBio"] = @"I haven't filled out a bio yet..";
-        user[@"location"] = @"Webspere, INTERNET"; 
+        //weak error checking
+        if ([username length] == 0 || [password length] == 0 || [retypedPassword length] == 0 || [email length] == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                            message:@"Please make sure you have filled all text fields"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
         
-        NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
-        PFFile *avatar = [PFFile fileWithData:imageData];
-        user[@"avatar"] = avatar;
+        else if (![password isEqualToString:retypedPassword]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                            message:@"Please make sure your passwords are the same"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
         
-        
-        //maybe add a quick description here or favorite sports or sports teams 
-        
-        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (error) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD dismiss];
-                });
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                                message:[error.userInfo objectForKey:@"error"]
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-            }
+        else {
             
-            else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD dismiss];
-                });
+            [SVProgressHUD showWithStatus:@"Signing Up"];
+            
+            //create a new user
+            PFUser *user = [PFUser user];
+            user.username = username;
+            user.password = password;
+            user.email = email;
+            user[@"shortBio"] = @"I haven't filled out a bio yet..";
+            user[@"location"] = @"Webspere, INTERNET";
+            
+            NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
+            PFFile *avatar = [PFFile fileWithData:imageData];
+            user[@"avatar"] = avatar;
+            
+            
+            //maybe add a quick description here or favorite sports or sports teams
+            
+            [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (error) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [SVProgressHUD dismiss];
+                    });
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                                    message:[error.userInfo objectForKey:@"error"]
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil, nil];
+                    [alert show];
+                }
                 
-                [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-                
-            }
-        }];
+                else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [SVProgressHUD dismiss];
+                    });
+                    
+                    [[[self presentingViewController] presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+                    
+                }
+            }];
+        }
+
     }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
 }
 
 - (void)registerForKeyboardNotification

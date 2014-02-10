@@ -12,6 +12,7 @@
 #import "DTAlertView.h"
 #import "SignUpViewController.h"
 #import "ResetPasswordViewController.h"
+#import "Reachability.h"
 @interface LoginViewController () <UIAlertViewDelegate>
 - (IBAction)signInAnonymously:(id)sender;
 - (IBAction)signUpButtonSelected:(id)sender;
@@ -55,40 +56,57 @@
 - (IBAction)login:(id)sender {
     
     
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    //weak error checking
+    if (internetStatus != NotReachable)
+        
+    {
+        //weak error checking
+        
+        if ([self.usernameTextField.text length] == 0 || [self.passwordTextField.text length] == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                            message:@"Please make sure you have entered both a username and a password"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        else {
+            
+            NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error) {
+                if (error) {
+                    //error checking
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                                    message:@"An error occured loggin in. Please try again"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil, nil];
+                    [alert show];
+                    
+                }
+                
+                else {
+                    //pop VC
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+            }];
+        }
+
+    }
     
-    if ([self.usernameTextField.text length] == 0 || [self.passwordTextField.text length] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                        message:@"Please make sure you have entered both a username and a password"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to login" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
         [alert show];
     }
+
     
-    else {
-        
-        NSString *username = [self.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString *password = [self.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error) {
-            if (error) {
-                //error checking
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops"
-                                                                message:@"An error occured loggin in. Please try again"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-                
-            }
-            
-            else {
-                //pop VC
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        }];
-    }
+    
 }
 
 - (void)setupToolbar
@@ -113,21 +131,35 @@
 
 - (IBAction)signInAnonymously:(id)sender {
     
-    [PFAnonymousUtils logInWithBlock:^(PFUser *user, NSError *error) {
-        
-        //user[@"isAnon"] = @"YES";
-        
-        if (error) {
-            NSLog(@"Anonymous login failed.");
-        } else {
-            NSLog(@"Anonymous user logged in.");
-        }
-        
-    }];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Need a Username" message:@"Enter a temporary username" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alert show]; 
+    if (internetStatus != NotReachable)
+        
+    {
+        [PFAnonymousUtils logInWithBlock:^(PFUser *user, NSError *error) {
+            
+            //user[@"isAnon"] = @"YES";
+            
+            if (error) {
+                NSLog(@"Anonymous login failed.");
+            } else {
+                NSLog(@"Anonymous user logged in.");
+                [self dismissViewControllerAnimated:YES completion:nil];
+                
+            }
+            
+            
+        }];
+
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to login" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
     
     
 }
@@ -147,30 +179,27 @@
                                                     
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-    if ([alertView.title isEqualToString:@"Need a Username"]) {
-        if (buttonIndex == 0) {
-            UITextField *textField = [alertView textFieldAtIndex:0];
-
-            if (textField.text.length == 0) {
-                //[self.navigationController popViewControllerAnimated:YES];
-            } else {
-                [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
-                //popVC
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-            
-            
-        }else {
-            //[self.navigationController popViewControllerAnimated:YES];
-        }
-
-    } else {
-        //nothing
-    }
-
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    
+//        if (buttonIndex == 0) {
+//            UITextField *textField = [alertView textFieldAtIndex:0];
+//
+//            if (textField.text.length == 0) {
+//                //[self.navigationController popViewControllerAnimated:YES];
+//            } else {
+//                [PFUser currentUser][@"usernameForAnonUser"] = textField.text;
+//                //popVC
+//                [self dismissViewControllerAnimated:YES completion:nil];
+//            }
+//            
+//            
+//        }else {
+//            //[self.navigationController popViewControllerAnimated:YES];
+//        }
+//
+//   
+//
+//}
 
 @end

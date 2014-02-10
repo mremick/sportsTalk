@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "ChatViewController.h"
 #import "ChatBubbleViewController.h"
+#import "Reachability.h"
 
 @interface GamesTableViewController ()
 
@@ -47,39 +48,53 @@
     [super viewWillAppear:animated];
     
     self.games = [NSMutableArray new];
-
     
-    NSDate *currentDate = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *dateString = [dateFormatter stringFromDate:currentDate];
-    //NSLog(@"DATE: %@",dateString);
+    self.navigationItem.title = [NSString stringWithFormat:@"%@ Games",self.leagueName];
     
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    
-    PFQuery *gamesForLeague = [PFQuery queryWithClassName:@"Game"];
-    [gamesForLeague whereKey:@"League" equalTo:self.leagueName];
-    
-    PFQuery *gamesForDate = [PFQuery queryWithClassName:@"Game"];
-    [gamesForDate whereKey:@"gameDate" equalTo:dateString];
-    
-    [gamesForDate findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            NSArray *returnedGames = objects;
-            NSLog(@"returned games:%@",returnedGames);
-            for (PFObject *game in returnedGames) {
-                if ([[game objectForKey:@"leagueName"] isEqualToString:self.leagueName]) {
-                    [self.games addObject:game];
+    if (internetStatus != NotReachable)
+        
+    {
+        NSDate *currentDate = [NSDate date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateString = [dateFormatter stringFromDate:currentDate];
+        //NSLog(@"DATE: %@",dateString);
+        
+        
+        
+        PFQuery *gamesForLeague = [PFQuery queryWithClassName:@"Game"];
+        [gamesForLeague whereKey:@"League" equalTo:self.leagueName];
+        
+        PFQuery *gamesForDate = [PFQuery queryWithClassName:@"Game"];
+        [gamesForDate whereKey:@"gameDate" equalTo:dateString];
+        
+        [gamesForDate findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                NSArray *returnedGames = objects;
+                NSLog(@"returned games:%@",returnedGames);
+                for (PFObject *game in returnedGames) {
+                    if ([[game objectForKey:@"leagueName"] isEqualToString:self.leagueName]) {
+                        [self.games addObject:game];
+                    }
                 }
+                
+                NSLog(@"games:%@",self.games);
+                [self.tableView reloadData];
             }
-            
-            NSLog(@"games:%@",self.games);
-            [self.tableView reloadData];
-        }
-    }];
-    
+        }];
 
+    }
     
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,6 +122,11 @@
     PFObject *game = [self.games objectAtIndex:indexPath.row];
     
     NSString *stringForCell = [NSString stringWithFormat:@"%@ vs. %@",game[@"team1Name"],game[@"team2Name"]];
+    
+    UIColor *disclosureColor = [UIColor colorWithRed:0.167 green:0.630 blue:0.319 alpha:1.000];
+    
+    cell.textLabel.textColor = disclosureColor;
+    cell.textLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16.0];
     
     cell.textLabel.text = stringForCell; 
     

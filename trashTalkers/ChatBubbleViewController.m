@@ -11,6 +11,7 @@
 #import "Post.h"
 #import "SVProgressHUD.h"
 #import "UserProfileViewController.h"
+#import "Reachability.h"
 
 #define MAX_ENTRIES_LOADED 25
 
@@ -187,6 +188,10 @@
 - (NSDate *)timestampForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Post *currentPost = [self.chatData objectAtIndex:indexPath.row];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"hh:mm a"];
+//    NSString *formattedDateString = [dateFormatter stringFromDate:currentPost.date];
+//    NSDate *finalDate = [dateFormatter dateFromString:formattedDateString];
 	return currentPost.date;
 }
 
@@ -700,25 +705,42 @@
 //need to find where this is called
 - (void)loadLocalChat
 {
-    NSLog(@"FIRSTLOAD: %d",self.firstLoad);
-    if (self.firstLoad != 0) {
-        if (![self.selectedGame.objectId isEqualToString:self.classNameHolder]) {
-            [self.chatData removeAllObjects];
-        }
-    }
     
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    if ([self.chatData count] == 0) {
+    if (internetStatus != NotReachable)
         
-        [self loadPostsForEmptyRoom];
-    } else {
-        [self loadNewPosts];
+    {
+        if (self.firstLoad != 0) {
+            if (![self.selectedGame.objectId isEqualToString:self.classNameHolder]) {
+                [self.chatData removeAllObjects];
+            }
+        }
+        
+        
+        if ([self.chatData count] == 0) {
+            
+            [self loadPostsForEmptyRoom];
+        } else {
+            [self loadNewPosts];
+        }
+        
+        
+        
+        self.classNameHolder = self.selectedGame.objectId;
+        [self.tableView reloadData];
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
     }
     
     
     
-    self.classNameHolder = self.selectedGame.objectId;
-    [self.tableView reloadData];
     NSLog(@"end of loadLoaclChat");
     
     

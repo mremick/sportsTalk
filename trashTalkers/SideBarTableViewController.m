@@ -13,6 +13,7 @@
 #import "UIImageView+ParseFileSupport.h"
 #import "SearchUsersViewController.h"
 #import "LoginViewController.h"
+#import "Reachability.h"
 
 @interface SideBarTableViewController () {
     UIImageView *navBarHairlineImageView;
@@ -114,34 +115,51 @@
 {
     [super viewWillAppear:animated];
     
-    if (![PFUser currentUser]) {
-        self.topVC = self.loginVC;
-    }
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
-        self.userAvatarImageView.image = [UIImage imageNamed:@"blackIcon.png"];
-        self.usernameLabel.text = @"Anonymous";
-    } else {
-        if (self.isFirstLoad) {
-            PFQuery *getUser = [PFUser query];
-            [getUser whereKey:@"username" equalTo:[PFUser currentUser].username];
-            [getUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if ([objects count]) {
-                    self.currentUser = [objects objectAtIndex:0];
-                    
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        self.userAvatarImageView.file = self.currentUser[@"avatar"];
-                        self.usernameLabel.text = [PFUser currentUser].username;
-                    }];
-                    
-                    self.isFirstLoad = NO;
-                    
-                }
-            }];
+    if (internetStatus != NotReachable)
+        
+    {
+        if (![PFUser currentUser]) {
+            self.topVC = self.loginVC;
+        }
+        
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            self.userAvatarImageView.image = [UIImage imageNamed:@"avatar.png"];
+            self.usernameLabel.text = @"Anonymous";
+        } else {
+            if (self.isFirstLoad) {
+                PFQuery *getUser = [PFUser query];
+                [getUser whereKey:@"username" equalTo:[PFUser currentUser].username];
+                [getUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    if ([objects count]) {
+                        self.currentUser = [objects objectAtIndex:0];
+                        
+                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            self.userAvatarImageView.file = self.currentUser[@"avatar"];
+                            self.usernameLabel.text = [PFUser currentUser].username;
+                        }];
+                        
+                        self.isFirstLoad = NO;
+                        
+                    }
+                }];
+                
+            }
             
         }
 
     }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
+    
     
     navBarHairlineImageView.hidden = YES;
 }

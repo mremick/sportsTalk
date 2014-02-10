@@ -9,6 +9,7 @@
 #import "EditProfileViewController.h"
 #import "UIImage+ProportionalFill.h"
 #import "UserProfileViewController.h"
+#import "Reachability.h"
 
 @interface EditProfileViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *changeImageButton;
@@ -107,47 +108,63 @@
 
 - (IBAction)submitEdits:(id)sender {
     
-    PFUser *currentUser = [PFUser currentUser];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    if (self.locationTextField.text.length > 20 && self.bioTextField.text.length > 70) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Location and Bio"
-                                                        message:@"The maximum characters allwed for location are 20 and for your bio is 70"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    } else if (self.locationTextField.text.length > 20) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Location"
-                                                        message:@"The maximum characters allwed for location are 20"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
+    if (internetStatus != NotReachable)
+        
+    {
+        PFUser *currentUser = [PFUser currentUser];
+        
+        if (self.locationTextField.text.length > 20 && self.bioTextField.text.length > 70) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Location and Bio"
+                                                            message:@"The maximum characters allwed for location are 20 and for your bio is 70"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        } else if (self.locationTextField.text.length > 20) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Location"
+                                                            message:@"The maximum characters allwed for location are 20"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+            
+        } else if (self.bioTextField.text.length > 70) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Bio"
+                                                            message:@"The maximum characters allwed for bio are 70"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        } else {
+            currentUser[@"shortBio"] = self.bioTextField.text;
+            //currentUser[@"favoriteTeams"] = self.favoriteTeamsTextField.text;
+            currentUser[@"location"] = self.locationTextField.text;
+            NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
+            PFFile *avatar = [PFFile fileWithData:imageData];
+            currentUser[@"avatar"] = avatar;
+            
+            [currentUser saveInBackground];
+            
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Changes Made!"
+                                                             message:@"Changes will show soon"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil, nil];
+            [alert show];
+        }
 
-    } else if (self.bioTextField.text.length > 70) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too Many Characters For Bio"
-                                                        message:@"The maximum characters allwed for bio are 70"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    } else {
-        currentUser[@"shortBio"] = self.bioTextField.text;
-        //currentUser[@"favoriteTeams"] = self.favoriteTeamsTextField.text;
-        currentUser[@"location"] = self.locationTextField.text;
-        NSData *imageData = UIImagePNGRepresentation(self.avatarImageView.image);
-        PFFile *avatar = [PFFile fileWithData:imageData];
-        currentUser[@"avatar"] = avatar;
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         
-        [currentUser saveInBackground];
-        
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Changes Made!"
-                                                         message:@"Changes will show soon"
-                                                        delegate:self
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil, nil];
         [alert show];
     }
+    
     
 }
 

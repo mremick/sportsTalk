@@ -10,6 +10,7 @@
 #import "UIImageView+ParseFileSupport.h"
 #import "SportsViewController.h"
 #import "FriendsCell.h"
+#import "Reachability.h"
 
 @interface FriendsViewController ()
 
@@ -33,45 +34,57 @@
 {
     [super viewWillAppear:animated];
     
-    NSLog(@"friends viewcontroller viewed"); 
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     
-    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
-        //[self enableSignUpButton];
+    if (internetStatus != NotReachable)
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Friends"
-                                                        message:@"Please create an account to be able to add friends" delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
-        
-        [alert show];
-        
-        //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-        
-        //[self performSegueWithIdentifier:@"fromFriendsToSports" sender:nil];
+    {
+        if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+            //[self enableSignUpButton];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Friends"
+                                                            message:@"Please create an account to be able to add friends" delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            
+            [alert show];
+            
+            //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+            
+            //[self performSegueWithIdentifier:@"fromFriendsToSports" sender:nil];
+            
+            
+        } else {
+            self.currentUser = [PFUser currentUser];
+            
+            PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
+            PFQuery *query = [relation query];
+            [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
+                
+                if (error) {
+                    NSLog(@"Error fetvhing friends");
+                }
+                
+                else {
+                    [self.friends removeAllObjects];
+                    [self.friends addObjectsFromArray:results];
+                    NSLog(@"FRIENDS: %@",self.friends);
+                    [self.tableView reloadData];
+                }
+            }];
+            
+            [self performSelector:@selector(reloadTheTable) withObject:nil afterDelay:1.0];
+        }
 
-        
-    } else {
-        self.currentUser = [PFUser currentUser];
-        
-        PFRelation *relation = [[PFUser currentUser] relationforKey:@"friendsRelation"];
-        PFQuery *query = [relation query];
-        [query findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error) {
-            
-            if (error) {
-                NSLog(@"Error fetvhing friends");
-            }
-            
-            else {
-                [self.friends removeAllObjects];
-                [self.friends addObjectsFromArray:results];
-                NSLog(@"FRIENDS: %@",self.friends);
-                [self.tableView reloadData];
-            }
-        }];
-        
-        [self performSelector:@selector(reloadTheTable) withObject:nil afterDelay:1.0];
     }
     
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
     
 }
 - (void)didReceiveMemoryWarning

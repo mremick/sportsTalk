@@ -11,6 +11,7 @@
 #import "UIImageView+ParseFileSupport.h"
 #import "EditProfileViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Reachability.h"
 
 @interface CurrentUserProfileViewController ()
 @property (weak, nonatomic) IBOutlet UIView *avatarBackground;
@@ -51,7 +52,23 @@
     
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     
-    [self loadUser];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable)
+        
+    {
+        [self loadUser];
+
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reachability" message:@"No internet connection found. Please check your internet status to view your profile" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alert show];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,7 +89,7 @@
         self.bioLabel.text = @"Anonymous users don't get a bio :)";
         self.postsLabel.text = @"0 posts";
         self.locationLabel.text = @"Being Anonymous";
-        self.userImage.image = [UIImage imageNamed:@"blackIcon.png"];
+        self.userImage.image = [UIImage imageNamed:@"avatar.png"];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Your Profile"
                                                         message:@"Please create an account to be able to customzise a profile"
