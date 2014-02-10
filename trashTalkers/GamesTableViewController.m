@@ -152,6 +152,12 @@
 }
 */
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
 
 #pragma mark - Navigation
 
@@ -166,6 +172,8 @@
         ChatBubbleViewController *chatBubbleVC = (ChatBubbleViewController *)[segue destinationViewController];
         chatBubbleVC.gameName = gameName; 
         chatBubbleVC.selectedGame = [self.games objectAtIndex:selectedPath.row];
+        
+
         
     }
 }

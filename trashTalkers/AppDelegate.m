@@ -107,7 +107,7 @@
 - (void)settingUpDesign
 {
     //UITextAttributeTextColor depriciated in iOS 7
-    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0.145 green:0.635 blue:0.3058 alpha:1.0]];
+    //[[UITabBar appearance] setTintColor:[UIColor colorWithRed:0.145 green:0.635 blue:0.3058 alpha:1.0]];
 }
 
 

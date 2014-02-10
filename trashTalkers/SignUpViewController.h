@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SVProgressHUD.h"
 
-@interface SignUpViewController : UIViewController <UITextFieldDelegate,UIImagePickerControllerDelegate>
+@interface SignUpViewController : UIViewController <UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;

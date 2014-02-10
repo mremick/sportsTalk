@@ -133,6 +133,38 @@
 - (void)keyboardWillShow
 {
     self.dismissKeyboardButton.hidden = NO;
+    [self animateTextField:self.retypePasswordTextField up:YES];
+    [self animateTextField:self.emailTextField up:YES];
+    
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    
+    return YES;
+}
+
+
+- (void) animateTextField: (UITextField*) textField up: (BOOL) up
+{
+    
+    if (textField.tag == 1) {
+        NSLog(@"RETYPE PASSWORD SELECTED");
+    } else if (textField.tag == 2) {
+        NSLog(@"EMAIL ADRRESS SELCTED");
+    }
+    //was 209
+//    const int movementDistance = 215; // tweak as needed
+//    const float movementDuration = 0.3f; // tweak as needed
+//    
+//    int movement = (up ? -movementDistance : movementDistance);
+//    
+//    [UIView beginAnimations: @"anim" context: nil];
+//    [UIView setAnimationBeginsFromCurrentState: YES];
+//    [UIView setAnimationDuration: movementDuration];
+//    self.view.frame = CGRectOffset(self.view.frame, 0, movement);
+//    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide
@@ -172,21 +204,56 @@
 }
 
 - (IBAction)addPhoto:(id)sender {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary | UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    
+    UIActionSheet *mySheet;
+    
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePicker.sourceType |= UIImagePickerControllerSourceTypeCamera;
+        mySheet = [[UIActionSheet alloc] initWithTitle:@"Pick Photo"
+                                              delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Camera",@"Photo Library", nil];
     }
     
-    imagePicker.delegate = self;
+    else {
+        mySheet = [[UIActionSheet alloc] initWithTitle:@"Pick Photo"
+                                              delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Photo Library", nil];
+    }
     
-    [self presentViewController:imagePicker
-                       animated:YES
-                     completion:^{
-                         //completion
-    }];
-    
+    [mySheet showInView:self.view];
 }
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Camera"]) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:imagePicker animated:YES completion:^{
+            //imagePicker code here
+        }];
+    }
+    
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Photo Library"]) {
+        
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePicker animated:YES completion:^{
+            //photo library code here
+        }];
+        
+        
+        
+        
+    }
+}
+
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {

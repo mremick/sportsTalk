@@ -17,6 +17,7 @@
 @property (strong,nonatomic) NSArray *userResponse;
 @property (strong,nonatomic) NSMutableArray *nonAnonUsers;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+- (IBAction)searchUserSelected:(id)sender;
 
 @end
 
@@ -62,9 +63,9 @@
     
     cell.avatarImageView.layer.masksToBounds = YES;
     cell.avatarImageView.layer.cornerRadius = 32;
+    [cell.avatarImageView.layer setBorderWidth:2.50f];
+    [cell.avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     
-    cell.avatarBackground.layer.masksToBounds = YES;
-    cell.avatarBackground.layer.cornerRadius = 33;
     
     cell.usernameLabel.text = returnedUser.username;
     cell.bio.text = returnedUser[@"shortBio"];
@@ -79,30 +80,52 @@
     
     [self.searchBar resignFirstResponder];
     
-    self.userResponse = [NSArray new];
-    self.nonAnonUsers = [NSMutableArray new];
-    
-    PFQuery *usersQuery = [PFUser query];
-    [usersQuery whereKey:@"username" containsString:self.searchBar.text];
-    [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            
-            NSLog(@"OBJECTS: %@",objects);
-            self.userResponse = objects;
-            
-            for (PFUser *user in self.userResponse) {
-                if (user.username.length < 20) {
-                    [self.nonAnonUsers addObject:user];
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
+                                                        message:@"Please create an account to be able to search for users"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        
+        [alert show];
+
+        
+    } else {
+        self.userResponse = [NSArray new];
+        self.nonAnonUsers = [NSMutableArray new];
+        
+        PFQuery *usersQuery = [PFUser query];
+        [usersQuery whereKey:@"username" containsString:self.searchBar.text];
+        [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                
+                NSLog(@"OBJECTS: %@",objects);
+                self.userResponse = objects;
+                
+                for (PFUser *user in self.userResponse) {
+                    if (user.username.length < 20) {
+                        [self.nonAnonUsers addObject:user];
+                    }
                 }
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self.tableView reloadData];
+                }];
             }
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [self.tableView reloadData];
-            }];
-        }
-    }];
+        }];
+
+    }
+
+    
     
     return YES;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
@@ -116,4 +139,46 @@
     }
 }
 
+- (IBAction)searchUserSelected:(id)sender {
+    
+    [self.searchBar resignFirstResponder];
+    
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to Search for Users"
+                                                        message:@"Please create an account to be able to search for users"
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        
+        [alert show];
+        
+        
+    } else {
+        self.userResponse = [NSArray new];
+        self.nonAnonUsers = [NSMutableArray new];
+        
+        PFQuery *usersQuery = [PFUser query];
+        [usersQuery whereKey:@"username" containsString:self.searchBar.text];
+        [usersQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                
+                NSLog(@"OBJECTS: %@",objects);
+                self.userResponse = objects;
+                
+                for (PFUser *user in self.userResponse) {
+                    if (user.username.length < 20) {
+                        [self.nonAnonUsers addObject:user];
+                    }
+                }
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self.tableView reloadData];
+                }];
+            }
+        }];
+        
+    }
+
+}
 @end

@@ -68,10 +68,10 @@
     
     self.userAvatarImageView.layer.masksToBounds = YES;
     self.userAvatarImageView.layer.cornerRadius = 48;
+    [self.userAvatarImageView.layer setBorderWidth:2.50f];
+    [self.userAvatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     
-    
-    self.avatarBackground.layer.masksToBounds = YES;
-    self.avatarBackground.layer.cornerRadius = 46;
+   
 
     
     self.navigationController.navigationBar.backgroundColor = barColor;
@@ -84,7 +84,7 @@
 
     
     self.viewControllerArray = [NSArray new];
-    self.viewControllerArray = @[self.currentUserProfileVC,self.chatVC,self.friendsVC,@"holderForLeaderboard",self.searchUsersVC];
+    self.viewControllerArray = @[self.currentUserProfileVC,self.chatVC,self.friendsVC,self.searchUsersVC];
     
     [self addChildViewController:self.chatVC];
     self.chatVC.view.frame = self.view.frame;
@@ -118,26 +118,30 @@
         self.topVC = self.loginVC;
     }
     
-    if (self.isFirstLoad) {
-        PFQuery *getUser = [PFUser query];
-        [getUser whereKey:@"username" equalTo:[PFUser currentUser].username];
-        [getUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if ([objects count]) {
-                self.currentUser = [objects objectAtIndex:0];
-                
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    self.userAvatarImageView.file = self.currentUser[@"avatar"];
-                    self.usernameLabel.text = [PFUser currentUser].username;
-                }];
-                
-                self.isFirstLoad = NO;
-
-            }
-        }];
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+        self.userAvatarImageView.image = [UIImage imageNamed:@"blackIcon.png"];
+        self.usernameLabel.text = @"Anonymous";
+    } else {
+        if (self.isFirstLoad) {
+            PFQuery *getUser = [PFUser query];
+            [getUser whereKey:@"username" equalTo:[PFUser currentUser].username];
+            [getUser findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if ([objects count]) {
+                    self.currentUser = [objects objectAtIndex:0];
+                    
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        self.userAvatarImageView.file = self.currentUser[@"avatar"];
+                        self.usernameLabel.text = [PFUser currentUser].username;
+                    }];
+                    
+                    self.isFirstLoad = NO;
+                    
+                }
+            }];
+            
+        }
 
     }
-    
-    
     
     navBarHairlineImageView.hidden = YES;
 }
@@ -233,60 +237,74 @@
 #pragma mark - Table view data source
 
 
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController *newVC = [self.viewControllerArray objectAtIndex:indexPath.row];
     
-    if ([newVC isKindOfClass:[self.topVC class]]) {
-        [self closeSideBar];
-    } else {
-        //adding the view controller as a child view controller
-        [self addChildViewController:newVC];
+    if (indexPath.row < 4) {
+        UIViewController *newVC = [self.viewControllerArray objectAtIndex:indexPath.row];
         
-        //setting the frame of the new of the new view controller to the size of the view
-        //newVC.view.frame = self.view.bounds;
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-        //adding the view
-        [self.view addSubview:newVC.view];
-        [newVC didMoveToParentViewController:newVC];
         
-        //animate old view out
-        //animate new view in
-        
-        //    if (indexPath.row == 0) {
-        //        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-        //            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
-        //        } completion:^(BOOL finished) {
-        //            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-        //                //changed to bounds for profile becuase I'm taking out the nav bar
-        //                newVC.view.frame = self.view.bounds;
-        //            } completion:^(BOOL finished) {
-        //                NSLog(@"setup pan gesture on new view controller");
-        //                [self setupPanGesture];
-        //            }];
-        //        }];
-        //
-        //    } else {
-        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y - 1, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
-        } completion:^(BOOL finished) {
+        if ([newVC isKindOfClass:[self.topVC class]]) {
+            [self closeSideBar];
+        } else {
+            //adding the view controller as a child view controller
+            [self addChildViewController:newVC];
+            
+            //setting the frame of the new of the new view controller to the size of the view
+            //newVC.view.frame = self.view.bounds;
+            
+            //adding the view
+            [self.view addSubview:newVC.view];
+            [newVC didMoveToParentViewController:newVC];
+            
+            //animate old view out
+            //animate new view in
+            
+            //    if (indexPath.row == 0) {
+            //        [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+            //            self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
+            //        } completion:^(BOOL finished) {
+            //            [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+            //                //changed to bounds for profile becuase I'm taking out the nav bar
+            //                newVC.view.frame = self.view.bounds;
+            //            } completion:^(BOOL finished) {
+            //                NSLog(@"setup pan gesture on new view controller");
+            //                [self setupPanGesture];
+            //            }];
+            //        }];
+            //
+            //    } else {
             [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
-                newVC.view.frame = self.view.frame; //bounds
+                self.topVC.view.frame = CGRectMake(self.view.frame.size.width, self.topVC.view.frame.origin.y - 1, self.topVC.view.frame.size.width, self.topVC.view.frame.size.height);
             } completion:^(BOOL finished) {
-                NSLog(@"setup pan gesture on new view controller");
-                [self setupPanGesture];
+                [UIView animateWithDuration:.4 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{
+                    newVC.view.frame = self.view.frame; //bounds
+                } completion:^(BOOL finished) {
+                    NSLog(@"setup pan gesture on new view controller");
+                    [self setupPanGesture];
+                }];
             }];
-        }];
-        
-        //}
-        
-        //remove child
-        [self.topVC.view removeFromSuperview];
-        [self.topVC removeFromParentViewController];
-        
-        self.topVC = newVC;
+            
+            //}
+            
+            //remove child
+            [self.topVC.view removeFromSuperview];
+            [self.topVC removeFromParentViewController];
+            
+            self.topVC = newVC;
+            
+        }
+
+    } else {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     }
+    
+    
     
     
 }

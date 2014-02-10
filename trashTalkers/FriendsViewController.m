@@ -102,11 +102,12 @@
     cell.backgroundColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
     self.tableView.backgroundColor = [UIColor colorWithRed:0.201 green:0.764 blue:0.380 alpha:1.000];
     
-    cell.avatarBackground.layer.masksToBounds = YES;
-    cell.avatarBackground.layer.cornerRadius = 33;
+    
     
     cell.avatarImageView.layer.masksToBounds = YES;
     cell.avatarImageView.layer.cornerRadius = 32;
+    [cell.avatarImageView.layer setBorderWidth:2.50f];
+    [cell.avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     
     // Configure the cell...
     PFUser *friend = [self.friends objectAtIndex:indexPath.row];

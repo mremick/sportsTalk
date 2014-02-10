@@ -103,12 +103,14 @@
 		3E89C1BF189DD3C5007B787A /* 1024px_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E89C1BE189DD3C5007B787A /* 1024px_2.png */; };
 		3E89C1C2189DEA8C007B787A /* SideBarTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E89C1C1189DEA8C007B787A /* SideBarTableViewController.m */; };
 		3E9242BD18568037008C039E /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242BC18568037008C039E /* FriendsViewController.m */; };
-		3E9242BF1857FF6F008C039E /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E9242BE1857FF6F008C039E /* avatar.png */; };
 		3E9242C218596701008C039E /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C118596701008C039E /* EditProfileViewController.m */; };
 		3E9242C5185BE86A008C039E /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C4185BE86A008C039E /* UIImage+ProportionalFill.m */; };
 		3E9242C8185BEF85008C039E /* UIImageView+ParseFileSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9242C7185BEF85008C039E /* UIImageView+ParseFileSupport.m */; };
 		3EA41947189B4CFE003E47DF /* DTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA41944189B4CFE003E47DF /* DTAlertView.m */; };
 		3EA41948189B4CFE003E47DF /* DTProgressStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA41946189B4CFE003E47DF /* DTProgressStatus.m */; };
+		3EAA644218A8590F0005A134 /* blackIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAA644118A8590F0005A134 /* blackIcon.png */; };
+		3EAA644518A894BA0005A134 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAA644318A894BA0005A134 /* avatar.png */; };
+		3EAA644618A894BA0005A134 /* avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EAA644418A894BA0005A134 /* avatar@2x.png */; };
 		3EC6BB681852B667000FC942 /* placeholder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB671852B667000FC942 /* placeholder.jpg */; };
 		3EC6BB6E1852BA04000FC942 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */; };
 		3EC6BB6F1852BA04000FC942 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC6BB6D1852BA04000FC942 /* SVProgressHUD.m */; };
@@ -251,7 +253,6 @@
 		3E89C1C1189DEA8C007B787A /* SideBarTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideBarTableViewController.m; sourceTree = "<group>"; };
 		3E9242BB18568037008C039E /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
 		3E9242BC18568037008C039E /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
-		3E9242BE1857FF6F008C039E /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		3E9242C018596701008C039E /* EditProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
 		3E9242C118596701008C039E /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
 		3E9242C3185BE86A008C039E /* UIImage+ProportionalFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ProportionalFill.h"; sourceTree = "<group>"; };
@@ -262,6 +263,9 @@
 		3EA41944189B4CFE003E47DF /* DTAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTAlertView.m; sourceTree = "<group>"; };
 		3EA41945189B4CFE003E47DF /* DTProgressStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTProgressStatus.h; sourceTree = "<group>"; };
 		3EA41946189B4CFE003E47DF /* DTProgressStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTProgressStatus.m; sourceTree = "<group>"; };
+		3EAA644118A8590F0005A134 /* blackIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackIcon.png; sourceTree = "<group>"; };
+		3EAA644318A894BA0005A134 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
+		3EAA644418A894BA0005A134 /* avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar@2x.png"; sourceTree = "<group>"; };
 		3EC6BB671852B667000FC942 /* placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder.jpg; sourceTree = "<group>"; };
 		3EC6BB6A1852BA04000FC942 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
 		3EC6BB6B1852BA04000FC942 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
@@ -512,6 +516,7 @@
 				3E4508CB18A47F8500CD7AE2 /* AMBubbleTableViewController */,
 				3E5B86EE183711870017E2BE /* AppDelegate.h */,
 				3E5B86EF183711870017E2BE /* AppDelegate.m */,
+				3EAA644118A8590F0005A134 /* blackIcon.png */,
 				3E5B86E7183711870017E2BE /* trashTalkers-Info.plist */,
 				3E4508A518A0678300CD7AE2 /* backArrow2.png */,
 				3E45088B18A0475D00CD7AE2 /* 1099-list-1.png */,
@@ -527,9 +532,10 @@
 				3E45089F18A05E3500CD7AE2 /* 1096-direction-arrow copy.png */,
 				3E4508A018A05E3500CD7AE2 /* 1096-direction-arrow@2x copy.png */,
 				3E89C1BE189DD3C5007B787A /* 1024px_2.png */,
-				3E9242BE1857FF6F008C039E /* avatar.png */,
 				3E45088118A0127400CD7AE2 /* loading_screen.png */,
 				3EC6BB671852B667000FC942 /* placeholder.jpg */,
+				3EAA644318A894BA0005A134 /* avatar.png */,
+				3EAA644418A894BA0005A134 /* avatar@2x.png */,
 				3E5B86E8183711870017E2BE /* InfoPlist.strings */,
 				3E5B86EB183711870017E2BE /* main.m */,
 				3E5B86ED183711870017E2BE /* trashTalkers-Prefix.pch */,
@@ -668,6 +674,7 @@
 				3E45090A18A47F8600CD7AE2 /* buttonSendHighlighted.png in Resources */,
 				3E45091818A47F8600CD7AE2 /* messageBubbleGray.png in Resources */,
 				3E45091F18A47F8600CD7AE2 /* messageBubbleTyping@2x.png in Resources */,
+				3EAA644618A894BA0005A134 /* avatar@2x.png in Resources */,
 				3E45088918A046B300CD7AE2 /* 974-users.png in Resources */,
 				3E45090118A47F8600CD7AE2 /* bubbleFlatOutgoing@2x.png in Resources */,
 				3E45089E18A0495300CD7AE2 /* 945-radar.png in Resources */,
@@ -686,13 +693,14 @@
 				3E45091018A47F8600CD7AE2 /* imageBarFlat.png in Resources */,
 				3E45091C18A47F8600CD7AE2 /* messageBubbleHighlighted.png in Resources */,
 				3E4508A218A05E3500CD7AE2 /* 1096-direction-arrow@2x copy.png in Resources */,
+				3EAA644218A8590F0005A134 /* blackIcon.png in Resources */,
 				3E45089A18A0491700CD7AE2 /* 910-graph@2x.png in Resources */,
 				3E45089C18A0494D00CD7AE2 /* 945-radar@2x.png in Resources */,
 				3E45091E18A47F8600CD7AE2 /* messageBubbleTyping.png in Resources */,
 				3E45090818A47F8600CD7AE2 /* buttonSendFlat.png in Resources */,
 				3E5B86F8183711870017E2BE /* Images.xcassets in Resources */,
+				3EAA644518A894BA0005A134 /* avatar.png in Resources */,
 				3E45088D18A0475D00CD7AE2 /* 1099-list-1.png in Resources */,
-				3E9242BF1857FF6F008C039E /* avatar.png in Resources */,
 				3E45090718A47F8600CD7AE2 /* buttonSend@2x.png in Resources */,
 				3E45090C18A47F8600CD7AE2 /* buttonSendHighlightedFlat.png in Resources */,
 				3E5B86EA183711870017E2BE /* InfoPlist.strings in Resources */,

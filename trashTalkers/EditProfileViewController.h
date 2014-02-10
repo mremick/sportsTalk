@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface EditProfileViewController : UIViewController <UITextFieldDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate>
+@interface EditProfileViewController : UIViewController <UITextFieldDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 
 @property (strong,nonatomic) NSString *bio;
 @property (strong,nonatomic) NSString *favoriteTeams;

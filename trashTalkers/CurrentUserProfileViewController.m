@@ -19,6 +19,8 @@
 @property (strong,nonatomic) NSString *postCountString;
 @property (weak, nonatomic) IBOutlet UILabel *postsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
+@property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lastChatRoomLabel;
 
 @end
 
@@ -28,11 +30,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.avatarBackground.layer.masksToBounds = YES;
-    self.avatarBackground.layer.cornerRadius = 69;
     
     self.userImage.layer.masksToBounds = YES;
     self.userImage.layer.cornerRadius = 65;
+    [self.userImage.layer setBorderWidth:2.5];
+    [self.userImage.layer setBorderColor:[UIColor whiteColor].CGColor];
     
     self.editProfileButton.layer.masksToBounds = YES;
     self.editProfileButton.layer.cornerRadius = 20.0f;
@@ -64,7 +66,13 @@
     //disable edit profile button
     
     if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
-        //[self enableSignUpButton];
+        
+        self.editProfileButton.hidden = YES;
+        self.userNameLabel.text = @"Anonymous";
+        self.bioLabel.text = @"Anonymous users don't get a bio :)";
+        self.postsLabel.text = @"0 posts";
+        self.locationLabel.text = @"Being Anonymous";
+        self.userImage.image = [UIImage imageNamed:@"blackIcon.png"];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable to View Your Profile"
                                                         message:@"Please create an account to be able to customzise a profile"
@@ -76,12 +84,16 @@
         
         
         
+        
+        
         //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
         
         //[self performSegueWithIdentifier:@"fromFriendsToSports" sender:nil];
         
         
     } else {
+        
+        self.editProfileButton.hidden = NO;
         PFUser *currentUser = [PFUser currentUser];
         
         PFQuery *query = [PFUser query];
@@ -98,18 +110,21 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     //assign labels in the UI here on the main thread
                     self.userNameLabel.text = self.userProfile.username;
-                    self.favoriteTeamsLabel.text = self.userProfile[@"favoriteTeams"];
                     self.bioLabel.text = self.userProfile[@"shortBio"];
                     self.userImage.file = self.userProfile[@"avatar"];
                     self.locationLabel.text = self.userProfile[@"location"];
+                    self.onlineStatusLabel.text = self.userProfile[@"Online"];
+                    self.lastChatRoomLabel.text = [NSString stringWithFormat:@"Last Chatroom seen in: %@",self.userProfile[@"lastChatRoom"]];
                     [SVProgressHUD dismiss];
                 });
             }
         }];
+        
+        [self loadUserPosts];
+
 
     }
     
-    [self loadUserPosts];
     
 }
 

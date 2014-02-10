@@ -13,10 +13,7 @@
 @interface EditProfileViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *changeImageButton;
 @property (weak, nonatomic) IBOutlet UIButton *submitChangesButton;
-@property (weak, nonatomic) IBOutlet UIView *avatarBackground;
 - (IBAction)backButtonSelected:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *locationWordLimitLabel;
-@property (weak, nonatomic) IBOutlet UILabel *bioWordLimitLabel;
 @property (nonatomic) int locationCount;
 @property (nonatomic) int bioCount;
 
@@ -53,11 +50,13 @@
     [[self.submitChangesButton layer] setBorderWidth:1.0f];
     [[self.submitChangesButton layer] setBorderColor:[UIColor whiteColor].CGColor];
     
-    self.avatarBackground.layer.masksToBounds = YES;
-    self.avatarBackground.layer.cornerRadius = 69;
+   
     
     self.avatarImageView.layer.masksToBounds = YES;
     self.avatarImageView.layer.cornerRadius = 65;
+    
+    [self.avatarImageView.layer setBorderWidth:2.50f];
+    [self.avatarImageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     
     
 }
@@ -189,25 +188,55 @@
 
 - (IBAction)changeImage:(id)sender {
     
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary | UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    UIActionSheet *mySheet;
     
-    /* Camera wasn't working on my device */
-    
-    /*
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePicker.sourceType |= UIImagePickerControllerSourceTypeCamera;
+        mySheet = [[UIActionSheet alloc] initWithTitle:@"Pick Photo"
+                                              delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Camera",@"Photo Library", nil];
     }
-    */
-    imagePicker.delegate = self;
     
-    [self presentViewController:imagePicker
-                       animated:YES
-                     completion:^{
-                         //completion
-                     }];
+    else {
+        mySheet = [[UIActionSheet alloc] initWithTitle:@"Pick Photo"
+                                              delegate:self
+                                     cancelButtonTitle:@"Cancel"
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:@"Photo Library", nil];
+    }
     
+    [mySheet showInView:self.view];
 }
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Camera"]) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:imagePicker animated:YES completion:^{
+            //imagePicker code here
+        }];
+    }
+    
+    if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Photo Library"]) {
+        
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePicker animated:YES completion:^{
+            //photo library code here
+        }];
+        
+        
+        
+        
+    }
+}
+
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -218,7 +247,7 @@
     //TO DO ONCE THE PHOTO HAS BEEN SELECTED
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
-        UIImage *thumbnail = [originalImage imageCroppedToFitSize:CGSizeMake(250, 250)];
+        UIImage *thumbnail = [originalImage imageCroppedToFitSize:CGSizeMake(130, 130)];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.avatarImageView.image = thumbnail;
         });

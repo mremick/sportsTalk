@@ -17,6 +17,7 @@
 @property (strong,nonatomic) NSString *postCountString;
 @property (strong,nonatomic) SportsViewController *sportsVC;
 - (IBAction)backButtonSelected:(id)sender;
+//@property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
 
 @end
 
@@ -32,6 +33,16 @@
     self.userImage.image = [UIImage imageNamed:@"placeholder.jpg"];
     
     self.currentUser = [PFUser currentUser];
+    
+    self.editProfileButton.layer.masksToBounds = YES;
+    self.editProfileButton.layer.cornerRadius = 20.0;
+    [self.editProfileButton.layer setBorderWidth:2.0];
+    [self.editProfileButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+    
+    self.addFriendButton.layer.masksToBounds = YES;
+    self.addFriendButton.layer.cornerRadius = 20.0;
+    [self.addFriendButton.layer setBorderWidth:2.0];
+    [self.addFriendButton.layer setBorderColor:[UIColor whiteColor].CGColor];
     
     
     
@@ -75,11 +86,13 @@
 - (void)buttonTitleMethod
 {
     if ([self isFriend:self.userProfile]) {
-        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Unfriend"];
+        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Unfollow"];
+        self.addFriendButton.titleLabel.textColor = [UIColor whiteColor];
     }
     
     else {
-        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Add Friend"];
+        self.addFriendButton.titleLabel.text = [NSString stringWithFormat:@"Follow"];
+        self.addFriendButton.titleLabel.textColor = [UIColor whiteColor];
 
     }
 }
@@ -97,6 +110,9 @@
     
     [SVProgressHUD showWithStatus:@"Loading User"];
     
+    
+
+    
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
            
@@ -104,8 +120,6 @@
             
             //assiging properties
             self.userProfile = [self.user objectAtIndex:0];
-            
-            NSLog(@"USER: %@",self.userProfile);
             
             self.favoriteTeams = self.userProfile[@"favoriteTeams"];
             self.shortBio = self.userProfile[@"shortBio"];
@@ -115,12 +129,11 @@
             self.location = self.userProfile[@"location"];
             self.objectId = self.userProfile.objectId;
             
-            NSLog(@"USER FAVROITE TEAMS:%@",self.favoriteTeams);
             
             //setting labels text
             self.favoriteTeamsLabel.text = self.favoriteTeams;
             self.shortBioLabel.text = self.shortBio;
-            self.lastChatRoomLabel.text = self.lastChatRoom;
+            self.lastChatRoomLabel.text = [NSString stringWithFormat:@"Last Chatroom in: %@",self.lastChatRoom];
             self.onlineStatusLabel.text = self.onlineStatus;
             self.userImage.file = self.imageFile;
             self.locationLabel.text = self.location;
@@ -146,16 +159,23 @@
     
     NSLog(@"check for current user called");
     
-    if ([currentUser.objectId isEqualToString:self.userProfile.objectId]) {
+    if ([PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
         self.addFriendButton.hidden = YES;
-        self.editProfileButton.hidden = NO; 
+        self.editProfileButton.hidden = YES;
+    } else {
+        if ([currentUser.objectId isEqualToString:self.userProfile.objectId]) {
+            self.addFriendButton.hidden = YES;
+            self.editProfileButton.hidden = NO;
+            
+        }
         
+        else {
+            self.addFriendButton.hidden = NO;
+            self.editProfileButton.hidden = YES;
+        }
+
     }
     
-    else {
-        self.addFriendButton.hidden = NO;
-        self.editProfileButton.hidden = YES;
-    }
 }
 
 - (void)loadFriends
@@ -171,8 +191,6 @@
         
         else {
             [self.friends addObjectsFromArray:results];
-            NSLog(@"FRIENDS: %@",self.friends);
-            NSLog(@"IS FRIEND:%d",[self isFriend:self.userProfile]);
 
         }
         

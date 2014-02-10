@@ -9,6 +9,8 @@
 #import "ResetPasswordViewController.h"
 
 @interface ResetPasswordViewController ()
+- (IBAction)goBackButtonSelected:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *sendEmailButton;
 
 @end
 
@@ -28,7 +30,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self registerForKeyboardNotifications]; 
+    [self registerForKeyboardNotifications];
+    
+    self.sendEmailButton.layer.masksToBounds = YES;
+    self.sendEmailButton.layer.cornerRadius = 20.0f;
+    [self.sendEmailButton.layer setBorderWidth:2.50f];
+    [self.sendEmailButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,4 +130,8 @@
 }
 
 
+- (IBAction)goBackButtonSelected:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
 @end
