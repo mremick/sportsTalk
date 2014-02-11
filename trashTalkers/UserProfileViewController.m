@@ -80,7 +80,6 @@
         
     {
         [self loadUser];
-        [self loadPostsCount];
         [self loadFriends];
     }
     
@@ -145,6 +144,9 @@
             self.imageFile = self.userProfile[@"avatar"];
             self.location = self.userProfile[@"location"];
             self.objectId = self.userProfile.objectId;
+            
+            [self loadPostsCount:self.userProfile];
+
             
             
             //setting labels text
@@ -287,9 +289,9 @@
     return NO;
 }
 
-- (void)loadPostsCount
+- (void)loadPostsCount:(PFUser *)user
 {
-    PFRelation *postsForUser = [PFUser currentUser][@"Posts"];
+    PFRelation *postsForUser = user[@"Posts"];
     
     [postsForUser.query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
         if (!error) {

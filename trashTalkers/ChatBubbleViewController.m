@@ -104,6 +104,10 @@
     
     self.navigationItem.title = self.gameName;
     
+    PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
+    [usersForRoom addObject:[PFUser currentUser]];
+    
+    
     PFUser *currentUser = [PFUser currentUser];
     self.userAvatar = currentUser[@"avatar"];
     [currentUser saveInBackground];
@@ -120,7 +124,7 @@
     [super viewWillDisappear:animated];
     
     PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
-    //[usersForRoom addObject:[PFUser currentUser]];
+    NSLog(@"LEAVING ROOM:%@",self.currentRoom);
     [usersForRoom removeObject:[PFUser currentUser]];
     [self.currentRoom saveInBackground];
     

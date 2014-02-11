@@ -94,7 +94,7 @@
     [super viewWillDisappear:animated];
     
     PFRelation *usersForRoom = [self.currentRoom relationforKey:@"Users"];
-    //[usersForRoom addObject:[PFUser currentUser]];
+    [usersForRoom addObject:[PFUser currentUser]];
     [usersForRoom removeObject:[PFUser currentUser]];
     [self.currentRoom saveInBackground];
     
