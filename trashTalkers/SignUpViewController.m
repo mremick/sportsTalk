@@ -13,6 +13,8 @@
 #import "Reachability.h"
 
 @interface SignUpViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *changePhotoButton;
+@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
 
 @end
 
@@ -30,6 +32,14 @@
     }
     
     [self setupToolbar];
+    
+    self.signUpButton.layer.masksToBounds = YES;
+    self.signUpButton.layer.cornerRadius = 20.0f;
+    [self.signUpButton.layer setBorderWidth:2.50f];
+    [self.signUpButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+    
+    
+    
     
     self.avatarImageView.image = [UIImage imageNamed:@"avatar.png"]; 
 }
